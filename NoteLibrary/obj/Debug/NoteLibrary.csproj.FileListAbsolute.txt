@@ -1,0 +1,15 @@
+\\vm-vsweb.niunt.niu.edu\user$\Z1702101\Documents\Visual Studio 2010\Projects\Assignment1\NoteLibrary\bin\Debug\NoteLibrary.dll
+\\vm-vsweb.niunt.niu.edu\user$\Z1702101\Documents\Visual Studio 2010\Projects\Assignment1\NoteLibrary\bin\Debug\NoteLibrary.pdb
+\\vm-vsweb.niunt.niu.edu\user$\Z1702101\Documents\Visual Studio 2010\Projects\Assignment1\NoteLibrary\obj\Debug\ResolveAssemblyReference.cache
+\\vm-vsweb.niunt.niu.edu\user$\Z1702101\Documents\Visual Studio 2010\Projects\Assignment1\NoteLibrary\obj\Debug\NoteLibrary.dll
+\\vm-vsweb.niunt.niu.edu\user$\Z1702101\Documents\Visual Studio 2010\Projects\Assignment1\NoteLibrary\obj\Debug\NoteLibrary.pdb
+C:\Users\Anthony\NIU\Net Programming (CSCI 680V)\Assignment1\NoteLibrary\bin\Debug\NoteLibrary.dll
+C:\Users\Anthony\NIU\Net Programming (CSCI 680V)\Assignment1\NoteLibrary\bin\Debug\NoteLibrary.pdb
+C:\Users\Anthony\NIU\Net Programming (CSCI 680V)\Assignment1\NoteLibrary\obj\Debug\NoteLibrary.csprojResolveAssemblyReference.cache
+C:\Users\Anthony\NIU\Net Programming (CSCI 680V)\Assignment1\NoteLibrary\obj\Debug\NoteLibrary.dll
+C:\Users\Anthony\NIU\Net Programming (CSCI 680V)\Assignment1\NoteLibrary\obj\Debug\NoteLibrary.pdb
+C:\Users\Rob\Documents\Visual Studio 2010\Projects\Assignment1\NoteLibrary\bin\Debug\NoteLibrary.dll
+C:\Users\Rob\Documents\Visual Studio 2010\Projects\Assignment1\NoteLibrary\bin\Debug\NoteLibrary.pdb
+C:\Users\Rob\Documents\Visual Studio 2010\Projects\Assignment1\NoteLibrary\obj\Debug\NoteLibrary.csprojResolveAssemblyReference.cache
+C:\Users\Rob\Documents\Visual Studio 2010\Projects\Assignment1\NoteLibrary\obj\Debug\NoteLibrary.dll
+C:\Users\Rob\Documents\Visual Studio 2010\Projects\Assignment1\NoteLibrary\obj\Debug\NoteLibrary.pdb

@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoteLibrary", "NoteLibrary\NoteLibrary.csproj", "{BA23CFA2-E994-43E0-94DA-FC41DFCB92A8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyNote", "EasyNote\EasyNote.csproj", "{6085796B-E53C-4B7C-9CE8-4662290F186C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BA23CFA2-E994-43E0-94DA-FC41DFCB92A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA23CFA2-E994-43E0-94DA-FC41DFCB92A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA23CFA2-E994-43E0-94DA-FC41DFCB92A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA23CFA2-E994-43E0-94DA-FC41DFCB92A8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6085796B-E53C-4B7C-9CE8-4662290F186C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6085796B-E53C-4B7C-9CE8-4662290F186C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6085796B-E53C-4B7C-9CE8-4662290F186C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6085796B-E53C-4B7C-9CE8-4662290F186C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

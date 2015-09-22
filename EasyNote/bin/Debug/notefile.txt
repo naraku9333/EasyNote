@@ -1,0 +1,6 @@
+food high in iron*beef, liver, mushroom, sweet potato*nutrition:food
+473 assignment 1*due in two weeks, submit on blackboard*assignment:csci473:to-do
+TA meeting fall 2015*Aug. 19, Wed, PM 103, 9am*meeting:to-do
+bills to be paid*credit cards, cable, cell phone, electricity*bill:money:to-do
+to-do tomorrow*drop mail, group discussion, fix car*to-do:plan
+an interesting article*www.sciencemag.org/content/343/6167/125.full*article:STEM

@@ -14,6 +14,7 @@ namespace NoteLibrary
         public string Title { get; set; }
         public string Body { get; set; }
         public string[] Tags { get; set; }
+        public bool Modifiable { get; set; }
 
         /**************************************************************************************
          * FUNCTION:  public Note(string title, string body, string[] tags)
@@ -73,7 +74,54 @@ namespace NoteLibrary
          **************************************************************************************/
         public static string[] splitTags(String tags)
         {
+            if (tags == "to-do")
+            {
+                throw new NoteException();
+            }
+            else if (tags == "meeting")
+            {
+                //Force a divide by 0 error.  
+                int zero = 0;
+                int error = 1 / zero;
+
+            }
+            else if (tags == "grades")
+            {
+                try
+                {
+                    //Force a divide by 0 error.
+                    int zero = 0;
+                    int error = 1 / zero;
+                }
+                catch (DivideByZeroException e)
+                {
+                    throw new NoteException("An exception with spliting the tags was encountered.", e, tags);
+                }
+            }
+
             return tags.Split(':');
         }
+
+        
     }
+    public class NoteException : Exception
+    {
+        private string tag;
+        public string Tag
+        {
+            get { return tag; }
+            set { tag = value; }
+        }
+
+        public NoteException() : base() { }
+        public NoteException(string message) : base(message) { }
+        public NoteException(string message, Exception innerException) : base(message, innerException) { }
+        public NoteException(string message, Exception innerException, string tag)
+            : base(message, innerException)
+        {
+            this.Tag = tag;
+        }
+
+    }
+
 }

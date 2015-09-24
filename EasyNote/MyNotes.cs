@@ -17,7 +17,6 @@ using NoteLibrary;
 using System.IO;
 using System.Drawing.Text;
 
-
 namespace EasyNote
 {
     public partial class MyNotes : Form
@@ -112,25 +111,26 @@ namespace EasyNote
             String body;    //The body of the note, appears as the second argument on the line.
             String tags;    //The tags of the note, appears as the third argument on the line.  
 
-            try
-            {
-                StreamReader reader = new StreamReader(FILE_LOCATION);
-
-                //Read the notes file, splitting the line into its parts.  Then, use these parts to construct a note.  
-                while (!reader.EndOfStream)
+           try
+           {
+                using(StreamReader reader = new StreamReader(FILE_LOCATION) )
                 {
-                    line = reader.ReadLine().Split('*');
 
-                    name = line[0];
-                    body = line[1];
-                    tags = line[2];
+                    //Read the notes file, splitting the line into its parts.  Then, use these parts to construct a note.  
+                    while (!reader.EndOfStream)
+                    {
+                        line = reader.ReadLine().Split('*');
 
-                    notes.Add(new Note(name, body, Note.splitTags(tags)));
+                        name = line[0];
+                        body = line[1];
+                        tags = line[2];
 
+                        this.addNewNote(line[0], line[1], line[2]);
+
+                    }
                 }
-                reader.Close();
             }
-            catch (Exception e)
+            catch (FileNotFoundException e)
             {
                 MessageBox.Show("There was an error processing the file: " + e.Message);
                 Environment.Exit(-1);
@@ -304,6 +304,30 @@ namespace EasyNote
             pbShowTags.Image = showButton;
         }
 
+
+        private void addNewNote(string title, string text, string tagString)
+        {
+            try
+            {
+                String[] tags = Note.splitTags(tagString);
+                notes.Add(new Note(title, text, tags));
+            }
+            catch (NoteException ne)
+            {
+                //If there was an innerException contained with the note exception.
+                if (ne.InnerException != null)
+                {
+                    MessageBox.Show(ne.Message + ne.Tag, ne.InnerException.Message);
+                }
+                //Otherwise there is no innerException
+                else
+                {
+                    MessageBox.Show(ne.Message, "Note Exception");
+                }
+            }
+        }
+
+
         /**************************************************************************************
          * FUNCTION:  private void pbAddNote_Click(object sender, EventArgs e)
          * 
@@ -314,8 +338,9 @@ namespace EasyNote
          * 
          * NOTES:     NOT-IMPLEMENTED
          **************************************************************************************/
-        private void pbAddNote_Click(object sender, EventArgs e)
+        private void pbAddNote_Click_1(object sender, EventArgs e)
         {
+            this.addNewNote(tbTitle.Text, textBox1.Text, tBTags.Text);
         }
     }
 }

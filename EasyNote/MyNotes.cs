@@ -304,7 +304,19 @@ namespace EasyNote
             pbShowTags.Image = showButton;
         }
 
-
+        /**************************************************************************************
+         * FUNCTION:  private addNewNote(string title, string text, string tagString)
+         * 
+         * ARGUMENTS: title - the title of the note
+         *            body - the body text of the note
+         *            tagString - all of the tags for the note, in one combined string.  
+         * 
+         * RETURNS:   This function has no return value, but the notes list will be modified to
+         *            have a new note with the entered values.  
+         * 
+         * NOTES:    AddNewNote not only adds the note, but it also does the exception checking for
+         *           it as well.  
+         **************************************************************************************/
         private void addNewNote(string title, string text, string tagString)
         {
             try
@@ -314,12 +326,12 @@ namespace EasyNote
             }
             catch (NoteException ne)
             {
-                //If there was an innerException contained with the note exception.
+                //If there was an innerException contained with the note exception, but its message in the caption.  
                 if (ne.InnerException != null)
                 {
                     MessageBox.Show(ne.Message + ne.Tag, ne.InnerException.Message);
                 }
-                //Otherwise there is no innerException
+                //Otherwise there is no innerException, just show the message.  
                 else
                 {
                     MessageBox.Show(ne.Message, "Note Exception");

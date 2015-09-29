@@ -206,6 +206,7 @@
             this.pbAddNote.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pbAddNote.TabIndex = 13;
             this.pbAddNote.TabStop = false;
+            this.pbAddNote.Click += new System.EventHandler(this.pbAddNote_Click_1);
             this.pbAddNote.MouseEnter += new System.EventHandler(this.pbAddNote_MouseEnter);
             this.pbAddNote.MouseLeave += new System.EventHandler(this.pbAddNote_MouseLeave);
             // 

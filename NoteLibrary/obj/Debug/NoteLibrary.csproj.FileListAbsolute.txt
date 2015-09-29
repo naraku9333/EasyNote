@@ -13,3 +13,8 @@ C:\Users\Rob\Documents\Visual Studio 2010\Projects\Assignment1\NoteLibrary\bin\D
 C:\Users\Rob\Documents\Visual Studio 2010\Projects\Assignment1\NoteLibrary\obj\Debug\NoteLibrary.csprojResolveAssemblyReference.cache
 C:\Users\Rob\Documents\Visual Studio 2010\Projects\Assignment1\NoteLibrary\obj\Debug\NoteLibrary.dll
 C:\Users\Rob\Documents\Visual Studio 2010\Projects\Assignment1\NoteLibrary\obj\Debug\NoteLibrary.pdb
+C:\Users\Anthony\NIU\Net Programming (CSCI 680V)\Assignment1_sv\GitHUB\EasyNote\NoteLibrary\bin\Debug\NoteLibrary.dll
+C:\Users\Anthony\NIU\Net Programming (CSCI 680V)\Assignment1_sv\GitHUB\EasyNote\NoteLibrary\bin\Debug\NoteLibrary.pdb
+C:\Users\Anthony\NIU\Net Programming (CSCI 680V)\Assignment1_sv\GitHUB\EasyNote\NoteLibrary\obj\Debug\NoteLibrary.csprojResolveAssemblyReference.cache
+C:\Users\Anthony\NIU\Net Programming (CSCI 680V)\Assignment1_sv\GitHUB\EasyNote\NoteLibrary\obj\Debug\NoteLibrary.dll
+C:\Users\Anthony\NIU\Net Programming (CSCI 680V)\Assignment1_sv\GitHUB\EasyNote\NoteLibrary\obj\Debug\NoteLibrary.pdb

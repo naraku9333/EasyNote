@@ -105,9 +105,6 @@
     <None Include="Resources\Light_Save_button.bmp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="cancel dark.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Light Cancel Button.png" />
   </ItemGroup>
   <ItemGroup>

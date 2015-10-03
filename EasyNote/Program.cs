@@ -65,7 +65,5 @@ namespace EasyNote
 
             Process.GetCurrentProcess().Kill();
         }
-    }
-
-     
+    }    
 }

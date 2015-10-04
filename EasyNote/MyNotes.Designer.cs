@@ -44,8 +44,9 @@
             this.pbExit = new System.Windows.Forms.PictureBox();
             this.pbShowTags = new System.Windows.Forms.PictureBox();
             this.pbAddNote = new System.Windows.Forms.PictureBox();
-            this.noteBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.pbSaveBttn = new System.Windows.Forms.PictureBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.noteBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.myNotesBindingSource = new System.Windows.Forms.BindingSource(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.dataSet1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvNotesList)).BeginInit();
@@ -54,8 +55,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.pbExit)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbShowTags)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbAddNote)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.noteBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbSaveBttn)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.noteBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.myNotesBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
@@ -167,6 +168,7 @@
             // 
             // pbCancelBttn
             // 
+            this.pbCancelBttn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.pbCancelBttn.Image = global::EasyNote.Properties.Resources.Dark_Cancel_Button;
             this.pbCancelBttn.Location = new System.Drawing.Point(680, 364);
             this.pbCancelBttn.Name = "pbCancelBttn";
@@ -181,6 +183,7 @@
             // 
             // pbDeleteBttn
             // 
+            this.pbDeleteBttn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.pbDeleteBttn.ErrorImage = global::EasyNote.Properties.Resources.Dark_Delete_Button;
             this.pbDeleteBttn.Image = global::EasyNote.Properties.Resources.Dark_Delete_Button;
             this.pbDeleteBttn.Location = new System.Drawing.Point(680, 297);
@@ -236,12 +239,9 @@
             this.pbAddNote.MouseEnter += new System.EventHandler(this.pbAddNote_MouseEnter);
             this.pbAddNote.MouseLeave += new System.EventHandler(this.pbAddNote_MouseLeave);
             // 
-            // noteBindingSource
-            // 
-            this.noteBindingSource.DataSource = typeof(NoteLibrary.Note);
-            // 
             // pbSaveBttn
             // 
+            this.pbSaveBttn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.pbSaveBttn.Image = global::EasyNote.Properties.Resources.Dark_Save_Button;
             this.pbSaveBttn.Location = new System.Drawing.Point(680, 173);
             this.pbSaveBttn.Name = "pbSaveBttn";
@@ -254,6 +254,21 @@
             this.pbSaveBttn.MouseEnter += new System.EventHandler(this.pbSaveBttn_MouseEnter);
             this.pbSaveBttn.MouseLeave += new System.EventHandler(this.pbSaveBttn_MouseLeave);
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.ForeColor = System.Drawing.Color.Snow;
+            this.label2.Location = new System.Drawing.Point(35, 767);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(659, 20);
+            this.label2.TabIndex = 19;
+            this.label2.Text = "Light gray notes are from ClassLibrary1.dll and are read only (can not be changed" +
+    " or deleted)";
+            // 
+            // noteBindingSource
+            // 
+            this.noteBindingSource.DataSource = typeof(NoteLibrary.Note);
+            // 
             // myNotesBindingSource
             // 
             this.myNotesBindingSource.DataSource = typeof(EasyNote.MyNotes);
@@ -264,6 +279,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.HotTrack;
             this.ClientSize = new System.Drawing.Size(856, 806);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.pbSaveBttn);
             this.Controls.Add(this.pbCancelBttn);
             this.Controls.Add(this.pbDeleteBttn);
@@ -290,8 +306,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.pbExit)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbShowTags)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbAddNote)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.noteBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbSaveBttn)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.noteBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.myNotesBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -318,6 +334,7 @@
         private System.Windows.Forms.PictureBox pbDeleteBttn;
         private System.Windows.Forms.PictureBox pbCancelBttn;
         private System.Windows.Forms.PictureBox pbSaveBttn;
+        private System.Windows.Forms.Label label2;
     }
 }
 

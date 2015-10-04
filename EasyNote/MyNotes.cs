@@ -21,9 +21,11 @@ namespace EasyNote
 {
     public partial class MyNotes : Form
     {
-        public const String FILE_LOCATION = "notefile.txt";
+        private const String FILE_LOCATION = "notefile.txt";
         
         private List<Note> notes = new List<Note>();
+
+        private Note currentNote = null;//currently selected note iff its a stored note
 
         /**************************************************************************************
          * FUNCTION:  MyNotes()
@@ -75,7 +77,7 @@ namespace EasyNote
             char[] delimiterChars = { ':' };
 
             //assign text data in text box Tags
-            string text = tBTags.Text;
+            string text = tbTags.Text;
 
             //parse text in text box using delimiter characters
             string[] words = text.Split(delimiterChars);
@@ -139,6 +141,27 @@ namespace EasyNote
         }
 
         /**************************************************************************************
+         * FUNCTION:  private void writeNotesFile()
+         * 
+         * ARGUMENTS: none
+         * 
+         * RETURNS:   This function has no return value
+         * 
+         * NOTES:     This function overwrites the notefile with the current data
+         *            in the notes list
+         **************************************************************************************/
+        private void writeNotesFile()
+        {
+            using (StreamWriter sw = new StreamWriter(FILE_LOCATION))
+            {
+                foreach(Note n in notes)
+                {
+                    sw.WriteLine(n.Title + "*" + n.Body + "*" + n.getTagString());
+                }
+            }
+        }
+
+        /**************************************************************************************
          * FUNCTION:  private void createNoteTable()
          * 
          * ARGUMENTS: none
@@ -150,23 +173,27 @@ namespace EasyNote
          **************************************************************************************/
         private void createNoteTable()
         {
-            DataTable noteTable = new DataTable();
+            //DataTable noteTable = new DataTable();
 
             //Create the headers for the columns as strings.
-            noteTable.Columns.Add("Title");
-            noteTable.Columns.Add("Text");
-            noteTable.Columns.Add("Tags");
+            //noteTable.Columns.Add("Title");
+            //noteTable.Columns.Add("Text");
+            //noteTable.Columns.Add("Tags");
+            foreach (string s in new string[] { "Title", "Text", "Tags" })
+            {
+                dgvNotesList.Columns.Add(s, s);
+            }
 
             //Add a new row for every note.  The row will contain information on the 
             //title, body, and tags (joined by :) of the note
             foreach (Note n in notes)
             {
-                String [] row = { n.Title, n.Body, n.getTagString() };
-                noteTable.Rows.Add(row);
+                String [] row = { n.Title, n.Body, n.getTagString().Replace(":", ", ") };
+                dgvNotesList.Rows.Add(row);
             }
 
             //Display the noteTable in a data grid form.  
-            dgvNotesList.DataSource = noteTable;
+           // dgvNotesList.DataSource = noteTable;
 
         }
 
@@ -322,7 +349,7 @@ namespace EasyNote
             try
             {
                 String[] tags = Note.splitTags(tagString);
-                notes.Add(new Note(title, text, tags));
+                notes.Add(new Note(title, text, tags));                
             }
             catch (NoteException ne)
             {
@@ -339,7 +366,6 @@ namespace EasyNote
             }
         }
 
-
         /**************************************************************************************
          * FUNCTION:  private void pbAddNote_Click(object sender, EventArgs e)
          * 
@@ -348,20 +374,47 @@ namespace EasyNote
          * 
          * RETURNS:   This function has no return value
          * 
-         * NOTES:     NOT-IMPLEMENTED
+         * NOTES:     Add new notes to note list and notfile
          **************************************************************************************/
-        private void pbAddNote_Click_1(object sender, EventArgs e)
+        private void pbAddNote_Click(object sender, EventArgs e)
         {
-            this.addNewNote(tbTitle.Text, textBox1.Text, tBTags.Text);
+            if (tbTitle.Text != "" && tbBody.Text != "")
+            {
+                this.addNewNote(tbTitle.Text, tbBody.Text, tbTags.Text);
+
+                using (StreamWriter sw = File.AppendText(FILE_LOCATION))
+                {
+                    sw.WriteLine(tbTitle.Text + "*" + tbBody.Text + "*" + tbTags.Text);
+                }
+
+                string[] row = { tbTitle.Text, tbBody.Text, tbTags.Text.Replace(":", ", ") };
+                dgvNotesList.Rows.Add(row);
+
+                clearText();
+            }
         }
 
-        private void dgvNotesList_DoubleClick(object sender, EventArgs e)
+        /**************************************************************************************
+         * FUNCTION:  private dgvNotesList_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+         *
+         * ARGUMENTS: sender - object that is calling the function
+         *            e - any arguments pass for the event
+         * 
+         * RETURNS:   This function has no return value
+         * 
+         * NOTES:     Retrieve selected note and populate fields
+         **************************************************************************************/
+        private void dgvNotesList_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            this.pbAddNote.Visible = false;
-            this.pbSaveBttn.Visible = true;
-            this.pbDeleteBttn.Visible = true;
-            this.pbCancelBttn.Visible = true;
+            changeButtonView();
+
+            int i = e.RowIndex;
+            currentNote = notes[i];
+            tbTitle.Text = currentNote.Title;
+            tbTags.Text = currentNote.getTagString();
+            tbBody.Text = currentNote.Body;
         }
+
         /**************************************************************************************
          * FUNCTION:  private void pbCancelBttn_MouseEnter(object sender, EventArgs e)
          * 
@@ -370,8 +423,8 @@ namespace EasyNote
          * 
          * RETURNS:   This function has no return value
          * 
-         * NOTES:     This function is called when the mouse is moved over pbCancelBtnn and changes 
-         *            the displayed image
+         * NOTES:     This function is called when the mouse is moved over pbCancelBtnn and 
+         *            changes the displayed image
          **************************************************************************************/
         private void pbCancelBttn_MouseEnter(object sender, EventArgs e)
         {
@@ -414,6 +467,7 @@ namespace EasyNote
             Image deleteButton = EasyNote.Properties.Resources.Light_Delete_Button;
             pbDeleteBttn.Image = deleteButton;
         }
+
         /**************************************************************************************
          * FUNCTION:  private void pbDeleteBttn_MouseLeave(object sender, EventArgs e)
          * 
@@ -431,35 +485,57 @@ namespace EasyNote
             Image deleteButton = EasyNote.Properties.Resources.Dark_Delete_Button;
             pbDeleteBttn.Image = deleteButton;
         }
-        
-        private void pbSaveBttn_Click(object sender, EventArgs e)
-        {
-            this.pbAddNote.Visible = true;
-            this.pbSaveBttn.Visible = false;
-            this.pbDeleteBttn.Visible = false;
-            this.pbCancelBttn.Visible = false;
-            this.tBTags.Clear();
-            this.tbTitle.Clear();
-            this.textBox1.Clear();
-            
-        }
+
         /**************************************************************************************
-         * FUNCTION:  private void pbSaveBttn_MouseEnter(object sender, EventArgs e)
+         * FUNCTION:  private void pbSaveBttn_Click(object sender, EventArgs e)
          * 
          * ARGUMENTS: sender - object that is calling the function
          *            e - any arguments pass for the event
          * 
          * RETURNS:   This function has no return value
          * 
-         * NOTES:     This function is called when the mouse is moved over pbSaveBttn and changes 
-         *            the displayed image
+         * NOTES:     This function is called when the pbSaveBttn is clicked
+         *            It saves the changes to the note in the notes list and notefile
          **************************************************************************************/
+        private void pbSaveBttn_Click(object sender, EventArgs e)
+        {           
+            changeButtonView();
+            if(currentNote != null)
+            {
+                currentNote.Title = tbTitle.Text;
+                currentNote.Tags = tbTags.Text.Split(':');
+                currentNote.Body = tbBody.Text;
+
+                //modify DGV, this is a little hacky
+                int i = notes.IndexOf(currentNote);
+                string[] row = { tbTitle.Text, tbBody.Text, tbTags.Text.Replace(":", ", ") };
+                dgvNotesList.Rows.RemoveAt(i);
+                dgvNotesList.Rows.Insert(i, row);
+
+                writeNotesFile();
+                currentNote = null;
+            }
+            clearText();            
+        }
+        
+        /**************************************************************************************
+        * FUNCTION:  private void pbSaveBttn_MouseEnter(object sender, EventArgs e)
+        * 
+        * ARGUMENTS: sender - object that is calling the function
+        *            e - any arguments pass for the event
+        * 
+        * RETURNS:   This function has no return value
+        * 
+        * NOTES:     This function is called when the mouse is moved over pbSaveBttn and changes 
+        *            the displayed image
+        **************************************************************************************/
         private void pbSaveBttn_MouseEnter(object sender, EventArgs e)
         {
             //create image from resource and display
             Image SaveButton = EasyNote.Properties.Resources.Light_Save_Button;
             pbSaveBttn.Image = SaveButton;
         }
+
         /**************************************************************************************
          * FUNCTION:  private void pbSaveBttn_MouseLeave(object sender, EventArgs e)
          * 
@@ -478,26 +554,86 @@ namespace EasyNote
             pbSaveBttn.Image = SaveButton;
         }
 
+        /**************************************************************************************
+         * FUNCTION:  private void pbCancelBttn_Click(object sender, EventArgs e)
+         * 
+         * ARGUMENTS: sender - object that is calling the function
+         *            e - any arguments pass for the event
+         * 
+         * RETURNS:   This function has no return value
+         * 
+         * NOTES:     This function is called when the pbCancelBttn is clicked
+         *            It discards any changes to the selected note
+         **************************************************************************************/
         private void pbCancelBttn_Click(object sender, EventArgs e)
         {
-            this.pbAddNote.Visible = true;
-            this.pbSaveBttn.Visible = false;
-            this.pbDeleteBttn.Visible = false;
-            this.pbCancelBttn.Visible = false;
-            this.tBTags.Clear();
-            this.tbTitle.Clear();
-            this.textBox1.Clear();
+            currentNote = null; 
+            changeButtonView();
+            clearText();
         }
 
+        /**************************************************************************************
+         * FUNCTION:  private void pbDeleteBttn_Click(object sender, EventArgs e)
+         * 
+         * ARGUMENTS: sender - object that is calling the function
+         *            e - any arguments pass for the event
+         * 
+         * RETURNS:   This function has no return value
+         * 
+         * NOTES:     This function is called when the pbSaveBttn is clicked
+         *            It deleted the currently selected note from the notes list 
+         *            and notefile
+         **************************************************************************************/
         private void pbDeleteBttn_Click(object sender, EventArgs e)
-        {
-            this.pbAddNote.Visible = true;
-            this.pbSaveBttn.Visible = false;
-            this.pbDeleteBttn.Visible = false;
-            this.pbCancelBttn.Visible = false;
-            this.tBTags.Clear();
-            this.tbTitle.Clear();
-            this.textBox1.Clear();
+        {    
+            changeButtonView();
+            if (currentNote != null)
+            {                
+                int i = notes.IndexOf(currentNote);
+
+                //remove note from list
+                notes.RemoveAt(i);
+
+                //remove note from DGV
+                dgvNotesList.Rows.RemoveAt(i);
+
+                writeNotesFile();
+                currentNote = null;
+            }
+            clearText();
         }
+
+        /**************************************************************************************
+         * FUNCTION:  private void clearText()
+         * 
+         * ARGUMENTS: This function takes no args
+         * 
+         * RETURNS:   This function has no return value
+         * 
+         * NOTES:     Helper function to clear UI text feilds
+         **************************************************************************************/
+        private void clearText()
+        {
+            tbTags.Clear();
+            tbTitle.Clear();
+            tbBody.Clear();
+        }
+
+        /**************************************************************************************
+         * FUNCTION:  private void changeButtonView()
+         * 
+         * ARGUMENTS: This function takes no args
+         * 
+         * RETURNS:   This function has no return value
+         * 
+         * NOTES:     Helper function to swap button images for UI views
+         **************************************************************************************/
+        private void changeButtonView()
+        {
+            pbAddNote.Visible = !pbAddNote.Visible;
+            pbSaveBttn.Visible = !pbSaveBttn.Visible;
+            pbDeleteBttn.Visible = !pbDeleteBttn.Visible;
+            pbCancelBttn.Visible = !pbCancelBttn.Visible;
+        }        
     }
 }

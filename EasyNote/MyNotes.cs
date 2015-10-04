@@ -4,7 +4,7 @@
  *            Sean Vogel
  *            Robert Kahren
  *            Anthony Malmgren
- * 
+ *
  * NOTES:     Main application form
  *            reads note file and fills DataGridView
  **************************************************************************************/
@@ -22,18 +22,18 @@ namespace EasyNote
     public partial class MyNotes : Form
     {
         private const String FILE_LOCATION = "notefile.txt";
-        
+
         private List<Note> notes = new List<Note>();
 
         private Note currentNote = null;//currently selected note iff its a stored note
 
         /**************************************************************************************
          * FUNCTION:  MyNotes()
-         * 
+         *
          * ARGUMENTS: None
-         * 
+         *
          * RETURNS:   This function has no return value
-         * 
+         *
          * NOTES:     Default constructor
          *            Initializes components, reads data file and calls createNoteTable
          **************************************************************************************/
@@ -42,18 +42,19 @@ namespace EasyNote
             InitializeComponent();
             ResizeRedraw = true;//force redraw on window resize
             readNotesFile();
+            getDllNotes();
             createNoteTable();
-    
+
         }
 
         /**************************************************************************************
          * FUNCTION:  private void pbExit_Click(object sender, EventArgs e)
-         * 
+         *
          * ARGUMENTS: sender - object that is calling the function
          *            e - any arguments pass for the event
-         * 
+         *
          * RETURNS:   This function has no return value
-         * 
+         *
          * NOTES:     This function is called when the exit button is clicked closing the window
          **************************************************************************************/
         private void pbExit_Click(object sender, EventArgs e)
@@ -63,12 +64,12 @@ namespace EasyNote
 
         /**************************************************************************************
          * FUNCTION:  private void pbShowTgs_Click(object sender, EventArgs e)
-         * 
+         *
          * ARGUMENTS: sender - object that is calling the function
          *            e - any arguments pass for the event
-         * 
+         *
          * RETURNS:   This function has no return value
-         * 
+         *
          * NOTES:     This function is called when the show tags button is clicked
          *            creating a messagebox showing the tags in current note
          **************************************************************************************/
@@ -82,7 +83,7 @@ namespace EasyNote
             //parse text in text box using delimiter characters
             string[] words = text.Split(delimiterChars);
 
-            //add title and new line 
+            //add title and new line
             string wordsShow = " Tags: " + Environment.NewLine;
 
 
@@ -98,12 +99,12 @@ namespace EasyNote
 
         /**************************************************************************************
          * FUNCTION:  private void readNotesFile()
-         * 
+         *
          * ARGUMENTS: none
-         * 
+         *
          * RETURNS:   This function has no return value
-         * 
-         * NOTES:     This function reads lines from a note file and constructs a Note from the 
+         *
+         * NOTES:     This function reads lines from a note file and constructs a Note from the
          *            data in the line. The Note is then added to a list of Notes
          **************************************************************************************/
         private void readNotesFile()
@@ -111,14 +112,14 @@ namespace EasyNote
             String[] line;  //A line from the file that has been split up into its individual parts (based on *)
             String name;    //The name of the note, appears as the first argument on a line.
             String body;    //The body of the note, appears as the second argument on the line.
-            String tags;    //The tags of the note, appears as the third argument on the line.  
+            String tags;    //The tags of the note, appears as the third argument on the line.
 
            try
            {
                 using(StreamReader reader = new StreamReader(FILE_LOCATION) )
                 {
 
-                    //Read the notes file, splitting the line into its parts.  Then, use these parts to construct a note.  
+                    //Read the notes file, splitting the line into its parts.  Then, use these parts to construct a note.
                     while (!reader.EndOfStream)
                     {
                         line = reader.ReadLine().Split('*');
@@ -128,7 +129,6 @@ namespace EasyNote
                         tags = line[2];
 
                         this.addNewNote(line[0], line[1], line[2]);
-
                     }
                 }
             }
@@ -142,11 +142,11 @@ namespace EasyNote
 
         /**************************************************************************************
          * FUNCTION:  private void writeNotesFile()
-         * 
+         *
          * ARGUMENTS: none
-         * 
+         *
          * RETURNS:   This function has no return value
-         * 
+         *
          * NOTES:     This function overwrites the notefile with the current data
          *            in the notes list
          **************************************************************************************/
@@ -163,11 +163,11 @@ namespace EasyNote
 
         /**************************************************************************************
          * FUNCTION:  private void createNoteTable()
-         * 
+         *
          * ARGUMENTS: none
-         * 
+         *
          * RETURNS:   This function has no return value
-         * 
+         *
          * NOTES:     This function adds the note data to a DataTable which is added to
          *            the DataGridView
          **************************************************************************************/
@@ -184,7 +184,7 @@ namespace EasyNote
                 dgvNotesList.Columns.Add(s, s);
             }
 
-            //Add a new row for every note.  The row will contain information on the 
+            //Add a new row for every note.  The row will contain information on the
             //title, body, and tags (joined by :) of the note
             foreach (Note n in notes)
             {
@@ -192,19 +192,19 @@ namespace EasyNote
                 dgvNotesList.Rows.Add(row);
             }
 
-            //Display the noteTable in a data grid form.  
+            //Display the noteTable in a data grid form.
            // dgvNotesList.DataSource = noteTable;
 
         }
 
         /**************************************************************************************
          * FUNCTION:  private void MyNotes_Paint(object sender, PaintEventArgs e)
-         * 
+         *
          * ARGUMENTS: sender - object that is calling the function
          *            e - any arguments pass for the event
-         * 
+         *
          * RETURNS:   This function has no return value
-         * 
+         *
          * NOTES:     This function is called when the window is painted/repainted
          *            adding the application name in custom font centered in window
          **************************************************************************************/
@@ -225,13 +225,13 @@ namespace EasyNote
 
         /**************************************************************************************
          * FUNCTION:  private void pbAddNote_MouseEnter(object sender, EventArgs e)
-         * 
+         *
          * ARGUMENTS: sender - object that is calling the function
          *            e - any arguments pass for the event
-         * 
+         *
          * RETURNS:   This function has no return value
-         * 
-         * NOTES:     This function is called when the mouse is moved over pbAddNote and changes 
+         *
+         * NOTES:     This function is called when the mouse is moved over pbAddNote and changes
          *            the displayed image
          **************************************************************************************/
         private void pbAddNote_MouseEnter(object sender, EventArgs e)
@@ -243,13 +243,13 @@ namespace EasyNote
 
         /**************************************************************************************
          * FUNCTION:  private void pbAddNote_MouseLeave(object sender, EventArgs e)
-         * 
+         *
          * ARGUMENTS: sender - object that is calling the function
          *            e - any arguments pass for the event
-         * 
+         *
          * RETURNS:   This function has no return value
-         * 
-         * NOTES:     This function is called when the mouse is off of pbAddNote and changes 
+         *
+         * NOTES:     This function is called when the mouse is off of pbAddNote and changes
          *            the displayed image
          **************************************************************************************/
         private void pbAddNote_MouseLeave(object sender, EventArgs e)
@@ -261,13 +261,13 @@ namespace EasyNote
 
         /**************************************************************************************
          * FUNCTION:  private void pbExit_MouseEnter(object sender, EventArgs e)
-         * 
+         *
          * ARGUMENTS: sender - object that is calling the function
          *            e - any arguments pass for the event
-         * 
+         *
          * RETURNS:   This function has no return value
-         * 
-         * NOTES:     This function is called when the mouse is moved over pbExit and changes 
+         *
+         * NOTES:     This function is called when the mouse is moved over pbExit and changes
          *            the displayed image
          **************************************************************************************/
         private void pbExit_MouseEnter(object sender, EventArgs e)
@@ -279,12 +279,12 @@ namespace EasyNote
 
         /**************************************************************************************
          * FUNCTION:  private void pbExit_MouseLeave(object sender, EventArgs e)
-         * 
+         *
          * ARGUMENTS: sender - object that is calling the function
          *            e - any arguments pass for the event
-         * 
+         *
          * RETURNS:   This function has no return value
-         * 
+         *
          * NOTES:     This function is called when the mouse is off of pbExit and changes
          *            the displayed image
          **************************************************************************************/
@@ -297,13 +297,13 @@ namespace EasyNote
 
         /**************************************************************************************
          * FUNCTION:  private void pbShowTags_MouseEnter(object sender, EventArgs e)
-         * 
+         *
          * ARGUMENTS: sender - object that is calling the function
          *            e - any arguments pass for the event
-         * 
+         *
          * RETURNS:   This function has no return value
-         * 
-         * NOTES:     This function is called when the mouse is moved over pbShowTags and changes 
+         *
+         * NOTES:     This function is called when the mouse is moved over pbShowTags and changes
          *            the displayed image
          **************************************************************************************/
         private void pbShowTags_MouseEnter(object sender, EventArgs e)
@@ -315,12 +315,12 @@ namespace EasyNote
 
         /**************************************************************************************
          * FUNCTION:  private void pbShowTgs_MouseLeave(object sender, EventArgs e)
-         * 
+         *
          * ARGUMENTS: sender - object that is calling the function
          *            e - any arguments pass for the event
-         * 
+         *
          * RETURNS:   This function has no return value
-         * 
+         *
          * NOTES:     This function is called when the mouse is off of pbShowTags and changes
          *            the displayed image
          **************************************************************************************/
@@ -333,32 +333,32 @@ namespace EasyNote
 
         /**************************************************************************************
          * FUNCTION:  private addNewNote(string title, string text, string tagString)
-         * 
+         *
          * ARGUMENTS: title - the title of the note
          *            body - the body text of the note
-         *            tagString - all of the tags for the note, in one combined string.  
-         * 
+         *            tagString - all of the tags for the note, in one combined string.
+         *
          * RETURNS:   This function has no return value, but the notes list will be modified to
-         *            have a new note with the entered values.  
-         * 
+         *            have a new note with the entered values.
+         *
          * NOTES:    AddNewNote not only adds the note, but it also does the exception checking for
-         *           it as well.  
+         *           it as well.
          **************************************************************************************/
-        private void addNewNote(string title, string text, string tagString)
+        private void addNewNote(string title, string text, string tagString, bool mod=true)
         {
             try
             {
                 String[] tags = Note.splitTags(tagString);
-                notes.Add(new Note(title, text, tags));                
+                notes.Add(new Note(title, text, tags, mod));  //CEdge add modifiable arg
             }
             catch (NoteException ne)
             {
-                //If there was an innerException contained with the note exception, but its message in the caption.  
+                //If there was an innerException contained with the note exception, but its message in the caption.
                 if (ne.InnerException != null)
                 {
                     MessageBox.Show(ne.Message + ne.Tag, ne.InnerException.Message);
                 }
-                //Otherwise there is no innerException, just show the message.  
+                //Otherwise there is no innerException, just show the message.
                 else
                 {
                     MessageBox.Show(ne.Message, "Note Exception");
@@ -368,12 +368,12 @@ namespace EasyNote
 
         /**************************************************************************************
          * FUNCTION:  private void pbAddNote_Click(object sender, EventArgs e)
-         * 
+         *
          * ARGUMENTS: sender - object that is calling the function
          *            e - any arguments pass for the event
-         * 
+         *
          * RETURNS:   This function has no return value
-         * 
+         *
          * NOTES:     Add new notes to note list and notfile
          **************************************************************************************/
         private void pbAddNote_Click(object sender, EventArgs e)
@@ -399,9 +399,9 @@ namespace EasyNote
          *
          * ARGUMENTS: sender - object that is calling the function
          *            e - any arguments pass for the event
-         * 
+         *
          * RETURNS:   This function has no return value
-         * 
+         *
          * NOTES:     Retrieve selected note and populate fields
          **************************************************************************************/
         private void dgvNotesList_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
@@ -417,13 +417,13 @@ namespace EasyNote
 
         /**************************************************************************************
          * FUNCTION:  private void pbCancelBttn_MouseEnter(object sender, EventArgs e)
-         * 
+         *
          * ARGUMENTS: sender - object that is calling the function
          *            e - any arguments pass for the event
-         * 
+         *
          * RETURNS:   This function has no return value
-         * 
-         * NOTES:     This function is called when the mouse is moved over pbCancelBtnn and 
+         *
+         * NOTES:     This function is called when the mouse is moved over pbCancelBtnn and
          *            changes the displayed image
          **************************************************************************************/
         private void pbCancelBttn_MouseEnter(object sender, EventArgs e)
@@ -435,12 +435,12 @@ namespace EasyNote
         }
         /**************************************************************************************
          * FUNCTION:  private void pbCancelBttn_MouseLeave(object sender, EventArgs e)
-         * 
+         *
          * ARGUMENTS: sender - object that is calling the function
          *            e - any arguments pass for the event
-         * 
+         *
          * RETURNS:   This function has no return value
-         * 
+         *
          * NOTES:     This function is called when the mouse is off of pbCancelBttn and changes
          *            the displayed image
          **************************************************************************************/
@@ -452,13 +452,13 @@ namespace EasyNote
         }
         /**************************************************************************************
          * FUNCTION:  private void pbDeleteBttn_MouseEnter(object sender, EventArgs e)
-         * 
+         *
          * ARGUMENTS: sender - object that is calling the function
          *            e - any arguments pass for the event
-         * 
+         *
          * RETURNS:   This function has no return value
-         * 
-         * NOTES:     This function is called when the mouse is moved over pbDeleteBttn and changes 
+         *
+         * NOTES:     This function is called when the mouse is moved over pbDeleteBttn and changes
          *            the displayed image
          **************************************************************************************/
         private void pbDeleteBttn_MouseEnter(object sender, EventArgs e)
@@ -470,12 +470,12 @@ namespace EasyNote
 
         /**************************************************************************************
          * FUNCTION:  private void pbDeleteBttn_MouseLeave(object sender, EventArgs e)
-         * 
+         *
          * ARGUMENTS: sender - object that is calling the function
          *            e - any arguments pass for the event
-         * 
+         *
          * RETURNS:   This function has no return value
-         * 
+         *
          * NOTES:     This function is called when the mouse is off of pbDeleteBttn and changes
          *            the displayed image
          **************************************************************************************/
@@ -488,17 +488,17 @@ namespace EasyNote
 
         /**************************************************************************************
          * FUNCTION:  private void pbSaveBttn_Click(object sender, EventArgs e)
-         * 
+         *
          * ARGUMENTS: sender - object that is calling the function
          *            e - any arguments pass for the event
-         * 
+         *
          * RETURNS:   This function has no return value
-         * 
+         *
          * NOTES:     This function is called when the pbSaveBttn is clicked
          *            It saves the changes to the note in the notes list and notefile
          **************************************************************************************/
         private void pbSaveBttn_Click(object sender, EventArgs e)
-        {           
+        {
             changeButtonView();
             if(currentNote != null)
             {
@@ -515,18 +515,18 @@ namespace EasyNote
                 writeNotesFile();
                 currentNote = null;
             }
-            clearText();            
+            clearText();
         }
-        
+
         /**************************************************************************************
         * FUNCTION:  private void pbSaveBttn_MouseEnter(object sender, EventArgs e)
-        * 
+        *
         * ARGUMENTS: sender - object that is calling the function
         *            e - any arguments pass for the event
-        * 
+        *
         * RETURNS:   This function has no return value
-        * 
-        * NOTES:     This function is called when the mouse is moved over pbSaveBttn and changes 
+        *
+        * NOTES:     This function is called when the mouse is moved over pbSaveBttn and changes
         *            the displayed image
         **************************************************************************************/
         private void pbSaveBttn_MouseEnter(object sender, EventArgs e)
@@ -538,12 +538,12 @@ namespace EasyNote
 
         /**************************************************************************************
          * FUNCTION:  private void pbSaveBttn_MouseLeave(object sender, EventArgs e)
-         * 
+         *
          * ARGUMENTS: sender - object that is calling the function
          *            e - any arguments pass for the event
-         * 
+         *
          * RETURNS:   This function has no return value
-         * 
+         *
          * NOTES:     This function is called when the mouse is off of pbSaveBttn and changes
          *            the displayed image
          **************************************************************************************/
@@ -556,39 +556,39 @@ namespace EasyNote
 
         /**************************************************************************************
          * FUNCTION:  private void pbCancelBttn_Click(object sender, EventArgs e)
-         * 
+         *
          * ARGUMENTS: sender - object that is calling the function
          *            e - any arguments pass for the event
-         * 
+         *
          * RETURNS:   This function has no return value
-         * 
+         *
          * NOTES:     This function is called when the pbCancelBttn is clicked
          *            It discards any changes to the selected note
          **************************************************************************************/
         private void pbCancelBttn_Click(object sender, EventArgs e)
         {
-            currentNote = null; 
+            currentNote = null;
             changeButtonView();
             clearText();
         }
 
         /**************************************************************************************
          * FUNCTION:  private void pbDeleteBttn_Click(object sender, EventArgs e)
-         * 
+         *
          * ARGUMENTS: sender - object that is calling the function
          *            e - any arguments pass for the event
-         * 
+         *
          * RETURNS:   This function has no return value
-         * 
+         *
          * NOTES:     This function is called when the pbSaveBttn is clicked
-         *            It deleted the currently selected note from the notes list 
+         *            It deleted the currently selected note from the notes list
          *            and notefile
          **************************************************************************************/
         private void pbDeleteBttn_Click(object sender, EventArgs e)
-        {    
+        {
             changeButtonView();
             if (currentNote != null)
-            {                
+            {
                 int i = notes.IndexOf(currentNote);
 
                 //remove note from list
@@ -605,11 +605,11 @@ namespace EasyNote
 
         /**************************************************************************************
          * FUNCTION:  private void clearText()
-         * 
+         *
          * ARGUMENTS: This function takes no args
-         * 
+         *
          * RETURNS:   This function has no return value
-         * 
+         *
          * NOTES:     Helper function to clear UI text feilds
          **************************************************************************************/
         private void clearText()
@@ -620,12 +620,54 @@ namespace EasyNote
         }
 
         /**************************************************************************************
+        * FUNCTION:  private void getDllNotes
+        *
+        * ARGUMENTS: none
+        *
+        * RETURNS:   This function has no return value
+        *
+        * NOTES:     This function fetches the notes stored in a referenced dll using a
+        *             stringbuilder, save result to string, and string reader loop and then
+        *             calls the addNewNote method to add the titles, bodies, and tags to the
+        *             Notes List.
+        **************************************************************************************/
+        private void getDllNotes()
+        {
+            System.Text.StringBuilder sb = new System.Text.StringBuilder();
+            System.Text.StringBuilder sb2 = new System.Text.StringBuilder();
+            System.Text.StringBuilder sb3 = new System.Text.StringBuilder();
+            Notes.NoteComponents n = new Notes.NoteComponents();
+
+            for (int i = 0; i < n.Count; i++)
+            {
+                sb.Append(n[i].Title);
+                string resultTitle = sb.ToString();
+                StringReader readerTitle = new StringReader(resultTitle);
+                sb.Length=0;
+
+                sb2.Append(n[i].Body);
+                string resultBody = sb2.ToString();
+                StringReader readerBody = new StringReader(resultBody);
+                sb2.Length=0;
+
+                sb3.Append(n[i].Tags);
+                string resultTags = sb3.ToString();
+                StringReader readerTags = new StringReader(resultTags);
+                sb3.Length=0;
+
+                this.addNewNote(resultTitle, resultBody, resultTags, false); //send title, body, tags, and false to modifier args
+
+
+            }
+        }
+
+        /**************************************************************************************
          * FUNCTION:  private void changeButtonView()
-         * 
+         *
          * ARGUMENTS: This function takes no args
-         * 
+         *
          * RETURNS:   This function has no return value
-         * 
+         *
          * NOTES:     Helper function to swap button images for UI views
          **************************************************************************************/
         private void changeButtonView()
@@ -634,6 +676,6 @@ namespace EasyNote
             pbSaveBttn.Visible = !pbSaveBttn.Visible;
             pbDeleteBttn.Visible = !pbDeleteBttn.Visible;
             pbCancelBttn.Visible = !pbCancelBttn.Visible;
-        }        
+        }
     }
 }

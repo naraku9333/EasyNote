@@ -28,11 +28,13 @@ namespace NoteLibrary
          * NOTES:     Constructor
          *            Sets values of data members
          **************************************************************************************/
-        public Note(string title, string body, string[] tags)
+        public Note(string title, string body, string[] tags, bool mod)
         {
             this.Title = title;
             this.Body = body;
             this.Tags = tags;
+            this.Modifiable = mod; //CEdge chang add modifiable set
+            
         }
 
         /**************************************************************************************

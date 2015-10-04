@@ -20,3 +20,15 @@ C:\Users\Rob\Documents\GitHub\EasyNote\EasyNote\obj\Debug\EasyNote.Properties.Re
 C:\Users\Rob\Documents\GitHub\EasyNote\EasyNote\obj\Debug\EasyNote.csproj.GenerateResource.Cache
 C:\Users\Rob\Documents\GitHub\EasyNote\EasyNote\obj\Debug\Assignment1.exe
 C:\Users\Rob\Documents\GitHub\EasyNote\EasyNote\obj\Debug\Assignment1.pdb
+C:\Users\Cierria\Documents\GitHub\EasyNote\EasyNote\bin\Debug\Assignment1.exe.config
+C:\Users\Cierria\Documents\GitHub\EasyNote\EasyNote\obj\Debug\Assignment1.exe
+C:\Users\Cierria\Documents\GitHub\EasyNote\EasyNote\obj\Debug\Assignment1.pdb
+C:\Users\Cierria\Documents\GitHub\EasyNote\EasyNote\bin\Debug\Assignment1.exe
+C:\Users\Cierria\Documents\GitHub\EasyNote\EasyNote\bin\Debug\Assignment1.pdb
+C:\Users\Cierria\Documents\GitHub\EasyNote\EasyNote\bin\Debug\ClassLibrary1.dll
+C:\Users\Cierria\Documents\GitHub\EasyNote\EasyNote\bin\Debug\NoteLibrary.dll
+C:\Users\Cierria\Documents\GitHub\EasyNote\EasyNote\bin\Debug\NoteLibrary.pdb
+C:\Users\Cierria\Documents\GitHub\EasyNote\EasyNote\obj\Debug\EasyNote.csprojResolveAssemblyReference.cache
+C:\Users\Cierria\Documents\GitHub\EasyNote\EasyNote\obj\Debug\EasyNote.MyNotes.resources
+C:\Users\Cierria\Documents\GitHub\EasyNote\EasyNote\obj\Debug\EasyNote.Properties.Resources.resources
+C:\Users\Cierria\Documents\GitHub\EasyNote\EasyNote\obj\Debug\EasyNote.csproj.GenerateResource.Cache

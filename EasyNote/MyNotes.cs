@@ -40,6 +40,7 @@ namespace EasyNote
             InitializeComponent();
             ResizeRedraw = true;//force redraw on window resize
             readNotesFile();
+            getDllNotes();
             createNoteTable();
     
         }
@@ -126,7 +127,6 @@ namespace EasyNote
                         tags = line[2];
 
                         this.addNewNote(line[0], line[1], line[2]);
-
                     }
                 }
             }
@@ -317,12 +317,12 @@ namespace EasyNote
          * NOTES:    AddNewNote not only adds the note, but it also does the exception checking for
          *           it as well.  
          **************************************************************************************/
-        private void addNewNote(string title, string text, string tagString)
+        private void addNewNote(string title, string text, string tagString, bool mod=true)
         {
             try
             {
                 String[] tags = Note.splitTags(tagString);
-                notes.Add(new Note(title, text, tags));
+                notes.Add(new Note(title, text, tags, mod));  //CEdge add modifiable arg
             }
             catch (NoteException ne)
             {
@@ -498,6 +498,51 @@ namespace EasyNote
             this.tBTags.Clear();
             this.tbTitle.Clear();
             this.textBox1.Clear();
+        }
+
+
+        /**************************************************************************************
+                * FUNCTION:  private void getDllNotes
+                * 
+                * ARGUMENTS: none
+                * 
+                * RETURNS:   This function has no return value
+                * 
+                * NOTES:     This function fetches the notes stored in a referenced dll using a 
+                *             stringbuilder, save result to string, and string reader loop and then
+                *             calls the addNewNote method to add the titles, bodies, and tags to the
+                *             Notes List.
+                **************************************************************************************/
+
+
+        private void getDllNotes()
+        {
+            System.Text.StringBuilder sb = new System.Text.StringBuilder();
+            System.Text.StringBuilder sb2 = new System.Text.StringBuilder();
+            System.Text.StringBuilder sb3 = new System.Text.StringBuilder();
+            Notes.NoteComponents n = new Notes.NoteComponents();
+
+            for (int i = 0; i < n.Count; i++)
+            {
+                sb.Append(n[i].Title);
+                string resultTitle = sb.ToString();
+                StringReader readerTitle = new StringReader(resultTitle);
+                sb.Length=0;
+
+                sb2.Append(n[i].Body);
+                string resultBody = sb2.ToString();
+                StringReader readerBody = new StringReader(resultBody);
+                sb2.Length=0;
+
+                sb3.Append(n[i].Tags);
+                string resultTags = sb3.ToString();
+                StringReader readerTags = new StringReader(resultTags);
+                sb3.Length=0;
+
+                this.addNewNote(resultTitle, resultBody, resultTags, false); //send title, body, tags, and false to modifier args
+
+
+            }
         }
     }
 }

@@ -354,5 +354,150 @@ namespace EasyNote
         {
             this.addNewNote(tbTitle.Text, textBox1.Text, tBTags.Text);
         }
+
+        private void dgvNotesList_DoubleClick(object sender, EventArgs e)
+        {
+            this.pbAddNote.Visible = false;
+            this.pbSaveBttn.Visible = true;
+            this.pbDeleteBttn.Visible = true;
+            this.pbCancelBttn.Visible = true;
+        }
+        /**************************************************************************************
+         * FUNCTION:  private void pbCancelBttn_MouseEnter(object sender, EventArgs e)
+         * 
+         * ARGUMENTS: sender - object that is calling the function
+         *            e - any arguments pass for the event
+         * 
+         * RETURNS:   This function has no return value
+         * 
+         * NOTES:     This function is called when the mouse is moved over pbCancelBtnn and changes 
+         *            the displayed image
+         **************************************************************************************/
+        private void pbCancelBttn_MouseEnter(object sender, EventArgs e)
+        {
+            //create image from resource and display
+            Image cancelButton = EasyNote.Properties.Resources.Light_Cancel_Button;
+            pbCancelBttn.Image = cancelButton;
+
+        }
+        /**************************************************************************************
+         * FUNCTION:  private void pbCancelBttn_MouseLeave(object sender, EventArgs e)
+         * 
+         * ARGUMENTS: sender - object that is calling the function
+         *            e - any arguments pass for the event
+         * 
+         * RETURNS:   This function has no return value
+         * 
+         * NOTES:     This function is called when the mouse is off of pbCancelBttn and changes
+         *            the displayed image
+         **************************************************************************************/
+        private void pbCancelBttn_MouseLeave(object sender, EventArgs e)
+        {
+            //create image from resource and display
+            Image cancelButton = EasyNote.Properties.Resources.Dark_Cancel_Button;
+            pbCancelBttn.Image = cancelButton;
+        }
+        /**************************************************************************************
+         * FUNCTION:  private void pbDeleteBttn_MouseEnter(object sender, EventArgs e)
+         * 
+         * ARGUMENTS: sender - object that is calling the function
+         *            e - any arguments pass for the event
+         * 
+         * RETURNS:   This function has no return value
+         * 
+         * NOTES:     This function is called when the mouse is moved over pbDeleteBttn and changes 
+         *            the displayed image
+         **************************************************************************************/
+        private void pbDeleteBttn_MouseEnter(object sender, EventArgs e)
+        {
+            //create image from resource and display
+            Image deleteButton = EasyNote.Properties.Resources.Light_Delete_Button;
+            pbDeleteBttn.Image = deleteButton;
+        }
+        /**************************************************************************************
+         * FUNCTION:  private void pbDeleteBttn_MouseLeave(object sender, EventArgs e)
+         * 
+         * ARGUMENTS: sender - object that is calling the function
+         *            e - any arguments pass for the event
+         * 
+         * RETURNS:   This function has no return value
+         * 
+         * NOTES:     This function is called when the mouse is off of pbDeleteBttn and changes
+         *            the displayed image
+         **************************************************************************************/
+        private void pbDeleteBttn_MouseLeave(object sender, EventArgs e)
+        {
+            //create image from resource and display
+            Image deleteButton = EasyNote.Properties.Resources.Dark_Delete_Button;
+            pbDeleteBttn.Image = deleteButton;
+        }
+        
+        private void pbSaveBttn_Click(object sender, EventArgs e)
+        {
+            this.pbAddNote.Visible = true;
+            this.pbSaveBttn.Visible = false;
+            this.pbDeleteBttn.Visible = false;
+            this.pbCancelBttn.Visible = false;
+            this.tBTags.Clear();
+            this.tbTitle.Clear();
+            this.textBox1.Clear();
+            
+        }
+        /**************************************************************************************
+         * FUNCTION:  private void pbSaveBttn_MouseEnter(object sender, EventArgs e)
+         * 
+         * ARGUMENTS: sender - object that is calling the function
+         *            e - any arguments pass for the event
+         * 
+         * RETURNS:   This function has no return value
+         * 
+         * NOTES:     This function is called when the mouse is moved over pbSaveBttn and changes 
+         *            the displayed image
+         **************************************************************************************/
+        private void pbSaveBttn_MouseEnter(object sender, EventArgs e)
+        {
+            //create image from resource and display
+            Image SaveButton = EasyNote.Properties.Resources.Light_Save_Button;
+            pbSaveBttn.Image = SaveButton;
+        }
+        /**************************************************************************************
+         * FUNCTION:  private void pbSaveBttn_MouseLeave(object sender, EventArgs e)
+         * 
+         * ARGUMENTS: sender - object that is calling the function
+         *            e - any arguments pass for the event
+         * 
+         * RETURNS:   This function has no return value
+         * 
+         * NOTES:     This function is called when the mouse is off of pbSaveBttn and changes
+         *            the displayed image
+         **************************************************************************************/
+        private void pbSaveBttn_MouseLeave(object sender, EventArgs e)
+        {
+            //create image from resource and display
+            Image SaveButton = EasyNote.Properties.Resources.Dark_Save_Button;
+            pbSaveBttn.Image = SaveButton;
+        }
+
+        private void pbCancelBttn_Click(object sender, EventArgs e)
+        {
+            this.pbAddNote.Visible = true;
+            this.pbSaveBttn.Visible = false;
+            this.pbDeleteBttn.Visible = false;
+            this.pbCancelBttn.Visible = false;
+            this.tBTags.Clear();
+            this.tbTitle.Clear();
+            this.textBox1.Clear();
+        }
+
+        private void pbDeleteBttn_Click(object sender, EventArgs e)
+        {
+            this.pbAddNote.Visible = true;
+            this.pbSaveBttn.Visible = false;
+            this.pbDeleteBttn.Visible = false;
+            this.pbCancelBttn.Visible = false;
+            this.tBTags.Clear();
+            this.tbTitle.Clear();
+            this.textBox1.Clear();
+        }
     }
 }

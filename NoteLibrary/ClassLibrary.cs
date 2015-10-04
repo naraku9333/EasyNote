@@ -103,10 +103,9 @@ namespace NoteLibrary
             }
 
             return tags.Split(':');
-        }
-
-        
+        }        
     }
+
     public class NoteException : Exception
     {
         private string tag;
@@ -124,7 +123,5 @@ namespace NoteLibrary
         {
             this.Tag = tag;
         }
-
     }
-
 }

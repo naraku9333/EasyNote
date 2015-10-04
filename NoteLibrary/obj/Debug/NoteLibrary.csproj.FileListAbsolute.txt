@@ -20,6 +20,5 @@ C:\Users\Anthony\NIU\Net Programming (CSCI 680V)\Assignment1_sv\GitHUB\EasyNote\
 C:\Users\Anthony\NIU\Net Programming (CSCI 680V)\Assignment1_sv\GitHUB\EasyNote\NoteLibrary\obj\Debug\NoteLibrary.pdb
 C:\Users\Rob\Documents\GitHub\EasyNote\NoteLibrary\bin\Debug\NoteLibrary.dll
 C:\Users\Rob\Documents\GitHub\EasyNote\NoteLibrary\bin\Debug\NoteLibrary.pdb
-C:\Users\Rob\Documents\GitHub\EasyNote\NoteLibrary\obj\Debug\NoteLibrary.csprojResolveAssemblyReference.cache
 C:\Users\Rob\Documents\GitHub\EasyNote\NoteLibrary\obj\Debug\NoteLibrary.dll
 C:\Users\Rob\Documents\GitHub\EasyNote\NoteLibrary\obj\Debug\NoteLibrary.pdb

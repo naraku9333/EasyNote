@@ -32,7 +32,13 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ClassLibrary1">
+      <HintPath>..\..\..\..\Downloads\ClassLibrary1.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
@@ -103,9 +109,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Light_Save_button.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="cancel dark.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Light Cancel Button.png" />

@@ -137,7 +137,6 @@ namespace EasyNote
                 MessageBox.Show("There was an error processing the file: " + e.Message);
                 Environment.Exit(-1);
             }
-
         }
 
         /**************************************************************************************
@@ -156,7 +155,8 @@ namespace EasyNote
             {
                 foreach(Note n in notes)
                 {
-                    sw.WriteLine(n.Title + "*" + n.Body + "*" + n.getTagString());
+                    if(n.Modifiable)
+                        sw.WriteLine(n.Title + "*" + n.Body + "*" + n.getTagString());
                 }
             }
         }
@@ -186,10 +186,12 @@ namespace EasyNote
 
             //Add a new row for every note.  The row will contain information on the
             //title, body, and tags (joined by :) of the note
-            foreach (Note n in notes)
+            for(int i = 0; i < notes.Count; ++i)//foreach (Note n in notes)
             {
-                String [] row = { n.Title, n.Body, n.getTagString().Replace(":", ", ") };
+                String [] row = { notes[i].Title, notes[i].Body, notes[i].getTagString().Replace(":", ", ") };
                 dgvNotesList.Rows.Add(row);
+                if (!notes[i].Modifiable)
+                    dgvNotesList.Rows[i].DefaultCellStyle.BackColor = Color.LightGray;
             }
 
             //Display the noteTable in a data grid form.
@@ -344,7 +346,7 @@ namespace EasyNote
          * NOTES:    AddNewNote not only adds the note, but it also does the exception checking for
          *           it as well.
          **************************************************************************************/
-        private void addNewNote(string title, string text, string tagString, bool mod=true)
+        private void addNewNote(string title, string text, string tagString, bool mod = true)
         {
             try
             {
@@ -433,6 +435,7 @@ namespace EasyNote
             pbCancelBttn.Image = cancelButton;
 
         }
+
         /**************************************************************************************
          * FUNCTION:  private void pbCancelBttn_MouseLeave(object sender, EventArgs e)
          *
@@ -450,6 +453,7 @@ namespace EasyNote
             Image cancelButton = EasyNote.Properties.Resources.Dark_Cancel_Button;
             pbCancelBttn.Image = cancelButton;
         }
+
         /**************************************************************************************
          * FUNCTION:  private void pbDeleteBttn_MouseEnter(object sender, EventArgs e)
          *
@@ -500,7 +504,7 @@ namespace EasyNote
         private void pbSaveBttn_Click(object sender, EventArgs e)
         {
             changeButtonView();
-            if(currentNote != null)
+            if(currentNote != null && currentNote.Modifiable)
             {
                 currentNote.Title = tbTitle.Text;
                 currentNote.Tags = tbTags.Text.Split(':');
@@ -519,16 +523,16 @@ namespace EasyNote
         }
 
         /**************************************************************************************
-        * FUNCTION:  private void pbSaveBttn_MouseEnter(object sender, EventArgs e)
-        *
-        * ARGUMENTS: sender - object that is calling the function
-        *            e - any arguments pass for the event
-        *
-        * RETURNS:   This function has no return value
-        *
-        * NOTES:     This function is called when the mouse is moved over pbSaveBttn and changes
-        *            the displayed image
-        **************************************************************************************/
+         * FUNCTION:  private void pbSaveBttn_MouseEnter(object sender, EventArgs e)
+         *
+         * ARGUMENTS: sender - object that is calling the function
+         *            e - any arguments pass for the event
+         *
+         * RETURNS:   This function has no return value
+         *
+         * NOTES:     This function is called when the mouse is moved over pbSaveBttn and changes
+         *            the displayed image
+         **************************************************************************************/
         private void pbSaveBttn_MouseEnter(object sender, EventArgs e)
         {
             //create image from resource and display
@@ -587,7 +591,7 @@ namespace EasyNote
         private void pbDeleteBttn_Click(object sender, EventArgs e)
         {
             changeButtonView();
-            if (currentNote != null)
+            if (currentNote != null && currentNote.Modifiable)
             {
                 int i = notes.IndexOf(currentNote);
 
@@ -633,31 +637,12 @@ namespace EasyNote
         **************************************************************************************/
         private void getDllNotes()
         {
-            System.Text.StringBuilder sb = new System.Text.StringBuilder();
-            System.Text.StringBuilder sb2 = new System.Text.StringBuilder();
-            System.Text.StringBuilder sb3 = new System.Text.StringBuilder();
             Notes.NoteComponents n = new Notes.NoteComponents();
 
             for (int i = 0; i < n.Count; i++)
-            {
-                sb.Append(n[i].Title);
-                string resultTitle = sb.ToString();
-                StringReader readerTitle = new StringReader(resultTitle);
-                sb.Length=0;
-
-                sb2.Append(n[i].Body);
-                string resultBody = sb2.ToString();
-                StringReader readerBody = new StringReader(resultBody);
-                sb2.Length=0;
-
-                sb3.Append(n[i].Tags);
-                string resultTags = sb3.ToString();
-                StringReader readerTags = new StringReader(resultTags);
-                sb3.Length=0;
-
-                this.addNewNote(resultTitle, resultBody, resultTags, false); //send title, body, tags, and false to modifier args
-
-
+            {               
+                //send title, body, tags, and false to modifier args
+                this.addNewNote(n[i].Title, n[i].Body, String.Join(":", n[i].Tags.ToArray()), false); 
             }
         }
 

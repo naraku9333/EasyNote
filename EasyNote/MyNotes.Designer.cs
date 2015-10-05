@@ -34,8 +34,8 @@
             this.lbText = new System.Windows.Forms.Label();
             this.lbAllNotes = new System.Windows.Forms.Label();
             this.tbTitle = new System.Windows.Forms.TextBox();
-            this.tbTags = new System.Windows.Forms.TextBox();
-            this.tbBody = new System.Windows.Forms.TextBox();
+            this.tBTags = new System.Windows.Forms.TextBox();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.dataSet1 = new System.Data.DataSet();
             this.dgvNotesList = new System.Windows.Forms.DataGridView();
@@ -44,8 +44,9 @@
             this.pbExit = new System.Windows.Forms.PictureBox();
             this.pbShowTags = new System.Windows.Forms.PictureBox();
             this.pbAddNote = new System.Windows.Forms.PictureBox();
-            this.noteBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.pbSaveBttn = new System.Windows.Forms.PictureBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.noteBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.myNotesBindingSource = new System.Windows.Forms.BindingSource(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.dataSet1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvNotesList)).BeginInit();
@@ -54,8 +55,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.pbExit)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbShowTags)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbAddNote)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.noteBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbSaveBttn)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.noteBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.myNotesBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
@@ -64,10 +65,9 @@
             this.lbTitle.AllowDrop = true;
             this.lbTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbTitle.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.lbTitle.Location = new System.Drawing.Point(23, 102);
-            this.lbTitle.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lbTitle.Location = new System.Drawing.Point(34, 157);
             this.lbTitle.Name = "lbTitle";
-            this.lbTitle.Size = new System.Drawing.Size(35, 23);
+            this.lbTitle.Size = new System.Drawing.Size(52, 35);
             this.lbTitle.TabIndex = 0;
             this.lbTitle.Text = "Title";
             // 
@@ -76,10 +76,9 @@
             this.lbTags.AllowDrop = true;
             this.lbTags.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbTags.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.lbTags.Location = new System.Drawing.Point(23, 149);
-            this.lbTags.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lbTags.Location = new System.Drawing.Point(34, 229);
             this.lbTags.Name = "lbTags";
-            this.lbTags.Size = new System.Drawing.Size(40, 23);
+            this.lbTags.Size = new System.Drawing.Size(60, 35);
             this.lbTags.TabIndex = 1;
             this.lbTags.Text = "Tags";
             // 
@@ -88,10 +87,9 @@
             this.lbText.AllowDrop = true;
             this.lbText.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbText.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.lbText.Location = new System.Drawing.Point(23, 202);
-            this.lbText.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lbText.Location = new System.Drawing.Point(34, 311);
             this.lbText.Name = "lbText";
-            this.lbText.Size = new System.Drawing.Size(40, 23);
+            this.lbText.Size = new System.Drawing.Size(60, 35);
             this.lbText.TabIndex = 2;
             this.lbText.Text = "Text";
             // 
@@ -100,10 +98,9 @@
             this.lbAllNotes.AllowDrop = true;
             this.lbAllNotes.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbAllNotes.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.lbAllNotes.Location = new System.Drawing.Point(9, 321);
-            this.lbAllNotes.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lbAllNotes.Location = new System.Drawing.Point(14, 494);
             this.lbAllNotes.Name = "lbAllNotes";
-            this.lbAllNotes.Size = new System.Drawing.Size(67, 23);
+            this.lbAllNotes.Size = new System.Drawing.Size(100, 35);
             this.lbAllNotes.TabIndex = 3;
             this.lbAllNotes.Text = "All Notes";
             // 
@@ -112,43 +109,39 @@
             this.tbTitle.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tbTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbTitle.Location = new System.Drawing.Point(96, 106);
-            this.tbTitle.Margin = new System.Windows.Forms.Padding(2);
+            this.tbTitle.Location = new System.Drawing.Point(144, 163);
             this.tbTitle.Name = "tbTitle";
-            this.tbTitle.Size = new System.Drawing.Size(306, 21);
+            this.tbTitle.Size = new System.Drawing.Size(457, 28);
             this.tbTitle.TabIndex = 1;
             // 
-            // tbTags
+            // tBTags
             // 
-            this.tbTags.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.tBTags.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbTags.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbTags.Location = new System.Drawing.Point(96, 152);
-            this.tbTags.Margin = new System.Windows.Forms.Padding(2);
-            this.tbTags.Name = "tbTags";
-            this.tbTags.Size = new System.Drawing.Size(306, 21);
-            this.tbTags.TabIndex = 2;
+            this.tBTags.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tBTags.Location = new System.Drawing.Point(144, 234);
+            this.tBTags.Name = "tBTags";
+            this.tBTags.Size = new System.Drawing.Size(457, 28);
+            this.tBTags.TabIndex = 2;
             // 
-            // tbBody
+            // textBox1
             // 
-            this.tbBody.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbBody.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbBody.Location = new System.Drawing.Point(96, 202);
-            this.tbBody.Margin = new System.Windows.Forms.Padding(2);
-            this.tbBody.Multiline = true;
-            this.tbBody.Name = "tbBody";
-            this.tbBody.Size = new System.Drawing.Size(306, 113);
-            this.tbBody.TabIndex = 3;
+            this.textBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox1.Location = new System.Drawing.Point(144, 311);
+            this.textBox1.Multiline = true;
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(457, 172);
+            this.textBox1.TabIndex = 3;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.label1.Location = new System.Drawing.Point(101, 174);
-            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label1.Location = new System.Drawing.Point(152, 268);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(153, 13);
+            this.label1.Size = new System.Drawing.Size(229, 20);
             this.label1.TabIndex = 10;
             this.label1.Text = "(input example: tag1:tag2:tag3)";
             // 
@@ -165,21 +158,21 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvNotesList.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvNotesList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvNotesList.Location = new System.Drawing.Point(12, 364);
+            this.dgvNotesList.Location = new System.Drawing.Point(18, 534);
+            this.dgvNotesList.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.dgvNotesList.Name = "dgvNotesList";
             this.dgvNotesList.RowTemplate.ReadOnly = true;
-            this.dgvNotesList.Size = new System.Drawing.Size(552, 148);
+            this.dgvNotesList.Size = new System.Drawing.Size(828, 228);
             this.dgvNotesList.TabIndex = 4;
-            this.dgvNotesList.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvNotesList_CellDoubleClick);
+            this.dgvNotesList.DoubleClick += new System.EventHandler(this.dgvNotesList_DoubleClick);
             // 
             // pbCancelBttn
             // 
             this.pbCancelBttn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.pbCancelBttn.Image = global::EasyNote.Properties.Resources.Dark_Cancel_Button;
-            this.pbCancelBttn.Location = new System.Drawing.Point(453, 237);
-            this.pbCancelBttn.Margin = new System.Windows.Forms.Padding(2);
+            this.pbCancelBttn.Location = new System.Drawing.Point(680, 364);
             this.pbCancelBttn.Name = "pbCancelBttn";
-            this.pbCancelBttn.Size = new System.Drawing.Size(86, 25);
+            this.pbCancelBttn.Size = new System.Drawing.Size(129, 38);
             this.pbCancelBttn.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pbCancelBttn.TabIndex = 17;
             this.pbCancelBttn.TabStop = false;
@@ -193,10 +186,9 @@
             this.pbDeleteBttn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.pbDeleteBttn.ErrorImage = global::EasyNote.Properties.Resources.Dark_Delete_Button;
             this.pbDeleteBttn.Image = global::EasyNote.Properties.Resources.Dark_Delete_Button;
-            this.pbDeleteBttn.Location = new System.Drawing.Point(453, 193);
-            this.pbDeleteBttn.Margin = new System.Windows.Forms.Padding(2);
+            this.pbDeleteBttn.Location = new System.Drawing.Point(680, 297);
             this.pbDeleteBttn.Name = "pbDeleteBttn";
-            this.pbDeleteBttn.Size = new System.Drawing.Size(86, 25);
+            this.pbDeleteBttn.Size = new System.Drawing.Size(129, 38);
             this.pbDeleteBttn.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pbDeleteBttn.TabIndex = 16;
             this.pbDeleteBttn.TabStop = false;
@@ -209,10 +201,9 @@
             // 
             this.pbExit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.pbExit.Image = global::EasyNote.Properties.Resources.Dark_Exit_Button;
-            this.pbExit.Location = new System.Drawing.Point(453, 279);
-            this.pbExit.Margin = new System.Windows.Forms.Padding(2);
+            this.pbExit.Location = new System.Drawing.Point(680, 429);
             this.pbExit.Name = "pbExit";
-            this.pbExit.Size = new System.Drawing.Size(86, 25);
+            this.pbExit.Size = new System.Drawing.Size(129, 38);
             this.pbExit.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pbExit.TabIndex = 15;
             this.pbExit.TabStop = false;
@@ -224,10 +215,9 @@
             // 
             this.pbShowTags.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.pbShowTags.Image = global::EasyNote.Properties.Resources.Dark_Show_Button;
-            this.pbShowTags.Location = new System.Drawing.Point(453, 152);
-            this.pbShowTags.Margin = new System.Windows.Forms.Padding(2);
+            this.pbShowTags.Location = new System.Drawing.Point(680, 234);
             this.pbShowTags.Name = "pbShowTags";
-            this.pbShowTags.Size = new System.Drawing.Size(86, 25);
+            this.pbShowTags.Size = new System.Drawing.Size(129, 38);
             this.pbShowTags.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pbShowTags.TabIndex = 14;
             this.pbShowTags.TabStop = false;
@@ -239,29 +229,23 @@
             // 
             this.pbAddNote.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.pbAddNote.Image = global::EasyNote.Properties.Resources.Dark_Add_Button;
-            this.pbAddNote.Location = new System.Drawing.Point(453, 112);
-            this.pbAddNote.Margin = new System.Windows.Forms.Padding(2);
+            this.pbAddNote.Location = new System.Drawing.Point(680, 173);
             this.pbAddNote.Name = "pbAddNote";
-            this.pbAddNote.Size = new System.Drawing.Size(86, 25);
+            this.pbAddNote.Size = new System.Drawing.Size(129, 38);
             this.pbAddNote.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pbAddNote.TabIndex = 13;
             this.pbAddNote.TabStop = false;
-            this.pbAddNote.Click += new System.EventHandler(this.pbAddNote_Click);
+            this.pbAddNote.Click += new System.EventHandler(this.pbAddNote_Click_1);
             this.pbAddNote.MouseEnter += new System.EventHandler(this.pbAddNote_MouseEnter);
             this.pbAddNote.MouseLeave += new System.EventHandler(this.pbAddNote_MouseLeave);
-            // 
-            // noteBindingSource
-            // 
-            this.noteBindingSource.DataSource = typeof(NoteLibrary.Note);
             // 
             // pbSaveBttn
             // 
             this.pbSaveBttn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.pbSaveBttn.Image = global::EasyNote.Properties.Resources.Dark_Save_Button;
-            this.pbSaveBttn.Location = new System.Drawing.Point(453, 112);
-            this.pbSaveBttn.Margin = new System.Windows.Forms.Padding(2);
+            this.pbSaveBttn.Location = new System.Drawing.Point(680, 173);
             this.pbSaveBttn.Name = "pbSaveBttn";
-            this.pbSaveBttn.Size = new System.Drawing.Size(86, 25);
+            this.pbSaveBttn.Size = new System.Drawing.Size(129, 38);
             this.pbSaveBttn.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pbSaveBttn.TabIndex = 18;
             this.pbSaveBttn.TabStop = false;
@@ -270,16 +254,32 @@
             this.pbSaveBttn.MouseEnter += new System.EventHandler(this.pbSaveBttn_MouseEnter);
             this.pbSaveBttn.MouseLeave += new System.EventHandler(this.pbSaveBttn_MouseLeave);
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.ForeColor = System.Drawing.Color.Snow;
+            this.label2.Location = new System.Drawing.Point(35, 767);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(659, 20);
+            this.label2.TabIndex = 19;
+            this.label2.Text = "Light gray notes are from ClassLibrary1.dll and are read only (can not be changed" +
+    " or deleted)";
+            // 
+            // noteBindingSource
+            // 
+            this.noteBindingSource.DataSource = typeof(NoteLibrary.Note);
+            // 
             // myNotesBindingSource
             // 
             this.myNotesBindingSource.DataSource = typeof(EasyNote.MyNotes);
             // 
             // MyNotes
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.HotTrack;
-            this.ClientSize = new System.Drawing.Size(571, 524);
+            this.ClientSize = new System.Drawing.Size(856, 806);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.pbSaveBttn);
             this.Controls.Add(this.pbCancelBttn);
             this.Controls.Add(this.pbDeleteBttn);
@@ -288,15 +288,14 @@
             this.Controls.Add(this.pbAddNote);
             this.Controls.Add(this.dgvNotesList);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.tbBody);
-            this.Controls.Add(this.tbTags);
+            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.tBTags);
             this.Controls.Add(this.tbTitle);
             this.Controls.Add(this.lbAllNotes);
             this.Controls.Add(this.lbText);
             this.Controls.Add(this.lbTags);
             this.Controls.Add(this.lbTitle);
-            this.Margin = new System.Windows.Forms.Padding(2);
-            this.MinimumSize = new System.Drawing.Size(577, 545);
+            this.MinimumSize = new System.Drawing.Size(858, 818);
             this.Name = "MyNotes";
             this.Text = "Easy Note";
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.MyNotes_Paint);
@@ -307,8 +306,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.pbExit)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbShowTags)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbAddNote)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.noteBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbSaveBttn)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.noteBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.myNotesBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -322,8 +321,8 @@
         private System.Windows.Forms.Label lbText;
         private System.Windows.Forms.Label lbAllNotes;
         private System.Windows.Forms.TextBox tbTitle;
-        private System.Windows.Forms.TextBox tbTags;
-        private System.Windows.Forms.TextBox tbBody;
+        private System.Windows.Forms.TextBox tBTags;
+        private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.BindingSource myNotesBindingSource;
         private System.Windows.Forms.BindingSource noteBindingSource;
@@ -335,6 +334,7 @@
         private System.Windows.Forms.PictureBox pbDeleteBttn;
         private System.Windows.Forms.PictureBox pbCancelBttn;
         private System.Windows.Forms.PictureBox pbSaveBttn;
+        private System.Windows.Forms.Label label2;
     }
 }
 

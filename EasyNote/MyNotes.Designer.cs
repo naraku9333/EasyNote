@@ -46,8 +46,8 @@
             this.pbAddNote = new System.Windows.Forms.PictureBox();
             this.pbSaveBttn = new System.Windows.Forms.PictureBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.noteBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.myNotesBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.noteBindingSource = new System.Windows.Forms.BindingSource(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.dataSet1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvNotesList)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbCancelBttn)).BeginInit();
@@ -56,8 +56,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.pbShowTags)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbAddNote)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbSaveBttn)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.noteBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.myNotesBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.noteBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // lbTitle
@@ -114,7 +114,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tbTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tbTitle.Location = new System.Drawing.Point(96, 106);
-            this.tbTitle.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tbTitle.Margin = new System.Windows.Forms.Padding(2);
             this.tbTitle.Name = "tbTitle";
             this.tbTitle.Size = new System.Drawing.Size(306, 21);
             this.tbTitle.TabIndex = 1;
@@ -125,7 +125,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tbTags.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tbTags.Location = new System.Drawing.Point(96, 152);
-            this.tbTags.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tbTags.Margin = new System.Windows.Forms.Padding(2);
             this.tbTags.Name = "tbTags";
             this.tbTags.Size = new System.Drawing.Size(306, 21);
             this.tbTags.TabIndex = 2;
@@ -136,7 +136,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tbBody.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tbBody.Location = new System.Drawing.Point(96, 202);
-            this.tbBody.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tbBody.Margin = new System.Windows.Forms.Padding(2);
             this.tbBody.Multiline = true;
             this.tbBody.Name = "tbBody";
             this.tbBody.Size = new System.Drawing.Size(306, 113);
@@ -178,7 +178,7 @@
             this.pbCancelBttn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.pbCancelBttn.Image = global::EasyNote.Properties.Resources.Dark_Cancel_Button;
             this.pbCancelBttn.Location = new System.Drawing.Point(453, 237);
-            this.pbCancelBttn.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pbCancelBttn.Margin = new System.Windows.Forms.Padding(2);
             this.pbCancelBttn.Name = "pbCancelBttn";
             this.pbCancelBttn.Size = new System.Drawing.Size(86, 25);
             this.pbCancelBttn.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -195,7 +195,7 @@
             this.pbDeleteBttn.ErrorImage = global::EasyNote.Properties.Resources.Dark_Delete_Button;
             this.pbDeleteBttn.Image = global::EasyNote.Properties.Resources.Dark_Delete_Button;
             this.pbDeleteBttn.Location = new System.Drawing.Point(453, 193);
-            this.pbDeleteBttn.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pbDeleteBttn.Margin = new System.Windows.Forms.Padding(2);
             this.pbDeleteBttn.Name = "pbDeleteBttn";
             this.pbDeleteBttn.Size = new System.Drawing.Size(86, 25);
             this.pbDeleteBttn.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -211,7 +211,7 @@
             this.pbExit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.pbExit.Image = global::EasyNote.Properties.Resources.Dark_Exit_Button;
             this.pbExit.Location = new System.Drawing.Point(453, 279);
-            this.pbExit.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pbExit.Margin = new System.Windows.Forms.Padding(2);
             this.pbExit.Name = "pbExit";
             this.pbExit.Size = new System.Drawing.Size(86, 25);
             this.pbExit.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -226,7 +226,7 @@
             this.pbShowTags.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.pbShowTags.Image = global::EasyNote.Properties.Resources.Dark_Show_Button;
             this.pbShowTags.Location = new System.Drawing.Point(453, 152);
-            this.pbShowTags.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pbShowTags.Margin = new System.Windows.Forms.Padding(2);
             this.pbShowTags.Name = "pbShowTags";
             this.pbShowTags.Size = new System.Drawing.Size(86, 25);
             this.pbShowTags.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -241,7 +241,7 @@
             this.pbAddNote.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.pbAddNote.Image = global::EasyNote.Properties.Resources.Dark_Add_Button;
             this.pbAddNote.Location = new System.Drawing.Point(453, 112);
-            this.pbAddNote.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pbAddNote.Margin = new System.Windows.Forms.Padding(2);
             this.pbAddNote.Name = "pbAddNote";
             this.pbAddNote.Size = new System.Drawing.Size(86, 25);
             this.pbAddNote.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -256,7 +256,7 @@
             this.pbSaveBttn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.pbSaveBttn.Image = global::EasyNote.Properties.Resources.Dark_Save_Button;
             this.pbSaveBttn.Location = new System.Drawing.Point(453, 112);
-            this.pbSaveBttn.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pbSaveBttn.Margin = new System.Windows.Forms.Padding(2);
             this.pbSaveBttn.Name = "pbSaveBttn";
             this.pbSaveBttn.Size = new System.Drawing.Size(86, 25);
             this.pbSaveBttn.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -269,6 +269,7 @@
             // 
             // label2
             // 
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label2.AutoSize = true;
             this.label2.ForeColor = System.Drawing.Color.Snow;
             this.label2.Location = new System.Drawing.Point(23, 499);
@@ -305,7 +306,7 @@
             this.Controls.Add(this.lbText);
             this.Controls.Add(this.lbTags);
             this.Controls.Add(this.lbTitle);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.MinimumSize = new System.Drawing.Size(577, 545);
             this.Name = "MyNotes";
             this.Text = "Easy Note";
@@ -318,8 +319,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.pbShowTags)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbAddNote)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbSaveBttn)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.noteBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.myNotesBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.noteBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

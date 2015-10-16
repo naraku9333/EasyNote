@@ -16,6 +16,8 @@ using System.Windows.Forms;
 using NoteLibrary;
 using System.IO;
 using System.Drawing.Text;
+using System.Data.SqlClient;
+using System.Text;
 
 namespace EasyNote
 {
@@ -26,6 +28,17 @@ namespace EasyNote
         private List<Note> notes = new List<Note>();
 
         private Note currentNote = null;//currently selected note iff its a stored note
+
+        private SqlConnection connection = null;    //Holds the connection to the database, using conString.
+
+        private SqlCommand command = null;          //Holds a command to be executed on the database.  
+
+        private SqlDataReader reader = null;        //Holds the result of a query from the database.  
+
+        //The connection string to use for connecting to the notebase2 database.  
+        private string conString = "server=10.158.56.48;uid=net2;pwd=dtbz2;database=notebase2;";
+
+        DataSet dataSet = null;
 
         /**************************************************************************************
          * FUNCTION:  MyNotes()
@@ -41,8 +54,8 @@ namespace EasyNote
         {
             InitializeComponent();
             ResizeRedraw = true;//force redraw on window resize
-            readNotesFile();
-            getDllNotes();
+//           readNotesFile();
+//            getDllNotes();
             createNoteTable();
 
         }
@@ -162,41 +175,76 @@ namespace EasyNote
         }
 
         /**************************************************************************************
-         * FUNCTION:  private void createNoteTable()
-         *
-         * ARGUMENTS: none
-         *
-         * RETURNS:   This function has no return value
-         *
-         * NOTES:     This function adds the note data to a DataTable which is added to
-         *            the DataGridView
-         **************************************************************************************/
+        * FUNCTION:  private void createNoteTable()
+        *
+        * ARGUMENTS: none
+        *
+        * RETURNS:   This function has no return value
+        *
+        * NOTES:     This function gets the note and tag data from the Notes and Tags tables in
+        *            the database and places them into a dataGridView.  
+        **************************************************************************************/
         private void createNoteTable()
         {
-            //DataTable noteTable = new DataTable();
-
-            //Create the headers for the columns as strings.
-            //noteTable.Columns.Add("Title");
-            //noteTable.Columns.Add("Text");
-            //noteTable.Columns.Add("Tags");
-            foreach (string s in new string[] { "Title", "Text", "Tags" })
+            //Try to execute the following Sql statements
+            try
             {
-                dgvNotesList.Columns.Add(s, s);
-            }
+                //Connect to the notebase2 database.  
+                using (connection = new SqlConnection(conString))
+                {
+                    connection.Open();
 
-            //Add a new row for every note.  The row will contain information on the
-            //title, body, and tags (joined by :) of the note
-            for(int i = 0; i < notes.Count; ++i)//foreach (Note n in notes)
+                    //Grab all of the notes (not including their tags) from the notes table
+                    using (SqlDataAdapter data = new SqlDataAdapter("select * from Notes", connection))
+                    {
+                        //Create a dataset from our query and fill the a table with this information. 
+                        dataSet = new DataSet("noteData");
+                        DataTable notesTable = new DataTable();
+                        data.Fill(dataSet);
+                        data.Fill(notesTable);
+
+                        //The tags for each note are added in an additional column and the NotesTable is bound to the datagrid.  
+                        notesTable.Columns.Add("Tags");
+                        dgvNotesList.DataSource = notesTable;
+
+                        //Hide the note id, but keep it in the table to make future Sql commands easier.  
+                        dgvNotesList.Rows[0].Visible = false;
+
+                        //Add the notes for each row based on the note id for that row.  
+                        foreach (DataGridViewRow row in dgvNotesList.Rows)
+                        {
+                            //The primary key of the note, used to determine what tags are associated with this row.  
+                            int noteID = (int)row.Cells[0].Value;
+
+                            //Use a StringBuilder to hold a combination of all of the tags.  
+                            StringBuilder tagString = new StringBuilder();
+
+                            //Grab all of the tags that are associated with the note.
+                            command = new SqlCommand("select Tag.text from Tag,NoteTags,Notes where Tag.tag_id = NoteTags.tag_id and NoteTags.note_id = Notes.note_id and Notes.note_id = " + noteID, connection);
+
+                            //Read the results of the SqlCommand and create a tagString from the individual tags associated with the note, 
+                            //then place it in the table.
+                            using (reader = command.ExecuteReader())
+                            {
+                                while (reader.Read())
+                                {
+                                    tagString.Append(reader.GetString(0) + ":");
+                                }
+
+                                //Remove the last ':' from the tag string.
+                                if (tagString.Length != 0)
+                                    tagString.Remove(tagString.Length - 1, 1);
+
+                                row.Cells["Tags"].Value = tagString.ToString();
+                            }
+                        }
+                    }
+                }
+            }
+            catch (SqlException e)
             {
-                String [] row = { notes[i].Title, notes[i].Body, notes[i].getTagString().Replace(":", ", ") };
-                dgvNotesList.Rows.Add(row);
-                if (!notes[i].Modifiable)
-                    dgvNotesList.Rows[i].DefaultCellStyle.BackColor = Color.LightGray;
+                MessageBox.Show(e.Message + " " + e.ToString());
             }
-
-            //Display the noteTable in a data grid form.
-           // dgvNotesList.DataSource = noteTable;
-
         }
 
         /**************************************************************************************
@@ -402,19 +450,29 @@ namespace EasyNote
          * ARGUMENTS: sender - object that is calling the function
          *            e - any arguments pass for the event
          *
-         * RETURNS:   This function has no return value
+         * RETURNS:   This function has no return value, but textFields in the program will be modified.
          *
-         * NOTES:     Retrieve selected note and populate fields
+         * NOTES:     This function takes the values for the note selected in the dataGridView and copies
+         *            them into textFields for the user to modify.  
          **************************************************************************************/
         private void dgvNotesList_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
+            //Show the save,delete, and cancel buttons.  
             changeButtonView();
 
+            //Get the select cell from the dataGridView.  
             int i = e.RowIndex;
-            currentNote = notes[i];
-            tbTitle.Text = currentNote.Title;
-            tbTags.Text = currentNote.getTagString();
-            tbBody.Text = currentNote.Body;
+            int j = e.ColumnIndex;
+
+            //If the column or line headers were double clicked, do nothing
+            if (e.RowIndex < 0 || e.ColumnIndex < 0)
+                return;
+
+            //Grab the title, body, and tags associated with the selected note and put them in
+            //textfields for the user to see.  
+            tbTitle.Text = dgvNotesList.Rows[i].Cells["title"].Value as string;
+            tbBody.Text = dgvNotesList.Rows[i].Cells["body"].Value as string;
+            tbTags.Text = dgvNotesList.Rows[i].Cells["Tags"].Value as string;
         }
 
         /**************************************************************************************

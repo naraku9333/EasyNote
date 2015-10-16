@@ -8,7 +8,7 @@
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>EasyNote</RootNamespace>
-    <AssemblyName>Assignment1</AssemblyName>
+    <AssemblyName>Assignment2</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -32,7 +32,13 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ClassLibrary1">
+      <HintPath>Resources\ClassLibrary1.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
@@ -101,7 +107,32 @@
   <ItemGroup>
     <None Include="Light Show Button.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Light_Save_button.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Light Cancel Button.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Light Delete Button.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Light Save Button.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Dark Save Button.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Dark Cancel Button.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Dark Delete Button.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

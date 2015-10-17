@@ -44,7 +44,6 @@ namespace EasyNote
             readNotesFile();
             getDllNotes();
             createNoteTable();
-
         }
 
         /**************************************************************************************
@@ -123,12 +122,14 @@ namespace EasyNote
                     while (!reader.EndOfStream)
                     {
                         line = reader.ReadLine().Split('*');
+                        if (line.Length == 3)
+                        {
+                            name = line[0];
+                            body = line[1];
+                            tags = line[2];
 
-                        name = line[0];
-                        body = line[1];
-                        tags = line[2];
-
-                        this.addNewNote(line[0], line[1], line[2]);
+                            this.addNewNote(line[0], line[1], line[2]);
+                        }
                     }
                 }
             }
@@ -340,18 +341,19 @@ namespace EasyNote
          *            body - the body text of the note
          *            tagString - all of the tags for the note, in one combined string.
          *
-         * RETURNS:   This function has no return value, but the notes list will be modified to
-         *            have a new note with the entered values.
+         * RETURNS:   This function returns true if note is sucsessfully created, and the notes 
+         *            list will be modified to have a new note with the entered values.
          *
          * NOTES:    AddNewNote not only adds the note, but it also does the exception checking for
          *           it as well.
          **************************************************************************************/
-        private void addNewNote(string title, string text, string tagString, bool mod = true)
+        private bool addNewNote(string title, string text, string tagString, bool mod = true)
         {
             try
             {
                 String[] tags = Note.splitTags(tagString);
                 notes.Add(new Note(title, text, tags, mod));  //CEdge add modifiable arg
+                return true;
             }
             catch (NoteException ne)
             {
@@ -366,6 +368,7 @@ namespace EasyNote
                     MessageBox.Show(ne.Message, "Note Exception");
                 }
             }
+            return false;
         }
 
         /**************************************************************************************
@@ -382,16 +385,16 @@ namespace EasyNote
         {
             if (tbTitle.Text != "" && tbBody.Text != "")
             {
-                this.addNewNote(tbTitle.Text, tbBody.Text, tbTags.Text);
-
-                using (StreamWriter sw = File.AppendText(FILE_LOCATION))
+                if (addNewNote(tbTitle.Text, tbBody.Text, tbTags.Text))
                 {
-                    sw.WriteLine(tbTitle.Text + "*" + tbBody.Text + "*" + tbTags.Text);
+                    using (StreamWriter sw = File.AppendText(FILE_LOCATION))
+                    {
+                        sw.WriteLine(tbTitle.Text + "*" + tbBody.Text + "*" + tbTags.Text);
+                    }
+
+                    string[] row = { tbTitle.Text, tbBody.Text, tbTags.Text.Replace(":", ", ") };
+                    dgvNotesList.Rows.Add(row);
                 }
-
-                string[] row = { tbTitle.Text, tbBody.Text, tbTags.Text.Replace(":", ", ") };
-                dgvNotesList.Rows.Add(row);
-
                 clearText();
             }
         }

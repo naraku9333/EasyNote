@@ -382,17 +382,25 @@ namespace EasyNote
         {
             if (tbTitle.Text != "" && tbBody.Text != "")
             {
-                this.addNewNote(tbTitle.Text, tbBody.Text, tbTags.Text);
-
-                using (StreamWriter sw = File.AppendText(FILE_LOCATION))
+                Image lightAdd = EasyNote.Properties.Resources.Light_Add_Button;
+                Image darkAdd = EasyNote.Properties.Resources.Dark_Add_Button;
+                Image lightCancel = EasyNote.Properties.Resources.Light_Cancel_Button;
+                Image darkCancel = EasyNote.Properties.Resources.Dark_Cancel_Button;
+                DialogResult result =  CustomMessageBox.Show("Are you sure you wish to add this note?", "Add Note", lightCancel, darkCancel, lightAdd, darkAdd);
+                if (result == DialogResult.Yes)
                 {
-                    sw.WriteLine(tbTitle.Text + "*" + tbBody.Text + "*" + tbTags.Text);
+                    this.addNewNote(tbTitle.Text, tbBody.Text, tbTags.Text);
+
+                    using (StreamWriter sw = File.AppendText(FILE_LOCATION))
+                    {
+                        sw.WriteLine(tbTitle.Text + "*" + tbBody.Text + "*" + tbTags.Text);
+                    }
+
+                    string[] row = { tbTitle.Text, tbBody.Text, tbTags.Text.Replace(":", ", ") };
+                    dgvNotesList.Rows.Add(row);
+
+                    clearText();
                 }
-
-                string[] row = { tbTitle.Text, tbBody.Text, tbTags.Text.Replace(":", ", ") };
-                dgvNotesList.Rows.Add(row);
-
-                clearText();
             }
         }
 
@@ -503,23 +511,31 @@ namespace EasyNote
          **************************************************************************************/
         private void pbSaveBttn_Click(object sender, EventArgs e)
         {
-            changeButtonView();
-            if(currentNote != null && currentNote.Modifiable)
+            Image lightForward = EasyNote.Properties.Resources.Light_Save_Button;
+            Image darkForward = EasyNote.Properties.Resources.Dark_Save_Button;
+            Image lightBack = EasyNote.Properties.Resources.Light_Cancel_Button;
+            Image darkBack = EasyNote.Properties.Resources.Dark_Cancel_Button;
+            DialogResult result = CustomMessageBox.Show("Are you sure you wish to save this note?", "Add Note", lightBack, darkBack, lightForward, darkForward);
+            if (result == DialogResult.Yes)
             {
-                currentNote.Title = tbTitle.Text;
-                currentNote.Tags = tbTags.Text.Split(':');
-                currentNote.Body = tbBody.Text;
+                changeButtonView();
+                if (currentNote != null && currentNote.Modifiable)
+                {
+                    currentNote.Title = tbTitle.Text;
+                    currentNote.Tags = tbTags.Text.Split(':');
+                    currentNote.Body = tbBody.Text;
 
-                //modify DGV, this is a little hacky
-                int i = notes.IndexOf(currentNote);
-                string[] row = { tbTitle.Text, tbBody.Text, tbTags.Text.Replace(":", ", ") };
-                dgvNotesList.Rows.RemoveAt(i);
-                dgvNotesList.Rows.Insert(i, row);
+                    //modify DGV, this is a little hacky
+                    int i = notes.IndexOf(currentNote);
+                    string[] row = { tbTitle.Text, tbBody.Text, tbTags.Text.Replace(":", ", ") };
+                    dgvNotesList.Rows.RemoveAt(i);
+                    dgvNotesList.Rows.Insert(i, row);
 
-                writeNotesFile();
-                currentNote = null;
+                    writeNotesFile();
+                    currentNote = null;
+                }
+                clearText();
             }
-            clearText();
         }
 
         /**************************************************************************************
@@ -590,21 +606,29 @@ namespace EasyNote
          **************************************************************************************/
         private void pbDeleteBttn_Click(object sender, EventArgs e)
         {
-            changeButtonView();
-            if (currentNote != null && currentNote.Modifiable)
+            Image lightForward = EasyNote.Properties.Resources.Light_Delete_Button;
+            Image darkForward = EasyNote.Properties.Resources.Dark_Delete_Button;
+            Image lightBack = EasyNote.Properties.Resources.Light_Cancel_Button;
+            Image darkBack = EasyNote.Properties.Resources.Dark_Cancel_Button;
+            DialogResult result = CustomMessageBox.Show("Are you sure you wish to delete this note?", "Add Note", lightBack, darkBack, lightForward, darkForward);
+            if (result == DialogResult.Yes)
             {
-                int i = notes.IndexOf(currentNote);
+                changeButtonView();
+                if (currentNote != null && currentNote.Modifiable)
+                {
+                    int i = notes.IndexOf(currentNote);
 
-                //remove note from list
-                notes.RemoveAt(i);
+                    //remove note from list
+                    notes.RemoveAt(i);
 
-                //remove note from DGV
-                dgvNotesList.Rows.RemoveAt(i);
+                    //remove note from DGV
+                    dgvNotesList.Rows.RemoveAt(i);
 
-                writeNotesFile();
-                currentNote = null;
+                    writeNotesFile();
+                    currentNote = null;
+                }
+                clearText();
             }
-            clearText();
         }
 
         /**************************************************************************************

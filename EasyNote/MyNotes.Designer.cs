@@ -48,6 +48,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.myNotesBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.noteBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.label3 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataSet1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvNotesList)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbCancelBttn)).BeginInit();
@@ -166,10 +167,10 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvNotesList.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvNotesList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvNotesList.Location = new System.Drawing.Point(12, 347);
+            this.dgvNotesList.Location = new System.Drawing.Point(12, 373);
             this.dgvNotesList.Name = "dgvNotesList";
             this.dgvNotesList.RowTemplate.ReadOnly = true;
-            this.dgvNotesList.Size = new System.Drawing.Size(552, 148);
+            this.dgvNotesList.Size = new System.Drawing.Size(552, 196);
             this.dgvNotesList.TabIndex = 4;
             this.dgvNotesList.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvNotesList_CellDoubleClick);
             // 
@@ -272,7 +273,7 @@
             this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label2.AutoSize = true;
             this.label2.ForeColor = System.Drawing.Color.Snow;
-            this.label2.Location = new System.Drawing.Point(23, 499);
+            this.label2.Location = new System.Drawing.Point(23, 573);
             this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(441, 13);
@@ -284,12 +285,25 @@
             // 
             this.noteBindingSource.DataSource = typeof(NoteLibrary.Note);
             // 
+            // label3
+            // 
+            this.label3.AllowDrop = true;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.label3.Location = new System.Drawing.Point(11, 347);
+            this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(262, 23);
+            this.label3.TabIndex = 20;
+            this.label3.Text = "Double click a note to view/edit/delete";
+            // 
             // MyNotes
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.HotTrack;
-            this.ClientSize = new System.Drawing.Size(571, 524);
+            this.ClientSize = new System.Drawing.Size(571, 598);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.pbSaveBttn);
             this.Controls.Add(this.pbCancelBttn);
@@ -347,6 +361,7 @@
         private System.Windows.Forms.PictureBox pbCancelBttn;
         private System.Windows.Forms.PictureBox pbSaveBttn;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label3;
     }
 }
 

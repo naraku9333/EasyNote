@@ -341,7 +341,7 @@ namespace EasyNote
          *            body - the body text of the note
          *            tagString - all of the tags for the note, in one combined string.
          *
-         * RETURNS:   This function returns true if note is sucsessfully created, and the notes 
+         * RETURNS:   This function returns true if note is sucsessfully created, and the notes
          *            list will be modified to have a new note with the entered values.
          *
          * NOTES:    AddNewNote not only adds the note, but it also does the exception checking for
@@ -385,15 +385,24 @@ namespace EasyNote
         {
             if (tbTitle.Text != "" && tbBody.Text != "")
             {
-                if (addNewNote(tbTitle.Text, tbBody.Text, tbTags.Text))
+                Image lightAdd = EasyNote.Properties.Resources.Light_Add_Button;
+                Image darkAdd = EasyNote.Properties.Resources.Dark_Add_Button;
+                Image lightCancel = EasyNote.Properties.Resources.Light_Cancel_Button;
+                Image darkCancel = EasyNote.Properties.Resources.Dark_Cancel_Button;
+                DialogResult result =  CustomMessageBox.Show("Are you sure you wish to add this note?", "Add Note", lightCancel, darkCancel, lightAdd, darkAdd);
+                if (result == DialogResult.Yes)
                 {
-                    using (StreamWriter sw = File.AppendText(FILE_LOCATION))
+                    if(addNewNote(tbTitle.Text, tbBody.Text, tbTags.Text))
                     {
-                        sw.WriteLine(tbTitle.Text + "*" + tbBody.Text + "*" + tbTags.Text);
-                    }
 
-                    string[] row = { tbTitle.Text, tbBody.Text, tbTags.Text.Replace(":", ", ") };
-                    dgvNotesList.Rows.Add(row);
+                        using (StreamWriter sw = File.AppendText(FILE_LOCATION))
+                        {
+                            sw.WriteLine(tbTitle.Text + "*" + tbBody.Text + "*" + tbTags.Text);
+                        }
+
+                        string[] row = { tbTitle.Text, tbBody.Text, tbTags.Text.Replace(":", ", ") };
+                        dgvNotesList.Rows.Add(row);
+                    }
                 }
                 clearText();
             }
@@ -506,23 +515,31 @@ namespace EasyNote
          **************************************************************************************/
         private void pbSaveBttn_Click(object sender, EventArgs e)
         {
-            changeButtonView();
-            if(currentNote != null && currentNote.Modifiable)
+            Image lightForward = EasyNote.Properties.Resources.Light_Save_Button;
+            Image darkForward = EasyNote.Properties.Resources.Dark_Save_Button;
+            Image lightBack = EasyNote.Properties.Resources.Light_Cancel_Button;
+            Image darkBack = EasyNote.Properties.Resources.Dark_Cancel_Button;
+            DialogResult result = CustomMessageBox.Show("Are you sure you wish to save this note?", "Add Note", lightBack, darkBack, lightForward, darkForward);
+            if (result == DialogResult.Yes)
             {
-                currentNote.Title = tbTitle.Text;
-                currentNote.Tags = tbTags.Text.Split(':');
-                currentNote.Body = tbBody.Text;
+                changeButtonView();
+                if (currentNote != null && currentNote.Modifiable)
+                {
+                    currentNote.Title = tbTitle.Text;
+                    currentNote.Tags = tbTags.Text.Split(':');
+                    currentNote.Body = tbBody.Text;
 
-                //modify DGV, this is a little hacky
-                int i = notes.IndexOf(currentNote);
-                string[] row = { tbTitle.Text, tbBody.Text, tbTags.Text.Replace(":", ", ") };
-                dgvNotesList.Rows.RemoveAt(i);
-                dgvNotesList.Rows.Insert(i, row);
+                    //modify DGV, this is a little hacky
+                    int i = notes.IndexOf(currentNote);
+                    string[] row = { tbTitle.Text, tbBody.Text, tbTags.Text.Replace(":", ", ") };
+                    dgvNotesList.Rows.RemoveAt(i);
+                    dgvNotesList.Rows.Insert(i, row);
 
-                writeNotesFile();
-                currentNote = null;
+                    writeNotesFile();
+                    currentNote = null;
+                }
+                clearText();
             }
-            clearText();
         }
 
         /**************************************************************************************
@@ -593,21 +610,29 @@ namespace EasyNote
          **************************************************************************************/
         private void pbDeleteBttn_Click(object sender, EventArgs e)
         {
-            changeButtonView();
-            if (currentNote != null && currentNote.Modifiable)
+            Image lightForward = EasyNote.Properties.Resources.Light_Delete_Button;
+            Image darkForward = EasyNote.Properties.Resources.Dark_Delete_Button;
+            Image lightBack = EasyNote.Properties.Resources.Light_Cancel_Button;
+            Image darkBack = EasyNote.Properties.Resources.Dark_Cancel_Button;
+            DialogResult result = CustomMessageBox.Show("Are you sure you wish to delete this note?", "Add Note", lightBack, darkBack, lightForward, darkForward);
+            if (result == DialogResult.Yes)
             {
-                int i = notes.IndexOf(currentNote);
+                changeButtonView();
+                if (currentNote != null && currentNote.Modifiable)
+                {
+                    int i = notes.IndexOf(currentNote);
 
-                //remove note from list
-                notes.RemoveAt(i);
+                    //remove note from list
+                    notes.RemoveAt(i);
 
-                //remove note from DGV
-                dgvNotesList.Rows.RemoveAt(i);
+                    //remove note from DGV
+                    dgvNotesList.Rows.RemoveAt(i);
 
-                writeNotesFile();
-                currentNote = null;
+                    writeNotesFile();
+                    currentNote = null;
+                }
+                clearText();
             }
-            clearText();
         }
 
         /**************************************************************************************
@@ -644,9 +669,9 @@ namespace EasyNote
             Notes.NoteComponents n = new Notes.NoteComponents();
 
             for (int i = 0; i < n.Count; i++)
-            {               
+            {
                 //send title, body, tags, and false to modifier args
-                this.addNewNote(n[i].Title, n[i].Body, String.Join(":", n[i].Tags.ToArray()), false); 
+                this.addNewNote(n[i].Title, n[i].Body, String.Join(":", n[i].Tags.ToArray()), false);
             }
         }
 

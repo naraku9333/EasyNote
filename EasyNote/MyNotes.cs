@@ -679,6 +679,7 @@ namespace EasyNote
             tbTags.Clear();
             tbTitle.Clear();
             tbBody.Clear();
+            dgvNotesList.ClearSelection();
         }
 
         /**************************************************************************************

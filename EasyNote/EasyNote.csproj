@@ -137,6 +137,12 @@
   <ItemGroup>
     <None Include="Dark Delete Button.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Dark Clear Button.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Light Clear Button.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>

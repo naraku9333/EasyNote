@@ -32,7 +32,6 @@
             this.lbTitle = new System.Windows.Forms.Label();
             this.lbTags = new System.Windows.Forms.Label();
             this.lbText = new System.Windows.Forms.Label();
-            this.lbAllNotes = new System.Windows.Forms.Label();
             this.tbTitle = new System.Windows.Forms.TextBox();
             this.tbTags = new System.Windows.Forms.TextBox();
             this.tbBody = new System.Windows.Forms.TextBox();
@@ -47,8 +46,13 @@
             this.pbSaveBttn = new System.Windows.Forms.PictureBox();
             this.label2 = new System.Windows.Forms.Label();
             this.myNotesBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.noteBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.label3 = new System.Windows.Forms.Label();
+            this.noteBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.tbSearch = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.lbMatching = new System.Windows.Forms.Label();
+            this.pbClearBtn = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataSet1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvNotesList)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbCancelBttn)).BeginInit();
@@ -59,6 +63,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.pbSaveBttn)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.myNotesBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.noteBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbClearBtn)).BeginInit();
             this.SuspendLayout();
             // 
             // lbTitle
@@ -97,18 +102,6 @@
             this.lbText.TabIndex = 2;
             this.lbText.Text = "Text";
             // 
-            // lbAllNotes
-            // 
-            this.lbAllNotes.AllowDrop = true;
-            this.lbAllNotes.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbAllNotes.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.lbAllNotes.Location = new System.Drawing.Point(9, 321);
-            this.lbAllNotes.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lbAllNotes.Name = "lbAllNotes";
-            this.lbAllNotes.Size = new System.Drawing.Size(67, 23);
-            this.lbAllNotes.TabIndex = 3;
-            this.lbAllNotes.Text = "All Notes";
-            // 
             // tbTitle
             // 
             this.tbTitle.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -140,7 +133,7 @@
             this.tbBody.Margin = new System.Windows.Forms.Padding(2);
             this.tbBody.Multiline = true;
             this.tbBody.Name = "tbBody";
-            this.tbBody.Size = new System.Drawing.Size(306, 113);
+            this.tbBody.Size = new System.Drawing.Size(306, 102);
             this.tbBody.TabIndex = 3;
             // 
             // label1
@@ -167,10 +160,10 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvNotesList.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvNotesList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvNotesList.Location = new System.Drawing.Point(12, 373);
+            this.dgvNotesList.Location = new System.Drawing.Point(12, 402);
             this.dgvNotesList.Name = "dgvNotesList";
             this.dgvNotesList.RowTemplate.ReadOnly = true;
-            this.dgvNotesList.Size = new System.Drawing.Size(552, 196);
+            this.dgvNotesList.Size = new System.Drawing.Size(552, 167);
             this.dgvNotesList.TabIndex = 4;
             this.dgvNotesList.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvNotesList_CellDoubleClick);
             // 
@@ -281,21 +274,77 @@
             this.label2.Text = "Light gray notes are from ClassLibrary1.dll and are read only (can not be changed" +
     " or deleted)";
             // 
-            // noteBindingSource
-            // 
-            this.noteBindingSource.DataSource = typeof(NoteLibrary.Note);
-            // 
             // label3
             // 
             this.label3.AllowDrop = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.label3.Location = new System.Drawing.Point(11, 347);
+            this.label3.Location = new System.Drawing.Point(11, 376);
             this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(262, 23);
             this.label3.TabIndex = 20;
             this.label3.Text = "Double click a note to view/edit/delete";
+            // 
+            // noteBindingSource
+            // 
+            this.noteBindingSource.DataSource = typeof(NoteLibrary.Note);
+            // 
+            // tbSearch
+            // 
+            this.tbSearch.Location = new System.Drawing.Point(96, 327);
+            this.tbSearch.Name = "tbSearch";
+            this.tbSearch.Size = new System.Drawing.Size(177, 20);
+            this.tbSearch.TabIndex = 21;
+            this.tbSearch.TextChanged += new System.EventHandler(this.tbSearch_TextChanged);
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.label4.Location = new System.Drawing.Point(96, 354);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(154, 13);
+            this.label4.TabIndex = 22;
+            this.label4.Text = "To search, begin typing the tag";
+            // 
+            // label5
+            // 
+            this.label5.AllowDrop = true;
+            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.label5.Location = new System.Drawing.Point(23, 324);
+            this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(58, 23);
+            this.label5.TabIndex = 23;
+            this.label5.Text = "Search";
+            // 
+            // lbMatching
+            // 
+            this.lbMatching.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lbMatching.AutoSize = true;
+            this.lbMatching.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbMatching.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.lbMatching.Location = new System.Drawing.Point(279, 328);
+            this.lbMatching.Name = "lbMatching";
+            this.lbMatching.Size = new System.Drawing.Size(176, 16);
+            this.lbMatching.TabIndex = 24;
+            this.lbMatching.Text = "Number of matching note: ##";
+            // 
+            // pbClearBtn
+            // 
+            this.pbClearBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.pbClearBtn.Image = global::EasyNote.Properties.Resources.Dark_Clear_Button;
+            this.pbClearBtn.Location = new System.Drawing.Point(453, 327);
+            this.pbClearBtn.Name = "pbClearBtn";
+            this.pbClearBtn.Size = new System.Drawing.Size(86, 25);
+            this.pbClearBtn.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pbClearBtn.TabIndex = 25;
+            this.pbClearBtn.TabStop = false;
+            this.pbClearBtn.Click += new System.EventHandler(this.pbClearBtn_Click);
+            this.pbClearBtn.MouseEnter += new System.EventHandler(this.pbClearBtn_MouseEnter);
+            this.pbClearBtn.MouseLeave += new System.EventHandler(this.pbClearBtn_MouseLeave);
             // 
             // MyNotes
             // 
@@ -303,6 +352,11 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.HotTrack;
             this.ClientSize = new System.Drawing.Size(571, 598);
+            this.Controls.Add(this.pbClearBtn);
+            this.Controls.Add(this.lbMatching);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.tbSearch);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.pbSaveBttn);
@@ -316,7 +370,6 @@
             this.Controls.Add(this.tbBody);
             this.Controls.Add(this.tbTags);
             this.Controls.Add(this.tbTitle);
-            this.Controls.Add(this.lbAllNotes);
             this.Controls.Add(this.lbText);
             this.Controls.Add(this.lbTags);
             this.Controls.Add(this.lbTitle);
@@ -335,6 +388,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.pbSaveBttn)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.myNotesBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.noteBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbClearBtn)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -345,7 +399,6 @@
         private System.Windows.Forms.Label lbTitle;
         private System.Windows.Forms.Label lbTags;
         private System.Windows.Forms.Label lbText;
-        private System.Windows.Forms.Label lbAllNotes;
         private System.Windows.Forms.TextBox tbTitle;
         private System.Windows.Forms.TextBox tbTags;
         private System.Windows.Forms.TextBox tbBody;
@@ -362,6 +415,11 @@
         private System.Windows.Forms.PictureBox pbSaveBttn;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox tbSearch;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label lbMatching;
+        private System.Windows.Forms.PictureBox pbClearBtn;
     }
 }
 

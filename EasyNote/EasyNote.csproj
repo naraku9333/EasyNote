@@ -55,6 +55,10 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="CustomMessageBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CustomMessageBox.Designer.cs" />
     <EmbeddedResource Include="MyNotes.resx">
       <DependentUpon>MyNotes.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -69,6 +73,8 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="CustomMessage.resx" />
+    <EmbeddedResource Include="CustomMessageBox.resx" />
     <None Include="app.config" />
     <None Include="Properties\DataSources\MyNotes.datasource" />
     <None Include="Properties\DataSources\NoteLibrary.Note.datasource" />
@@ -128,6 +134,7 @@
   <ItemGroup>
     <None Include="Dark Delete Button.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>

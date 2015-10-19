@@ -38,6 +38,8 @@ namespace EasyNote
         //The connection string to use for connecting to the notebase2 database.  
         private string conString = "server=10.158.56.48;uid=net2;pwd=dtbz2;database=notebase2;";
 
+        private int selectedNote = 3;               //The current note selected in the dgv
+
         DataSet dataSet = null;
 
         /**************************************************************************************
@@ -206,9 +208,9 @@ namespace EasyNote
                         //The tags for each note are added in an additional column and the NotesTable is bound to the datagrid.  
                         notesTable.Columns.Add("Tags");
                         dgvNotesList.DataSource = notesTable;
-
+                        
                         //Hide the note id, but keep it in the table to make future Sql commands easier.  
-                        dgvNotesList.Rows[0].Visible = false;
+            //            dgvNotesList.Rows[0].Visible = false;
 
                         //Add the notes for each row based on the note id for that row.  
                         foreach (DataGridViewRow row in dgvNotesList.Rows)
@@ -473,6 +475,9 @@ namespace EasyNote
             tbTitle.Text = dgvNotesList.Rows[i].Cells["title"].Value as string;
             tbBody.Text = dgvNotesList.Rows[i].Cells["body"].Value as string;
             tbTags.Text = dgvNotesList.Rows[i].Cells["Tags"].Value as string;
+
+            //Grab the id of the note the user selected from the table.  
+            selectedNote = (int)dgvNotesList.Rows[i].Cells["note_id"].Value;
         }
 
         /**************************************************************************************
@@ -561,23 +566,92 @@ namespace EasyNote
          **************************************************************************************/
         private void pbSaveBttn_Click(object sender, EventArgs e)
         {
-            changeButtonView();
-            if(currentNote != null && currentNote.Modifiable)
+            //Images for the message buttons on the message box.  Used to ask the user to confirm saving the note.  
+            Image lightForward = EasyNote.Properties.Resources.Light_Save_Button;
+            Image darkForward = EasyNote.Properties.Resources.Dark_Save_Button;
+            Image lightBack = EasyNote.Properties.Resources.Light_Cancel_Button;
+            Image darkBack = EasyNote.Properties.Resources.Dark_Cancel_Button;
+            DialogResult result = CustomMessageBox.Show("Are you sure you wish to save this note?", "Add Note", lightBack, darkBack, lightForward, darkForward);
+
+            //If the user wants to save the note, then start modifying the tables.   
+            if (result == DialogResult.Yes)
             {
-                currentNote.Title = tbTitle.Text;
-                currentNote.Tags = tbTags.Text.Split(':');
-                currentNote.Body = tbBody.Text;
+                //Remove the save / cancel button.  
+                changeButtonView();
 
-                //modify DGV, this is a little hacky
-                int i = notes.IndexOf(currentNote);
-                string[] row = { tbTitle.Text, tbBody.Text, tbTags.Text.Replace(":", ", ") };
-                dgvNotesList.Rows.RemoveAt(i);
-                dgvNotesList.Rows.Insert(i, row);
+                //Start by opening a new connection.  
+                using(connection = new SqlConnection(conString))
+                {
+                    connection.Open();
+                    
+                    //Grab the new title and body from the text boxes and update the database with them.  
+                    using(command = new SqlCommand("update Notes set title = @title, body = @body, updated = @update where note_id = @id", connection) )
+                    {
+                        command.Parameters.AddWithValue("title",tbTitle.Text);
+                        command.Parameters.AddWithValue("body",tbBody.Text);
+                        command.Parameters.AddWithValue("update", DateTime.Now);
+                        command.Parameters.AddWithValue("id",selectedNote);
+                        command.ExecuteNonQuery();
 
-                writeNotesFile();
-                currentNote = null;
+                        //For simplicity, just delete all the tags associated with the note.  We will add these tags back in next.  
+                        command.CommandText = "delete from NoteTags where note_id = @id";
+                        command.ExecuteNonQuery();
+
+                        //Add two new parameters for sql commands for the tag text and tag_id.  They are defined here as they may change during
+                        //the following loop.  
+                        command.Parameters.AddWithValue("tag", "");
+                        command.Parameters.AddWithValue("tagid", "");
+
+                        
+                        string[] tags = Note.splitTags(tbTags.Text);            //Holds all of the tags the user typed in.  
+
+                        //Now determine the tags from what the user input into the textfield.  If a tag exists, it will be added into the NoteTag table.  
+                        //If a tag doesn't exist, it is created here before being added to the table.  
+                        foreach(string tag in tags)
+                        {
+                            //Try to get the tag if it exists.  
+                            command.CommandText = "select tag_id from Tag where text = @tag";
+                            command.Parameters["tag"].Value = tag;
+
+                            reader = command.ExecuteReader();
+
+                            //It the tag existed, then add it to NoteTags
+                            if(reader.Read())
+                            {
+                                command.CommandText = "insert into NoteTags values (@id,@tagid)";
+                                command.Parameters["tagid"].Value = reader.GetInt32(0);
+                                reader.Close();
+                                command.ExecuteNonQuery();
+                            }
+                            //Otherwise, create the tag, then get its tag_id and insert it into note tags.  
+                            else
+                            {
+                                reader.Close();
+                                command.CommandText = "insert into Tag values (@tag)";
+                                command.ExecuteNonQuery();
+
+                                //Grab the tag_id of the tag we just created
+                                command.CommandText = "select tag_id from Tag where text = @tag";
+
+                                reader = command.ExecuteReader();
+                                reader.Read();
+
+                                //Use the tag_id and note_id to link the tag with the note.  
+                                command.CommandText = "insert into NoteTags values (@id,@tagid)";
+                                command.Parameters["tagid"].Value = reader.GetInt32(0);
+
+                                reader.Close();
+                                command.ExecuteNonQuery();
+                            }
+                        }
+
+                        //Refresh the table (done poorly for now)  
+                        createNoteTable();
+                   }
+
+                clearText();
+                }
             }
-            clearText();
         }
 
         /**************************************************************************************
@@ -648,21 +722,40 @@ namespace EasyNote
          **************************************************************************************/
         private void pbDeleteBttn_Click(object sender, EventArgs e)
         {
-            changeButtonView();
-            if (currentNote != null && currentNote.Modifiable)
+            //Create the images for the custom message box, then display this message box to the user to determine if they want to delete this note.  
+            Image lightForward = EasyNote.Properties.Resources.Light_Delete_Button;
+            Image darkForward = EasyNote.Properties.Resources.Dark_Delete_Button;
+            Image lightBack = EasyNote.Properties.Resources.Light_Cancel_Button;
+            Image darkBack = EasyNote.Properties.Resources.Dark_Cancel_Button;
+
+            DialogResult result = CustomMessageBox.Show("Are you sure you wish to delete this note?", "Add Note", lightBack, darkBack, lightForward, darkForward);
+
+            //If the user does want to delete the note, remove it from the notes table as well as well as any references in the NoteTags table.  
+            if (result == DialogResult.Yes)
             {
-                int i = notes.IndexOf(currentNote);
+                changeButtonView();
 
-                //remove note from list
-                notes.RemoveAt(i);
+                //Open a connection
+                using(connection = new SqlConnection(conString))
+                {
+                    connection.Open();
 
-                //remove note from DGV
-                dgvNotesList.Rows.RemoveAt(i);
+                    //Remove references to the note in note_tags.  
+                    using(command = new SqlCommand("delete from NoteTags where note_id = @id",connection))
+                    {
+                        command.Parameters.AddWithValue("id", selectedNote);
+                        command.ExecuteNonQuery();
 
-                writeNotesFile();
-                currentNote = null;
+                        //Then delete the note itself.  
+                        command.CommandText = "delete from Notes where note_id = @id";
+                        command.ExecuteNonQuery();
+                    }
+
+                    clearText();
+                    createNoteTable();
+                }
             }
-            clearText();
+           
         }
 
         /**************************************************************************************

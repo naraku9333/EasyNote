@@ -28,3 +28,13 @@ Exception occured on 9/24/2015 7:41:10 PM at NoteLibrary in method System.String
 Data values are as follows:
 	Test testing data handling
 	test2 one more test for you
+Exception occured on 10/18/2015 8:23:12 PM at .Net SqlClient Data Provider in method Void OnError(System.Data.SqlClient.SqlException, Boolean)
+Data values are as follows:
+	HelpLink.ProdName Microsoft SQL Server
+	HelpLink.ProdVer 09.00.3080
+	HelpLink.EvtSrc MSSQLServer
+	HelpLink.EvtID 102
+	HelpLink.BaseHelpUrl http://go.microsoft.com/fwlink
+	HelpLink.LinkId 20476
+Exception occured on 10/18/2015 8:54:56 PM at System.Windows.Forms in method Void OnDataGridViewElementStateChanging(System.Windows.Forms.DataGridViewElement, Int32, System.Windows.Forms.DataGridViewElementStates)
+Data values are as follows:

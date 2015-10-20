@@ -387,8 +387,8 @@ namespace EasyNote
         {
             if (tbTitle.Text != "" && tbBody.Text != "")
             {
-                Image lightAdd = EasyNote.Properties.Resources.Light_Add_Button;
-                Image darkAdd = EasyNote.Properties.Resources.Dark_Add_Button;
+                Image lightAdd = EasyNote.Properties.Resources.Light_Ok_Button;
+                Image darkAdd = EasyNote.Properties.Resources.Dark_Ok_Button;
                 Image lightCancel = EasyNote.Properties.Resources.Light_Cancel_Button;
                 Image darkCancel = EasyNote.Properties.Resources.Dark_Cancel_Button;
                 DialogResult result =  CustomMessageBox.Show("Are you sure you wish to add this note?", "Add Note", lightCancel, darkCancel, lightAdd, darkAdd);
@@ -521,8 +521,8 @@ namespace EasyNote
          **************************************************************************************/
         private void pbSaveBttn_Click(object sender, EventArgs e)
         {
-            Image lightForward = EasyNote.Properties.Resources.Light_Save_Button;
-            Image darkForward = EasyNote.Properties.Resources.Dark_Save_Button;
+            Image lightForward = EasyNote.Properties.Resources.Light_Ok_Button;
+            Image darkForward = EasyNote.Properties.Resources.Dark_Ok_Button;
             Image lightBack = EasyNote.Properties.Resources.Light_Cancel_Button;
             Image darkBack = EasyNote.Properties.Resources.Dark_Cancel_Button;
             DialogResult result = CustomMessageBox.Show("Are you sure you wish to save this note?", "Save Note", lightBack, darkBack, lightForward, darkForward);
@@ -618,8 +618,8 @@ namespace EasyNote
          **************************************************************************************/
         private void pbDeleteBttn_Click(object sender, EventArgs e)
         {
-            Image lightForward = EasyNote.Properties.Resources.Light_Delete_Button;
-            Image darkForward = EasyNote.Properties.Resources.Dark_Delete_Button;
+            Image lightForward = EasyNote.Properties.Resources.Light_Ok_Button;
+            Image darkForward = EasyNote.Properties.Resources.Dark_Ok_Button;
             Image lightBack = EasyNote.Properties.Resources.Light_Cancel_Button;
             Image darkBack = EasyNote.Properties.Resources.Dark_Cancel_Button;
             DialogResult result = CustomMessageBox.Show("Are you sure you wish to delete this note?", "delete Note", lightBack, darkBack, lightForward, darkForward);
@@ -736,7 +736,7 @@ namespace EasyNote
                     }
                 }
                 //assign string with number of mathcing notes to lbTagsFound and display it
-                lbMatching.Text = "Number of matching notes found " + count.ToString();
+                lbMatching.Text = "Number of matchs: " + count.ToString();
                 lbMatching.Visible = true;
 
             }
@@ -785,7 +785,7 @@ namespace EasyNote
             Image ClearButton = EasyNote.Properties.Resources.Light_Clear_Button;
             pbClearBtn.Image = ClearButton;
         }
-        /**************************************************************************************
+        /************************************New for Assignment 3*********************************************
         * FUNCTION:  private void pbClearButton_MouseLeave(object sender, EventArgs e)
         *
         * ARGUMENTS: sender - object that is calling the function

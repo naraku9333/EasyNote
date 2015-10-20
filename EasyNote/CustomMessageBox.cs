@@ -117,6 +117,7 @@ namespace EasyNote
         private void btForward_MouseEnter(object sender, EventArgs e)
         {
             btForward.BackgroundImage = lightForwardBtn;
+            btForward.FlatAppearance.MouseOverBackColor = Color.Transparent;
         }
         /****************************New for Assignment 3******************************************
         * FUNCTION:  private void btForward_MouseLeave(object sender, EventArgs e)
@@ -147,6 +148,7 @@ namespace EasyNote
         private void btBack_MouseEnter(object sender, EventArgs e)
         {
             btBack.BackgroundImage = lightBackBtn;
+            btBack.FlatAppearance.MouseOverBackColor = Color.Transparent;
         }
         /***************************New for Assignment 3****************************************
         * FUNCTION:  private void btBack_MouseLeave(object sender, EventArgs e)

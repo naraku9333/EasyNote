@@ -1,12 +1,16 @@
 ﻿/**************************************************************************************
  * CLASS:     MyNotes
+ * 
  * AUTHORS:   Cierria McPerryman
  *            Sean Vogel
  *            Robert Kahren
  *            Anthony Malmgren
- *
- * NOTES:     Main application form
- *            reads note file and fills DataGridView
+ * 
+ * ASSIGNMENT 3 Due 10/27/2015
+ * 
+ * NOTES:     This is the main application form.  It contains the GUI to display and search
+ *            a note database as well as event handlers that modify the database by adding
+ *            notes, deleting them, or updating them.  
  **************************************************************************************/
 using System;
 using System.Collections.Generic;
@@ -27,7 +31,7 @@ namespace EasyNote
 
         private List<Note> notes = new List<Note>();
 
-        private Note currentNote = null;//currently selected note iff its a stored note
+        private Note currentNote = null;            //currently selected note iff its a stored note
 
         private SqlConnection connection = null;    //Holds the connection to the database, using conString.
 
@@ -38,9 +42,8 @@ namespace EasyNote
         //The connection string to use for connecting to the notebase2 database.  
         private string conString = "server=10.158.56.48;uid=net2;pwd=dtbz2;database=notebase2;";
 
-        private int selectedNote = 3;               //The current note selected in the dgv
-
-        DataSet dataSet = null;
+        private int selectedNote;               //The current note_id selected in the dgv
+        private int selectedRow;                //The current row selected in the dgv
 
         /**************************************************************************************
          * FUNCTION:  MyNotes()
@@ -50,7 +53,7 @@ namespace EasyNote
          * RETURNS:   This function has no return value
          *
          * NOTES:     Default constructor
-         *            Initializes components, reads data file and calls createNoteTable
+         *            Initializes components, then creates the notes table.  
          **************************************************************************************/
         public MyNotes()
         {
@@ -199,10 +202,8 @@ namespace EasyNote
                     //Grab all of the notes (not including their tags) from the notes table
                     using (SqlDataAdapter data = new SqlDataAdapter("select * from Notes", connection))
                     {
-                        //Create a dataset from our query and fill the a table with this information. 
-                        dataSet = new DataSet("noteData");
+                        //Create a datatable and fill it with the table from our query.   
                         DataTable notesTable = new DataTable();
-                        data.Fill(dataSet);
                         data.Fill(notesTable);
 
                         //The tags for each note are added in an additional column and the NotesTable is bound to the datagrid.  
@@ -245,7 +246,7 @@ namespace EasyNote
             }
             catch (SqlException e)
             {
-                MessageBox.Show(e.Message + " " + e.ToString());
+                MessageBox.Show("Creating the DataGridView of the notes list failed:" + e.Message + "\n" + e.ToString());
             }
         }
 
@@ -452,32 +453,31 @@ namespace EasyNote
          * ARGUMENTS: sender - object that is calling the function
          *            e - any arguments pass for the event
          *
-         * RETURNS:   This function has no return value, but textFields in the program will be modified.
+         * RETURNS:   No return value, but textFields in the program will be modified.
          *
          * NOTES:     This function takes the values for the note selected in the dataGridView and copies
          *            them into textFields for the user to modify.  
          **************************************************************************************/
         private void dgvNotesList_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            //Show the save,delete, and cancel buttons.  
-            changeButtonView();
-
-            //Get the select cell from the dataGridView.  
-            int i = e.RowIndex;
-            int j = e.ColumnIndex;
-
             //If the column or line headers were double clicked, do nothing
             if (e.RowIndex < 0 || e.ColumnIndex < 0)
                 return;
 
+            selectedRow = e.RowIndex;
+
+            //Show the save,delete, and cancel buttons.  
+            changeButtonView();
+
             //Grab the title, body, and tags associated with the selected note and put them in
             //textfields for the user to see.  
-            tbTitle.Text = dgvNotesList.Rows[i].Cells["title"].Value as string;
-            tbBody.Text = dgvNotesList.Rows[i].Cells["body"].Value as string;
-            tbTags.Text = dgvNotesList.Rows[i].Cells["Tags"].Value as string;
+            tbTitle.Text = dgvNotesList.Rows[selectedRow].Cells["title"].Value as string;
+            tbBody.Text = dgvNotesList.Rows[selectedRow].Cells["body"].Value as string;
+            tbTags.Text = dgvNotesList.Rows[selectedRow].Cells["Tags"].Value as string;
 
-            //Grab the id of the note the user selected from the table.  
-            selectedNote = (int)dgvNotesList.Rows[i].Cells["note_id"].Value;
+            //Grab the id of the note the user selected from the table for later queries.  
+            selectedNote = (int)dgvNotesList.Rows[selectedRow].Cells["note_id"].Value;
+            
         }
 
         /**************************************************************************************
@@ -559,10 +559,12 @@ namespace EasyNote
          * ARGUMENTS: sender - object that is calling the function
          *            e - any arguments pass for the event
          *
-         * RETURNS:   This function has no return value
+         * RETURNS:   This function has no return value, but the changes will appear in the 
+         *            datagridview for the selected note and the database will be updated.  
          *
          * NOTES:     This function is called when the pbSaveBttn is clicked
-         *            It saves the changes to the note in the notes list and notefile
+         *            It saves the changes to the note in the datagridview and to the database.  
+         *            
          **************************************************************************************/
         private void pbSaveBttn_Click(object sender, EventArgs e)
         {
@@ -573,85 +575,100 @@ namespace EasyNote
             Image darkBack = EasyNote.Properties.Resources.Dark_Cancel_Button;
             DialogResult result = CustomMessageBox.Show("Are you sure you wish to save this note?", "Add Note", lightBack, darkBack, lightForward, darkForward);
 
+           
+
             //If the user wants to save the note, then start modifying the tables.   
             if (result == DialogResult.Yes)
             {
                 //Remove the save / cancel button.  
-                changeButtonView();
+                changeButtonView(); 
 
-                //Start by opening a new connection.  
-                using(connection = new SqlConnection(conString))
+                //Get the time for the updated field of the note.  
+                DateTime updatedTime =  DateTime.Now;
+                try
                 {
-                    connection.Open();
-                    
-                    //Grab the new title and body from the text boxes and update the database with them.  
-                    using(command = new SqlCommand("update Notes set title = @title, body = @body, updated = @update where note_id = @id", connection) )
+                    //Start by opening a new connection.  
+                    using (connection = new SqlConnection(conString))
                     {
-                        command.Parameters.AddWithValue("title",tbTitle.Text);
-                        command.Parameters.AddWithValue("body",tbBody.Text);
-                        command.Parameters.AddWithValue("update", DateTime.Now);
-                        command.Parameters.AddWithValue("id",selectedNote);
-                        command.ExecuteNonQuery();
+                        connection.Open();
 
-                        //For simplicity, just delete all the tags associated with the note.  We will add these tags back in next.  
-                        command.CommandText = "delete from NoteTags where note_id = @id";
-                        command.ExecuteNonQuery();
-
-                        //Add two new parameters for sql commands for the tag text and tag_id.  They are defined here as they may change during
-                        //the following loop.  
-                        command.Parameters.AddWithValue("tag", "");
-                        command.Parameters.AddWithValue("tagid", "");
-
-                        
-                        string[] tags = Note.splitTags(tbTags.Text);            //Holds all of the tags the user typed in.  
-
-                        //Now determine the tags from what the user input into the textfield.  If a tag exists, it will be added into the NoteTag table.  
-                        //If a tag doesn't exist, it is created here before being added to the table.  
-                        foreach(string tag in tags)
+                        //Grab the new title and body from the text boxes and update the database with them.  
+                        using (command = new SqlCommand("update Notes set title = @title, body = @body, updated = @update where note_id = @id", connection))
                         {
-                            //Try to get the tag if it exists.  
-                            command.CommandText = "select tag_id from Tag where text = @tag";
-                            command.Parameters["tag"].Value = tag;
+                            command.Parameters.AddWithValue("title", tbTitle.Text);
+                            command.Parameters.AddWithValue("body", tbBody.Text);
+                            command.Parameters.AddWithValue("update", updatedTime);
+                            command.Parameters.AddWithValue("id", selectedNote);
+                            command.ExecuteNonQuery();
 
-                            reader = command.ExecuteReader();
+                            //For simplicity, just delete all the tags associated with the note.  We will add these tags back in next.  
+                            //Without doing this, the program would have to check if each tag were still valid.  
+                            command.CommandText = "delete from NoteTags where note_id = @id";
+                            command.ExecuteNonQuery();
 
-                            //It the tag existed, then add it to NoteTags
-                            if(reader.Read())
+                            //Add two new parameters for sql commands for the tag text and tag_id.  They are defined here as they may change during
+                            //the following loop.  
+                            command.Parameters.AddWithValue("tag", "");
+                            command.Parameters.AddWithValue("tagid", "");
+
+                            string[] tags = Note.splitTags(tbTags.Text);            //Holds all of the tags the user typed in.  
+
+                            //Now determine the tags from what the user input into the textfield.  If a tag exists, it will be added into the NoteTag table.  
+                            //If a tag doesn't exist, it is created here before being added to the table.  
+                            foreach (string tag in tags)
                             {
-                                command.CommandText = "insert into NoteTags values (@id,@tagid)";
-                                command.Parameters["tagid"].Value = reader.GetInt32(0);
-                                reader.Close();
-                                command.ExecuteNonQuery();
-                            }
-                            //Otherwise, create the tag, then get its tag_id and insert it into note tags.  
-                            else
-                            {
-                                reader.Close();
-                                command.CommandText = "insert into Tag values (@tag)";
-                                command.ExecuteNonQuery();
-
-                                //Grab the tag_id of the tag we just created
+                                //Try to get the tag if it exists.  
                                 command.CommandText = "select tag_id from Tag where text = @tag";
+                                command.Parameters["tag"].Value = tag;
 
                                 reader = command.ExecuteReader();
-                                reader.Read();
 
-                                //Use the tag_id and note_id to link the tag with the note.  
-                                command.CommandText = "insert into NoteTags values (@id,@tagid)";
-                                command.Parameters["tagid"].Value = reader.GetInt32(0);
+                                //It the tag existed, then add it to NoteTags
+                                if (reader.Read())
+                                {
+                                    command.CommandText = "insert into NoteTags values (@id,@tagid)";
+                                    command.Parameters["tagid"].Value = reader.GetInt32(0);
+                                    reader.Close();
+                                    command.ExecuteNonQuery();
+                                }
+                                //Otherwise, create the tag, then get its tag_id and insert it into note tags.  
+                                else
+                                {
+                                    reader.Close();
+                                    command.CommandText = "insert into Tag values (@tag)";
+                                    command.ExecuteNonQuery();
 
-                                reader.Close();
-                                command.ExecuteNonQuery();
+                                    //Grab the tag_id of the tag we just created
+                                    command.CommandText = "select tag_id from Tag where text = @tag";
+                                    reader = command.ExecuteReader();
+                                    reader.Read();
+
+                                    //Use the tag_id and note_id to link the tag with the note.  
+                                    command.CommandText = "insert into NoteTags values (@id,@tagid)";
+                                    command.Parameters["tagid"].Value = reader.GetInt32(0);
+
+                                    reader.Close();
+
+                                    command.ExecuteNonQuery();
+                                }
                             }
                         }
 
-                        //Refresh the table (done poorly for now)  
-                        createNoteTable();
-                   }
-
-                clearText();
+                        //Update the dataGridView to reflect the new entry.  
+                        dgvNotesList.Rows[selectedRow].Cells["title"].Value = tbTitle.Text;
+                        dgvNotesList.Rows[selectedRow].Cells["body"].Value = tbBody.Text;
+                        dgvNotesList.Rows[selectedRow].Cells["updated"].Value = updatedTime;
+                        dgvNotesList.Rows[selectedRow].Cells["Tags"].Value = tbTags.Text;
+                        clearText();
+                    }
                 }
-            }
+                catch(SqlException sqle)
+                {
+                    MessageBox.Show("There was an issue saving the update to the database: " + sqle.Message);
+                }
+
+            } //end if dialogresult == yes
+
         }
 
         /**************************************************************************************
@@ -714,11 +731,13 @@ namespace EasyNote
          * ARGUMENTS: sender - object that is calling the function
          *            e - any arguments pass for the event
          *
-         * RETURNS:   This function has no return value
+         * RETURNS:   This function has no return value, but the dataGridView may have a row be
+         *            removed.  The database will also have this value deleted.  
          *
          * NOTES:     This function is called when the pbSaveBttn is clicked
-         *            It deleted the currently selected note from the notes list
-         *            and notefile
+         *            It deletes the currently selected row from the datagridview and the currently
+         *            selected note from that row from the database.  
+         *
          **************************************************************************************/
         private void pbDeleteBttn_Click(object sender, EventArgs e)
         {
@@ -733,26 +752,36 @@ namespace EasyNote
             //If the user does want to delete the note, remove it from the notes table as well as well as any references in the NoteTags table.  
             if (result == DialogResult.Yes)
             {
-                changeButtonView();
-
-                //Open a connection
-                using(connection = new SqlConnection(conString))
+                try
                 {
-                    connection.Open();
-
-                    //Remove references to the note in note_tags.  
-                    using(command = new SqlCommand("delete from NoteTags where note_id = @id",connection))
+                    //Open a connection
+                    using (connection = new SqlConnection(conString))
                     {
-                        command.Parameters.AddWithValue("id", selectedNote);
-                        command.ExecuteNonQuery();
+                        connection.Open();
 
-                        //Then delete the note itself.  
-                        command.CommandText = "delete from Notes where note_id = @id";
-                        command.ExecuteNonQuery();
+                        //Remove references to the note in note_tags.  
+                        using (command = new SqlCommand("delete from NoteTags where note_id = @id", connection))
+                        {
+                            command.Parameters.AddWithValue("id", selectedNote);
+                            command.ExecuteNonQuery();
+
+                            //Then delete the note itself.  
+                            command.CommandText = "delete from Notes where note_id = @id";
+                            command.ExecuteNonQuery();
+                        }
+
+                        clearText();
+
+                        //Hide the save/cancel/delete button.  
+                        changeButtonView();
+
+                        //Remove the row for the dgv to keep the database and local table in sync.  
+                        dgvNotesList.Rows.RemoveAt(selectedRow);
                     }
-
-                    clearText();
-                    createNoteTable();
+                }
+                catch(SqlException sqle)
+                {
+                    MessageBox.Show("There was an issue with deleting from the database: " + sqle.Message);
                 }
             }
            

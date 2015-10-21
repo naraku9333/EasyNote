@@ -38,3 +38,5 @@ Data values are as follows:
 	HelpLink.LinkId 20476
 Exception occured on 10/18/2015 8:54:56 PM at System.Windows.Forms in method Void OnDataGridViewElementStateChanging(System.Windows.Forms.DataGridViewElement, Int32, System.Windows.Forms.DataGridViewElementStates)
 Data values are as follows:
+Exception occured on 10/20/2015 8:00:54 PM at NoteLibrary in method System.String[] splitTags(System.String)
+Data values are as follows:

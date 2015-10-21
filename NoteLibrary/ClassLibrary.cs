@@ -76,6 +76,7 @@ namespace NoteLibrary
          **************************************************************************************/
         public static string[] splitTags(String tags)
         {
+            /*
             //If we encounter a tags of "to-do" just throw a basic note exception.  
             if (tags == "to-do")
             {
@@ -100,7 +101,7 @@ namespace NoteLibrary
                 {
                     throw new NoteException("An exception with spliting the tags was encountered: ", e, tags);
                 }
-            }
+            } */
 
             return tags.Split(':');
         }        

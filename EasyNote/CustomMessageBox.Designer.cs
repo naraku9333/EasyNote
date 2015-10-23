@@ -32,9 +32,9 @@
             this.btBack = new System.Windows.Forms.Button();
             this.btForward = new System.Windows.Forms.Button();
             this.SuspendLayout();
-            // 
+            //
             // lbMessage
-            // 
+            //
             this.lbMessage.AutoSize = true;
             this.lbMessage.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.lbMessage.Location = new System.Drawing.Point(145, 32);
@@ -42,9 +42,9 @@
             this.lbMessage.Size = new System.Drawing.Size(196, 13);
             this.lbMessage.TabIndex = 2;
             this.lbMessage.Text = "Are you sure you wish to save the note?";
-            // 
+            //
             // btBack
-            // 
+            //
             this.btBack.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btBack.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btBack.FlatAppearance.BorderSize = 0;
@@ -58,9 +58,9 @@
             this.btBack.Click += new System.EventHandler(this.btBack_Click);
             this.btBack.MouseEnter += new System.EventHandler(this.btBack_MouseEnter);
             this.btBack.MouseLeave += new System.EventHandler(this.btBack_MouseLeave);
-            // 
+            //
             // btForward
-            // 
+            //
             this.btForward.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btForward.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.btForward.FlatAppearance.BorderSize = 0;
@@ -74,9 +74,9 @@
             this.btForward.Click += new System.EventHandler(this.btForward_Click);
             this.btForward.MouseEnter += new System.EventHandler(this.btForward_MouseEnter);
             this.btForward.MouseLeave += new System.EventHandler(this.btForward_MouseLeave);
-            // 
+            //
             // CustomMessageBox
-            // 
+            //
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.HotTrack;

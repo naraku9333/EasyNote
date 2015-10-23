@@ -1,7 +1,7 @@
 ﻿/********************************New for Assignment 3*************************************
  * CLASS:     CustomMessageBox
  * AUTHORS:   Robert Kahren II
- *            
+ *
  *
  * NOTES:     Windows Form Class use to display a confirmation message boxes
  **************************************************************************************/
@@ -37,10 +37,11 @@ namespace EasyNote
         {
             InitializeComponent();
         }
+
         static CustomMessageBox MsgBox;                             //instance of CustomMessageBox close to be created
         static DialogResult result = DialogResult.No;               //DialogResults to be returned
         /**************************************New for Assignment 3*******************************************
-         * FUNCTION:  public static DialogResult Show(string messageText, string boxText, 
+         * FUNCTION:  public static DialogResult Show(string messageText, string boxText,
          *            Image lightBackImage, Image darkBackImage, Image lightForwardImage, Image darkForwardImage)
          *
          * ARGUMENTS: messageText - text to be displayed in the message box
@@ -71,6 +72,7 @@ namespace EasyNote
             MsgBox.ShowDialog();
             return result;
         }
+
         /**************************New for Assignment 3*******************************************
         * FUNCTION:  private void btForward_Click(object sender, EventArgs e)
         *
@@ -87,6 +89,7 @@ namespace EasyNote
             result = DialogResult.Yes;
             MsgBox.Close();
         }
+
         /***************************New for Assignment 3******************************************
        * FUNCTION:  private void btBack_Click(object sender, EventArgs e)
        *
@@ -103,6 +106,7 @@ namespace EasyNote
             result = DialogResult.No;
             MsgBox.Close();
         }
+
         /***************************New for Assignment 3*******************************************
         * FUNCTION:  private void btForward_MouseEnter(object sender, EventArgs e)
         *
@@ -119,6 +123,7 @@ namespace EasyNote
             btForward.BackgroundImage = lightForwardBtn;
             btForward.FlatAppearance.MouseOverBackColor = Color.Transparent;
         }
+
         /****************************New for Assignment 3******************************************
         * FUNCTION:  private void btForward_MouseLeave(object sender, EventArgs e)
         *
@@ -134,6 +139,7 @@ namespace EasyNote
         {
             btForward.BackgroundImage = darkForwardBtn;
         }
+
         /*****************************New for Assignment 3****************************************
        * FUNCTION:  private void btBack_MouseEnter(object sender, EventArgs e)
        *
@@ -150,6 +156,7 @@ namespace EasyNote
             btBack.BackgroundImage = lightBackBtn;
             btBack.FlatAppearance.MouseOverBackColor = Color.Transparent;
         }
+
         /***************************New for Assignment 3****************************************
         * FUNCTION:  private void btBack_MouseLeave(object sender, EventArgs e)
         *

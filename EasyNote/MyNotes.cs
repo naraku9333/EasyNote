@@ -578,7 +578,6 @@ namespace EasyNote
          * RETURNS:   This function has no return value, but the changes will appear in the 
          *            datagridview for the selected note and the database will be updated.  
          *
-<<<<<<< HEAD
          * NOTES:     This function is called when the pbSaveBttn is clicked
          *            It saves the changes to the note in the datagridview and to the database.  
          *            
@@ -586,13 +585,12 @@ namespace EasyNote
         private void pbSaveBttn_Click(object sender, EventArgs e)
         {
             //Images for the message buttons on the message box.  Used to ask the user to confirm saving the note.  
-            Image lightForward = EasyNote.Properties.Resources.Light_Save_Button;
-            Image darkForward = EasyNote.Properties.Resources.Dark_Save_Button;
+            Image lightForward = EasyNote.Properties.Resources.Light_Ok_Button;
+            Image darkForward = EasyNote.Properties.Resources.Dark_Ok_Button;
             Image lightBack = EasyNote.Properties.Resources.Light_Cancel_Button;
             Image darkBack = EasyNote.Properties.Resources.Dark_Cancel_Button;
-            DialogResult result = CustomMessageBox.Show("Are you sure you wish to save this note?", "Add Note", lightBack, darkBack, lightForward, darkForward);
 
-           
+            DialogResult result = CustomMessageBox.Show("Are you sure you wish to save this note?", "Save Note", lightBack, darkBack, lightForward, darkForward);
 
             //If the user wants to save the note, then start modifying the tables.   
             if (result == DialogResult.Yes)
@@ -684,43 +682,7 @@ namespace EasyNote
                     MessageBox.Show("There was an issue saving the update to the database: " + sqle.Message);
                 }
 
-            } //end if dialogresult == yes
-
-=======
-         * NOTES:     This function is called when the pbSaveBttn is clicked. It calls the 
-         *            CustomerMessageBox Class and displays a confirmation box to the user to 
-         *            cofirm they wish to save the note. If they do, It saves the changes to 
-         *            the note in the notes list and notefile
-         **************************************************************************************/
-        private void pbSaveBttn_Click(object sender, EventArgs e)
-        {
-            Image lightForward = EasyNote.Properties.Resources.Light_Ok_Button;
-            Image darkForward = EasyNote.Properties.Resources.Dark_Ok_Button;
-            Image lightBack = EasyNote.Properties.Resources.Light_Cancel_Button;
-            Image darkBack = EasyNote.Properties.Resources.Dark_Cancel_Button;
-            DialogResult result = CustomMessageBox.Show("Are you sure you wish to save this note?", "Save Note", lightBack, darkBack, lightForward, darkForward);
-            //if the use confirms the saving of the note
-            if (result == DialogResult.Yes)
-            {
-                changeButtonView();
-                if (currentNote != null && currentNote.Modifiable)
-                {
-                    currentNote.Title = tbTitle.Text;
-                    currentNote.Tags = tbTags.Text.Split(':');
-                    currentNote.Body = tbBody.Text;
-
-                    //modify DGV, this is a little hacky
-                    int i = notes.IndexOf(currentNote);
-                    string[] row = { tbTitle.Text, tbBody.Text, tbTags.Text.Replace(":", ", ") };
-                    dgvNotesList.Rows.RemoveAt(i);
-                    dgvNotesList.Rows.Insert(i, row);
-
-                    writeNotesFile();
-                    currentNote = null;
-                }
-                clearText();
-            }
->>>>>>> refs/remotes/origin/master
+            } //end if dialogresult == yes        
         }
 
         /**************************************************************************************
@@ -786,7 +748,6 @@ namespace EasyNote
          * RETURNS:   This function has no return value, but the dataGridView may have a row be
          *            removed.  The database will also have this value deleted.  
          *
-<<<<<<< HEAD
          * NOTES:     This function is called when the pbSaveBttn is clicked
          *            It deletes the currently selected row from the datagridview and the currently
          *            selected note from that row from the database.  
@@ -795,8 +756,8 @@ namespace EasyNote
         private void pbDeleteBttn_Click(object sender, EventArgs e)
         {
             //Create the images for the custom message box, then display this message box to the user to determine if they want to delete this note.  
-            Image lightForward = EasyNote.Properties.Resources.Light_Delete_Button;
-            Image darkForward = EasyNote.Properties.Resources.Dark_Delete_Button;
+            Image lightForward = EasyNote.Properties.Resources.Light_Ok_Button;
+            Image darkForward = EasyNote.Properties.Resources.Dark_Ok_Button;
             Image lightBack = EasyNote.Properties.Resources.Light_Cancel_Button;
             Image darkBack = EasyNote.Properties.Resources.Dark_Cancel_Button;
 
@@ -832,46 +793,13 @@ namespace EasyNote
                         dgvNotesList.Rows.RemoveAt(selectedRow);
                     }
                 }
-                catch(SqlException sqle)
+                catch (SqlException sqle)
                 {
                     MessageBox.Show("There was an issue with deleting from the database: " + sqle.Message);
                 }
             }
-           
-=======
-         * NOTES:     This function is called when the pbSaveBttn is clicked.  It calls the 
-         *            CustomerMessageBox Class and displays a confirmation box to the user to 
-         *            cofirm they wish to delete the note. If they do, It deleted the currently
-         *            selected note from the notes list and notefile
-         **************************************************************************************/
-        private void pbDeleteBttn_Click(object sender, EventArgs e)
-        {
-            Image lightForward = EasyNote.Properties.Resources.Light_Ok_Button;
-            Image darkForward = EasyNote.Properties.Resources.Dark_Ok_Button;
-            Image lightBack = EasyNote.Properties.Resources.Light_Cancel_Button;
-            Image darkBack = EasyNote.Properties.Resources.Dark_Cancel_Button;
-            DialogResult result = CustomMessageBox.Show("Are you sure you wish to delete this note?", "delete Note", lightBack, darkBack, lightForward, darkForward);
-            //if user confirmed the deletion of the note
-            if (result == DialogResult.Yes)
-            {
-                changeButtonView();
-                if (currentNote != null && currentNote.Modifiable)
-                {
-                    int i = notes.IndexOf(currentNote);
-
-                    //remove note from list
-                    notes.RemoveAt(i);
-
-                    //remove note from DGV
-                    dgvNotesList.Rows.RemoveAt(i);
-
-                    writeNotesFile();
-                    currentNote = null;
-                }
-                clearText();
-            }
->>>>>>> refs/remotes/origin/master
         }
+        
 
         /**************************************************************************************
          * FUNCTION:  private void clearText()
@@ -961,7 +889,10 @@ namespace EasyNote
                     //otherwise hide the row
                     else
                     {
+                        CurrencyManager curr = (CurrencyManager)BindingContext[dgvNotesList.DataSource];
+                        curr.SuspendBinding();
                         dgvNotesList.Rows[row.Index].Visible = false;
+                        curr.ResumeBinding();
                     }
                 }
                 //assign string with number of mathcing notes to lbTagsFound and display it

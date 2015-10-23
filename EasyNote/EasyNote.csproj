@@ -79,7 +79,6 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <EmbeddedResource Include="CustomMessage.resx" />
-    <EmbeddedResource Include="CustomMessageBox.resx" />
     <None Include="app.config" />
     <None Include="Properties\DataSources\MyNotes.datasource" />
     <None Include="Properties\DataSources\NoteLibrary.Note.datasource" />

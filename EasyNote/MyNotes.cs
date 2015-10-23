@@ -62,7 +62,6 @@ namespace EasyNote
 //           readNotesFile();
 //            getDllNotes();
             createNoteTable();
-
         }
 
         /**************************************************************************************
@@ -141,12 +140,14 @@ namespace EasyNote
                     while (!reader.EndOfStream)
                     {
                         line = reader.ReadLine().Split('*');
+                        if (line.Length == 3)
+                        {
+                            name = line[0];
+                            body = line[1];
+                            tags = line[2];
 
-                        name = line[0];
-                        body = line[1];
-                        tags = line[2];
-
-                        this.addNewNote(line[0], line[1], line[2]);
+                            this.addNewNote(line[0], line[1], line[2]);
+                        }
                     }
                 }
             }
@@ -391,18 +392,19 @@ namespace EasyNote
          *            body - the body text of the note
          *            tagString - all of the tags for the note, in one combined string.
          *
-         * RETURNS:   This function has no return value, but the notes list will be modified to
-         *            have a new note with the entered values.
+         * RETURNS:   This function returns true if note is sucsessfully created, and the notes
+         *            list will be modified to have a new note with the entered values.
          *
          * NOTES:    AddNewNote not only adds the note, but it also does the exception checking for
          *           it as well.
          **************************************************************************************/
-        private void addNewNote(string title, string text, string tagString, bool mod = true)
+        private bool addNewNote(string title, string text, string tagString, bool mod = true)
         {
             try
             {
                 String[] tags = Note.splitTags(tagString);
                 notes.Add(new Note(title, text, tags, mod));  //CEdge add modifiable arg
+                return true;
             }
             catch (NoteException ne)
             {
@@ -417,9 +419,10 @@ namespace EasyNote
                     MessageBox.Show(ne.Message, "Note Exception");
                 }
             }
+            return false;
         }
 
-        /**************************************************************************************
+        /***************************Updated for Assignment 3************************************
          * FUNCTION:  private void pbAddNote_Click(object sender, EventArgs e)
          *
          * ARGUMENTS: sender - object that is calling the function
@@ -427,23 +430,36 @@ namespace EasyNote
          *
          * RETURNS:   This function has no return value
          *
-         * NOTES:     Add new notes to note list and notfile
+         * NOTES:     This function is called when the pbAddNote button is clicked It calls the 
+         *            CustomerMessageBox Class and displays a confirmation box to the user to 
+         *            cofirm they wish to add the note. If they do, it adds the new note to note list and notfile
          **************************************************************************************/
         private void pbAddNote_Click(object sender, EventArgs e)
         {
             if (tbTitle.Text != "" && tbBody.Text != "")
             {
-                this.addNewNote(tbTitle.Text, tbBody.Text, tbTags.Text);
-
-                using (StreamWriter sw = File.AppendText(FILE_LOCATION))
+                Image lightAdd = EasyNote.Properties.Resources.Light_Ok_Button;
+                Image darkAdd = EasyNote.Properties.Resources.Dark_Ok_Button;
+                Image lightCancel = EasyNote.Properties.Resources.Light_Cancel_Button;
+                Image darkCancel = EasyNote.Properties.Resources.Dark_Cancel_Button;
+                DialogResult result =  CustomMessageBox.Show("Are you sure you wish to add this note?", "Add Note", lightCancel, darkCancel, lightAdd, darkAdd);
+                //if the user confirms the adding of the note
+                if (result == DialogResult.Yes)
                 {
-                    sw.WriteLine(tbTitle.Text + "*" + tbBody.Text + "*" + tbTags.Text);
+                    if(addNewNote(tbTitle.Text, tbBody.Text, tbTags.Text))
+                    {
+
+                        using (StreamWriter sw = File.AppendText(FILE_LOCATION))
+                        {
+                            sw.WriteLine(tbTitle.Text + "*" + tbBody.Text + "*" + tbTags.Text);
+                        }
+
+                        string[] row = { tbTitle.Text, tbBody.Text, tbTags.Text.Replace(":", ", ") };
+                        dgvNotesList.Rows.Add(row);
+                    }
+                    clearText();
                 }
-
-                string[] row = { tbTitle.Text, tbBody.Text, tbTags.Text.Replace(":", ", ") };
-                dgvNotesList.Rows.Add(row);
-
-                clearText();
+                
             }
         }
 
@@ -553,7 +569,7 @@ namespace EasyNote
             pbDeleteBttn.Image = deleteButton;
         }
 
-        /**************************************************************************************
+        /*******************************Updated for Assignment 3*******************************************************
          * FUNCTION:  private void pbSaveBttn_Click(object sender, EventArgs e)
          *
          * ARGUMENTS: sender - object that is calling the function
@@ -562,6 +578,7 @@ namespace EasyNote
          * RETURNS:   This function has no return value, but the changes will appear in the 
          *            datagridview for the selected note and the database will be updated.  
          *
+<<<<<<< HEAD
          * NOTES:     This function is called when the pbSaveBttn is clicked
          *            It saves the changes to the note in the datagridview and to the database.  
          *            
@@ -669,6 +686,41 @@ namespace EasyNote
 
             } //end if dialogresult == yes
 
+=======
+         * NOTES:     This function is called when the pbSaveBttn is clicked. It calls the 
+         *            CustomerMessageBox Class and displays a confirmation box to the user to 
+         *            cofirm they wish to save the note. If they do, It saves the changes to 
+         *            the note in the notes list and notefile
+         **************************************************************************************/
+        private void pbSaveBttn_Click(object sender, EventArgs e)
+        {
+            Image lightForward = EasyNote.Properties.Resources.Light_Ok_Button;
+            Image darkForward = EasyNote.Properties.Resources.Dark_Ok_Button;
+            Image lightBack = EasyNote.Properties.Resources.Light_Cancel_Button;
+            Image darkBack = EasyNote.Properties.Resources.Dark_Cancel_Button;
+            DialogResult result = CustomMessageBox.Show("Are you sure you wish to save this note?", "Save Note", lightBack, darkBack, lightForward, darkForward);
+            //if the use confirms the saving of the note
+            if (result == DialogResult.Yes)
+            {
+                changeButtonView();
+                if (currentNote != null && currentNote.Modifiable)
+                {
+                    currentNote.Title = tbTitle.Text;
+                    currentNote.Tags = tbTags.Text.Split(':');
+                    currentNote.Body = tbBody.Text;
+
+                    //modify DGV, this is a little hacky
+                    int i = notes.IndexOf(currentNote);
+                    string[] row = { tbTitle.Text, tbBody.Text, tbTags.Text.Replace(":", ", ") };
+                    dgvNotesList.Rows.RemoveAt(i);
+                    dgvNotesList.Rows.Insert(i, row);
+
+                    writeNotesFile();
+                    currentNote = null;
+                }
+                clearText();
+            }
+>>>>>>> refs/remotes/origin/master
         }
 
         /**************************************************************************************
@@ -725,7 +777,7 @@ namespace EasyNote
             clearText();
         }
 
-        /**************************************************************************************
+        /**********************Updated for Assignment 3****************************************************************
          * FUNCTION:  private void pbDeleteBttn_Click(object sender, EventArgs e)
          *
          * ARGUMENTS: sender - object that is calling the function
@@ -734,6 +786,7 @@ namespace EasyNote
          * RETURNS:   This function has no return value, but the dataGridView may have a row be
          *            removed.  The database will also have this value deleted.  
          *
+<<<<<<< HEAD
          * NOTES:     This function is called when the pbSaveBttn is clicked
          *            It deletes the currently selected row from the datagridview and the currently
          *            selected note from that row from the database.  
@@ -785,6 +838,39 @@ namespace EasyNote
                 }
             }
            
+=======
+         * NOTES:     This function is called when the pbSaveBttn is clicked.  It calls the 
+         *            CustomerMessageBox Class and displays a confirmation box to the user to 
+         *            cofirm they wish to delete the note. If they do, It deleted the currently
+         *            selected note from the notes list and notefile
+         **************************************************************************************/
+        private void pbDeleteBttn_Click(object sender, EventArgs e)
+        {
+            Image lightForward = EasyNote.Properties.Resources.Light_Ok_Button;
+            Image darkForward = EasyNote.Properties.Resources.Dark_Ok_Button;
+            Image lightBack = EasyNote.Properties.Resources.Light_Cancel_Button;
+            Image darkBack = EasyNote.Properties.Resources.Dark_Cancel_Button;
+            DialogResult result = CustomMessageBox.Show("Are you sure you wish to delete this note?", "delete Note", lightBack, darkBack, lightForward, darkForward);
+            //if user confirmed the deletion of the note
+            if (result == DialogResult.Yes)
+            {
+                changeButtonView();
+                if (currentNote != null && currentNote.Modifiable)
+                {
+                    int i = notes.IndexOf(currentNote);
+
+                    //remove note from list
+                    notes.RemoveAt(i);
+
+                    //remove note from DGV
+                    dgvNotesList.Rows.RemoveAt(i);
+
+                    writeNotesFile();
+                    currentNote = null;
+                }
+                clearText();
+            }
+>>>>>>> refs/remotes/origin/master
         }
 
         /**************************************************************************************
@@ -821,9 +907,9 @@ namespace EasyNote
             Notes.NoteComponents n = new Notes.NoteComponents();
 
             for (int i = 0; i < n.Count; i++)
-            {               
+            {
                 //send title, body, tags, and false to modifier args
-                this.addNewNote(n[i].Title, n[i].Body, String.Join(":", n[i].Tags.ToArray()), false); 
+                this.addNewNote(n[i].Title, n[i].Body, String.Join(":", n[i].Tags.ToArray()), false);
             }
         }
 
@@ -842,6 +928,107 @@ namespace EasyNote
             pbSaveBttn.Visible = !pbSaveBttn.Visible;
             pbDeleteBttn.Visible = !pbDeleteBttn.Visible;
             pbCancelBttn.Visible = !pbCancelBttn.Visible;
+        }
+
+        /****************************New for Assignment 3***********************************************
+        * FUNCTION:   private void tbSearch_TextChanged(object sender, EventArgs e)
+        *
+        * ARGUMENTS: sender - object that is calling the function
+        *            e - any arguments pass for the event
+        *
+        * RETURNS:   This function has no return value
+        *
+        * NOTES:     This function is called when the text of tbSearch changes.  It sets the the clear 
+        *            button visiblity appropriately, filters the results displayed in the DataGridView,
+        *            and isplays the number of numbers that have tags containing the search text entered.   
+        **************************************************************************************/
+        private void tbSearch_TextChanged(object sender, EventArgs e)
+        {
+            int count = 0;                              //tracks matching number of notes
+            //if the user has text entered into the search box
+            if (tbSearch.Text != "")
+            {
+                pbClearBtn.Visible = true;
+                //check each row in the DataGridView
+                foreach (System.Windows.Forms.DataGridViewRow row in dgvNotesList.Rows)
+                {
+                    //if a tag contains the search text, display the row and increament count
+                    if ((row.Cells[2]).Value.ToString().ToLower().Contains(tbSearch.Text.ToLower()))
+                    {
+                        dgvNotesList.Rows[row.Index].Visible = true;
+                        count++;
+                    }
+                    //otherwise hide the row
+                    else
+                    {
+                        dgvNotesList.Rows[row.Index].Visible = false;
+                    }
+                }
+                //assign string with number of mathcing notes to lbTagsFound and display it
+                lbMatching.Text = "Number of matchs: " + count.ToString();
+                lbMatching.Visible = true;
+
+            }
+            //otherwise hide pbClearButton button and lbTagsFound
+            else
+            {
+                pbClearBtn.Visible = false;
+                lbMatching.Visible = false;
+                //set each row in the DataGridView to visible
+                foreach (System.Windows.Forms.DataGridViewRow row in dgvNotesList.Rows)
+                {
+                    dgvNotesList.Rows[row.Index].Visible = true;
+                }
+
+            }
+
+        }
+        /************************New for Assignment 3*******************************************
+       * FUNCTION:  private void pbClearButton_Click(object sender, EventArgs e)
+       *
+       * ARGUMENTS: sender - object that is calling the function
+       *            e - any arguments pass for the event
+       *
+       * RETURNS:   This function has no return value
+       *
+       * NOTES:     This function is called when the pbClearButton is clicked
+       *            It clears the tbSearch.
+       **************************************************************************************/
+        private void pbClearBtn_Click(object sender, EventArgs e)
+        {
+            tbSearch.Text = "";
+        }
+        /**************************New for Assignment 3************************************************************
+         * FUNCTION:  private void pbClearButton_MouseEnter(object sender, EventArgs e)
+         *
+         * ARGUMENTS: sender - object that is calling the function
+         *            e - any arguments pass for the event
+         *
+         * RETURNS:   This function has no return value
+         *
+         * NOTES:     This function is called when the mouse is moved over pbClearButton and changes
+         *            the displayed image
+         **************************************************************************************/
+        private void pbClearBtn_MouseEnter(object sender, EventArgs e)
+        {
+            Image ClearButton = EasyNote.Properties.Resources.Light_Clear_Button;
+            pbClearBtn.Image = ClearButton;
+        }
+        /************************************New for Assignment 3*********************************************
+        * FUNCTION:  private void pbClearButton_MouseLeave(object sender, EventArgs e)
+        *
+        * ARGUMENTS: sender - object that is calling the function
+        *            e - any arguments pass for the event
+        *
+        * RETURNS:   This function has no return value
+        *
+        * NOTES:     This function is called when the mouse is off of pbClearButton and changes
+        *            the displayed image
+        **************************************************************************************/
+        private void pbClearBtn_MouseLeave(object sender, EventArgs e)
+        {
+            Image ClearButton = EasyNote.Properties.Resources.Dark_Clear_Button;
+            pbClearBtn.Image = ClearButton;
         }
     }
 }

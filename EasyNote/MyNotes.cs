@@ -40,10 +40,11 @@ namespace EasyNote
         private SqlDataReader reader = null;        //Holds the result of a query from the database.  
 
         //The connection string to use for connecting to the notebase2 database.  
-        private string conString = "server=10.158.56.48;uid=net2;pwd=dtbz2;database=notebase2;";
+        private const string conString = "server=10.158.56.48;uid=net2;pwd=dtbz2;database=notebase2;";
 
         private int selectedNote;               //The current note_id selected in the dgv
         private int selectedRow;                //The current row selected in the dgv
+        private DataTable notesTable = null;
 
         /**************************************************************************************
          * FUNCTION:  MyNotes()
@@ -204,7 +205,7 @@ namespace EasyNote
                     using (SqlDataAdapter data = new SqlDataAdapter("select * from Notes", connection))
                     {
                         //Create a datatable and fill it with the table from our query.   
-                        DataTable notesTable = new DataTable();
+                        notesTable = new DataTable();
                         data.Fill(notesTable);
 
                         //The tags for each note are added in an additional column and the NotesTable is bound to the datagrid.  
@@ -442,24 +443,31 @@ namespace EasyNote
                 Image darkAdd = EasyNote.Properties.Resources.Dark_Ok_Button;
                 Image lightCancel = EasyNote.Properties.Resources.Light_Cancel_Button;
                 Image darkCancel = EasyNote.Properties.Resources.Dark_Cancel_Button;
+
                 DialogResult result =  CustomMessageBox.Show("Are you sure you wish to add this note?", "Add Note", lightCancel, darkCancel, lightAdd, darkAdd);
+               
                 //if the user confirms the adding of the note
                 if (result == DialogResult.Yes)
-                {
-                    if(addNewNote(tbTitle.Text, tbBody.Text, tbTags.Text))
+                {                    
+                    using (connection = new SqlConnection(conString))
                     {
-
-                        using (StreamWriter sw = File.AppendText(FILE_LOCATION))
+                        connection.Open();
+                        using (var com = new SqlCommand("addnote", connection) { CommandType = CommandType.StoredProcedure })
                         {
-                            sw.WriteLine(tbTitle.Text + "*" + tbBody.Text + "*" + tbTags.Text);
-                        }
+                            com.Connection = connection;
+                            com.Parameters.AddWithValue("@title", tbTitle.Text);
+                            com.Parameters.AddWithValue("@body", tbBody.Text);
+                            com.Parameters.AddWithValue("@tags", tbTags.Text);
 
-                        string[] row = { tbTitle.Text, tbBody.Text, tbTags.Text.Replace(":", ", ") };
-                        dgvNotesList.Rows.Add(row);
+                            using (var adapter = new SqlDataAdapter(com))
+                            {                                
+                                adapter.Fill(notesTable);
+                                createNoteTable();
+                            }                            
+                        }
                     }
                     clearText();
-                }
-                
+                }                
             }
         }
 
@@ -881,7 +889,7 @@ namespace EasyNote
                 foreach (System.Windows.Forms.DataGridViewRow row in dgvNotesList.Rows)
                 {
                     //if a tag contains the search text, display the row and increament count
-                    if ((row.Cells[2]).Value.ToString().ToLower().Contains(tbSearch.Text.ToLower()))
+                    if ((row.Cells[5]).Value.ToString().ToLower().Contains(tbSearch.Text.ToLower()))
                     {
                         dgvNotesList.Rows[row.Index].Visible = true;
                         count++;
@@ -896,7 +904,7 @@ namespace EasyNote
                     }
                 }
                 //assign string with number of mathcing notes to lbTagsFound and display it
-                lbMatching.Text = "Number of matchs: " + count.ToString();
+                lbMatching.Text = "Number of matches: " + count.ToString();
                 lbMatching.Visible = true;
 
             }

@@ -451,7 +451,6 @@ namespace EasyNote
                 {                    
                     using (connection = new SqlConnection(conString))
                     {
-                        connection.Open();
                         using (var com = new SqlCommand("addnote", connection) { CommandType = CommandType.StoredProcedure })
                         {
                             com.Connection = connection;
@@ -460,7 +459,7 @@ namespace EasyNote
                             com.Parameters.AddWithValue("@tags", tbTags.Text);
 
                             using (var adapter = new SqlDataAdapter(com))
-                            {                                
+                            {                             
                                 adapter.Fill(notesTable);
                                 createNoteTable();
                             }                            
@@ -604,91 +603,114 @@ namespace EasyNote
             if (result == DialogResult.Yes)
             {
                 //Remove the save / cancel button.  
-                changeButtonView(); 
-
-                //Get the time for the updated field of the note.  
-                DateTime updatedTime =  DateTime.Now;
+                changeButtonView();
                 try
                 {
-                    //Start by opening a new connection.  
                     using (connection = new SqlConnection(conString))
                     {
-                        connection.Open();
-
-                        //Grab the new title and body from the text boxes and update the database with them.  
-                        using (command = new SqlCommand("update Notes set title = @title, body = @body, updated = @update where note_id = @id", connection))
+                        using (var com = new SqlCommand("updatenote", connection) { CommandType = CommandType.StoredProcedure })
                         {
-                            command.Parameters.AddWithValue("title", tbTitle.Text);
-                            command.Parameters.AddWithValue("body", tbBody.Text);
-                            command.Parameters.AddWithValue("update", updatedTime);
-                            command.Parameters.AddWithValue("id", selectedNote);
-                            command.ExecuteNonQuery();
+                            com.Connection = connection;
+                            com.Parameters.AddWithValue("@noteid", selectedNote);
+                            com.Parameters.AddWithValue("@title", tbTitle.Text);
+                            com.Parameters.AddWithValue("@body", tbBody.Text);
+                            com.Parameters.AddWithValue("@tags", tbTags.Text);
 
-                            //For simplicity, just delete all the tags associated with the note.  We will add these tags back in next.  
-                            //Without doing this, the program would have to check if each tag were still valid.  
-                            command.CommandText = "delete from NoteTags where note_id = @id";
-                            command.ExecuteNonQuery();
-
-                            //Add two new parameters for sql commands for the tag text and tag_id.  They are defined here as they may change during
-                            //the following loop.  
-                            command.Parameters.AddWithValue("tag", "");
-                            command.Parameters.AddWithValue("tagid", "");
-
-                            string[] tags = Note.splitTags(tbTags.Text);            //Holds all of the tags the user typed in.  
-
-                            //Now determine the tags from what the user input into the textfield.  If a tag exists, it will be added into the NoteTag table.  
-                            //If a tag doesn't exist, it is created here before being added to the table.  
-                            foreach (string tag in tags)
+                            using (var adapter = new SqlDataAdapter(com))
                             {
-                                //Try to get the tag if it exists.  
-                                command.CommandText = "select tag_id from Tag where text = @tag";
-                                command.Parameters["tag"].Value = tag;
-
-                                reader = command.ExecuteReader();
-
-                                //It the tag existed, then add it to NoteTags
-                                if (reader.Read())
-                                {
-                                    command.CommandText = "insert into NoteTags values (@id,@tagid)";
-                                    command.Parameters["tagid"].Value = reader.GetInt32(0);
-                                    reader.Close();
-                                    command.ExecuteNonQuery();
-                                }
-                                //Otherwise, create the tag, then get its tag_id and insert it into note tags.  
-                                else
-                                {
-                                    reader.Close();
-                                    command.CommandText = "insert into Tag values (@tag)";
-                                    command.ExecuteNonQuery();
-
-                                    //Grab the tag_id of the tag we just created
-                                    command.CommandText = "select tag_id from Tag where text = @tag";
-                                    reader = command.ExecuteReader();
-                                    reader.Read();
-
-                                    //Use the tag_id and note_id to link the tag with the note.  
-                                    command.CommandText = "insert into NoteTags values (@id,@tagid)";
-                                    command.Parameters["tagid"].Value = reader.GetInt32(0);
-
-                                    reader.Close();
-
-                                    command.ExecuteNonQuery();
-                                }
+                                adapter.Fill(notesTable);
+                                createNoteTable();
                             }
                         }
-
-                        //Update the dataGridView to reflect the new entry.  
-                        dgvNotesList.Rows[selectedRow].Cells["title"].Value = tbTitle.Text;
-                        dgvNotesList.Rows[selectedRow].Cells["body"].Value = tbBody.Text;
-                        dgvNotesList.Rows[selectedRow].Cells["updated"].Value = updatedTime;
-                        dgvNotesList.Rows[selectedRow].Cells["Tags"].Value = tbTags.Text;
-                        clearText();
                     }
                 }
-                catch(SqlException sqle)
+                catch (SqlException sqle)
                 {
                     MessageBox.Show("There was an issue saving the update to the database: " + sqle.Message);
                 }
+                ////Get the time for the updated field of the note.  
+                //DateTime updatedTime =  DateTime.Now;
+                //try
+                //{
+                //    //Start by opening a new connection.  
+                //    using (connection = new SqlConnection(conString))
+                //    {
+                //        connection.Open();
+
+                //        //Grab the new title and body from the text boxes and update the database with them.  
+                //        using (command = new SqlCommand("update Notes set title = @title, body = @body, updated = @update where note_id = @id", connection))
+                //        {
+                //            command.Parameters.AddWithValue("title", tbTitle.Text);
+                //            command.Parameters.AddWithValue("body", tbBody.Text);
+                //            command.Parameters.AddWithValue("update", updatedTime);
+                //            command.Parameters.AddWithValue("id", selectedNote);
+                //            command.ExecuteNonQuery();
+
+                //            //For simplicity, just delete all the tags associated with the note.  We will add these tags back in next.  
+                //            //Without doing this, the program would have to check if each tag were still valid.  
+                //            command.CommandText = "delete from NoteTags where note_id = @id";
+                //            command.ExecuteNonQuery();
+
+                //            //Add two new parameters for sql commands for the tag text and tag_id.  They are defined here as they may change during
+                //            //the following loop.  
+                //            command.Parameters.AddWithValue("tag", "");
+                //            command.Parameters.AddWithValue("tagid", "");
+
+                //            string[] tags = Note.splitTags(tbTags.Text);            //Holds all of the tags the user typed in.  
+
+                //            //Now determine the tags from what the user input into the textfield.  If a tag exists, it will be added into the NoteTag table.  
+                //            //If a tag doesn't exist, it is created here before being added to the table.  
+                //            foreach (string tag in tags)
+                //            {
+                //                //Try to get the tag if it exists.  
+                //                command.CommandText = "select tag_id from Tag where text = @tag";
+                //                command.Parameters["tag"].Value = tag;
+
+                //                reader = command.ExecuteReader();
+
+                //                //It the tag existed, then add it to NoteTags
+                //                if (reader.Read())
+                //                {
+                //                    command.CommandText = "insert into NoteTags values (@id,@tagid)";
+                //                    command.Parameters["tagid"].Value = reader.GetInt32(0);
+                //                    reader.Close();
+                //                    command.ExecuteNonQuery();
+                //                }
+                //                //Otherwise, create the tag, then get its tag_id and insert it into note tags.  
+                //                else
+                //                {
+                //                    reader.Close();
+                //                    command.CommandText = "insert into Tag values (@tag)";
+                //                    command.ExecuteNonQuery();
+
+                //                    //Grab the tag_id of the tag we just created
+                //                    command.CommandText = "select tag_id from Tag where text = @tag";
+                //                    reader = command.ExecuteReader();
+                //                    reader.Read();
+
+                //                    //Use the tag_id and note_id to link the tag with the note.  
+                //                    command.CommandText = "insert into NoteTags values (@id,@tagid)";
+                //                    command.Parameters["tagid"].Value = reader.GetInt32(0);
+
+                //                    reader.Close();
+
+                //                    command.ExecuteNonQuery();
+                //                }
+                //            }
+                //        }
+
+                //        //Update the dataGridView to reflect the new entry.  
+                //        dgvNotesList.Rows[selectedRow].Cells["title"].Value = tbTitle.Text;
+                //        dgvNotesList.Rows[selectedRow].Cells["body"].Value = tbBody.Text;
+                //        dgvNotesList.Rows[selectedRow].Cells["updated"].Value = updatedTime;
+                //        dgvNotesList.Rows[selectedRow].Cells["Tags"].Value = tbTags.Text;
+                //        clearText();
+                //    }
+                //}
+                //catch(SqlException sqle)
+                //{
+                //    MessageBox.Show("There was an issue saving the update to the database: " + sqle.Message);
+                //}
 
             } //end if dialogresult == yes        
         }

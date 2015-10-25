@@ -18,7 +18,6 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.Drawing.Text;
 using System.Data.SqlClient;
-using System.Text;
 using EasyNote.Properties;
 
 namespace EasyNote
@@ -27,15 +26,12 @@ namespace EasyNote
     {
         private SqlConnection connection = null;    //Holds the connection to the database, using conString.
 
-        private SqlCommand command = null;          //Holds a command to be executed on the database.  
-
-        private SqlDataReader reader = null;        //Holds the result of a query from the database.  
-
         //The connection string to use for connecting to the notebase2 database.  
         private const string conString = "server=10.158.56.48;uid=net2;pwd=dtbz2;database=notebase2;";
 
         private int selectedNote;               //The current note_id selected in the dgv
         private int selectedRow;                //The current row selected in the dgv
+
         private DataTable notesTable = null;
 
         /**************************************************************************************
@@ -120,52 +116,18 @@ namespace EasyNote
             //Try to execute the following Sql statements
             try
             {
-                //Connect to the notebase2 database.  
+                ////Connect to the notebase2 database.                  
                 using (connection = new SqlConnection(conString))
                 {
-                    connection.Open();
-
-                    //Grab all of the notes (not including their tags) from the notes table
-                    using (SqlDataAdapter data = new SqlDataAdapter("select * from Notes", connection))
+                    using (var com = new SqlCommand("notedisplay", connection) { CommandType = CommandType.StoredProcedure })
                     {
-                        //Create a datatable and fill it with the table from our query.   
+                        com.Connection = connection;
                         notesTable = new DataTable();
-                        data.Fill(notesTable);
-
-                        //The tags for each note are added in an additional column and the NotesTable is bound to the datagrid.  
-                        notesTable.Columns.Add("Tags");
-                        dgvNotesList.DataSource = notesTable;
-                        
-                        //Hide the note id, but keep it in the table to make future Sql commands easier.  
-                        dgvNotesList.Rows[0].Visible = false;
-
-                        //Add the notes for each row based on the note id for that row.  
-                        foreach (DataGridViewRow row in dgvNotesList.Rows)
+                        using (var adapter = new SqlDataAdapter(com))
                         {
-                            //The primary key of the note, used to determine what tags are associated with this row.  
-                            int noteID = (int)row.Cells[0].Value;
-
-                            //Use a StringBuilder to hold a combination of all of the tags.  
-                            StringBuilder tagString = new StringBuilder();
-
-                            //Grab all of the tags that are associated with the note.
-                            command = new SqlCommand("select Tag.text from Tag,NoteTags,Notes where Tag.tag_id = NoteTags.tag_id and NoteTags.note_id = Notes.note_id and Notes.note_id = " + noteID, connection);
-
-                            //Read the results of the SqlCommand and create a tagString from the individual tags associated with the note, 
-                            //then place it in the table.
-                            using (reader = command.ExecuteReader())
-                            {
-                                while (reader.Read())
-                                {
-                                    tagString.Append(reader.GetString(0) + ":");
-                                }
-
-                                //Remove the last ':' from the tag string.
-                                if (tagString.Length != 0)
-                                    tagString.Remove(tagString.Length - 1, 1);
-
-                                row.Cells["Tags"].Value = tagString.ToString();
-                            }
+                            adapter.Fill(notesTable);
+                            dgvNotesList.DataSource = notesTable;
+                            dgvNotesList.Columns["ID"].Visible = false;
                         }
                     }
                 }
@@ -216,7 +178,7 @@ namespace EasyNote
         private void pbAddNote_MouseEnter(object sender, EventArgs e)
         {
             //create image from resource and display
-            Image addButton =  EasyNote.Properties.Resources.Light_Add_Button;
+            Image addButton = Resources.Light_Add_Button;
             pbAddNote.Image = addButton;
         }
 
@@ -234,7 +196,7 @@ namespace EasyNote
         private void pbAddNote_MouseLeave(object sender, EventArgs e)
         {
             //create image from resource and display
-            Image addButton = EasyNote.Properties.Resources.Dark_Add_Button;
+            Image addButton = Resources.Dark_Add_Button;
             pbAddNote.Image = addButton;
         }
 
@@ -252,7 +214,7 @@ namespace EasyNote
         private void pbExit_MouseEnter(object sender, EventArgs e)
         {
             //create image from resource and display
-            Image exitButton = EasyNote.Properties.Resources.Light_Exit_Button;
+            Image exitButton = Resources.Light_Exit_Button;
             pbExit.Image = exitButton;
         }
 
@@ -270,7 +232,7 @@ namespace EasyNote
         private void pbExit_MouseLeave(object sender, EventArgs e)
         {
             //create image from resource and display
-            Image exitButton = EasyNote.Properties.Resources.Dark_Exit_Button;
+            Image exitButton = Resources.Dark_Exit_Button;
             pbExit.Image = exitButton;
         }
 
@@ -288,7 +250,7 @@ namespace EasyNote
         private void pbShowTags_MouseEnter(object sender, EventArgs e)
         {
             //create image from resource and display
-            Image showButton = EasyNote.Properties.Resources.Light_Show_Button;
+            Image showButton = Resources.Light_Show_Button;
             pbShowTags.Image = showButton;
         }
 
@@ -385,12 +347,12 @@ namespace EasyNote
 
             //Grab the title, body, and tags associated with the selected note and put them in
             //textfields for the user to see.  
-            tbTitle.Text = dgvNotesList.Rows[selectedRow].Cells["title"].Value as string;
-            tbBody.Text = dgvNotesList.Rows[selectedRow].Cells["body"].Value as string;
+            tbTitle.Text = dgvNotesList.Rows[selectedRow].Cells["Title"].Value as string;
+            tbBody.Text = dgvNotesList.Rows[selectedRow].Cells["Text"].Value as string;
             tbTags.Text = dgvNotesList.Rows[selectedRow].Cells["Tags"].Value as string;
 
             //Grab the id of the note the user selected from the table for later queries.  
-            selectedNote = (int)dgvNotesList.Rows[selectedRow].Cells["note_id"].Value;
+            selectedNote = (int)dgvNotesList.Rows[selectedRow].Cells["ID"].Value;
             
         }
 
@@ -600,7 +562,7 @@ namespace EasyNote
                         connection.Open();
 
                         //Remove references to the note in note_tags.  
-                        using (command = new SqlCommand("delete from Notes where note_id = @id", connection))
+                        using (var command = new SqlCommand("delete from Notes where note_id = @id", connection))
                         {
                             command.Parameters.AddWithValue("id", selectedNote);
                             command.ExecuteNonQuery();                            

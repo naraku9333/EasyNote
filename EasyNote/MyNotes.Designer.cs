@@ -38,29 +38,31 @@
             this.label1 = new System.Windows.Forms.Label();
             this.dataSet1 = new System.Data.DataSet();
             this.dgvNotesList = new System.Windows.Forms.DataGridView();
-            this.pbCancelBttn = new System.Windows.Forms.PictureBox();
-            this.pbDeleteBttn = new System.Windows.Forms.PictureBox();
-            this.pbExit = new System.Windows.Forms.PictureBox();
-            this.pbAddNote = new System.Windows.Forms.PictureBox();
-            this.pbSaveBttn = new System.Windows.Forms.PictureBox();
-            this.myNotesBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.label3 = new System.Windows.Forms.Label();
-            this.noteBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.tbSearch = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.lbMatching = new System.Windows.Forms.Label();
+            this.pbAttachBtn = new System.Windows.Forms.PictureBox();
             this.pbClearBtn = new System.Windows.Forms.PictureBox();
+            this.pbSaveBttn = new System.Windows.Forms.PictureBox();
+            this.pbCancelBttn = new System.Windows.Forms.PictureBox();
+            this.pbDeleteBttn = new System.Windows.Forms.PictureBox();
+            this.pbExit = new System.Windows.Forms.PictureBox();
+            this.pbAddNote = new System.Windows.Forms.PictureBox();
+            this.myNotesBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.noteBindingSource = new System.Windows.Forms.BindingSource(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.dataSet1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvNotesList)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbAttachBtn)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbClearBtn)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbSaveBttn)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbCancelBttn)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbDeleteBttn)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbExit)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbAddNote)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbSaveBttn)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.myNotesBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.noteBindingSource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbClearBtn)).BeginInit();
             this.SuspendLayout();
             // 
             // lbTitle
@@ -164,85 +166,6 @@
             this.dgvNotesList.TabIndex = 4;
             this.dgvNotesList.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvNotesList_CellDoubleClick);
             // 
-            // pbCancelBttn
-            // 
-            this.pbCancelBttn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.pbCancelBttn.Image = global::EasyNote.Properties.Resources.Dark_Cancel_Button;
-            this.pbCancelBttn.Location = new System.Drawing.Point(453, 205);
-            this.pbCancelBttn.Margin = new System.Windows.Forms.Padding(2);
-            this.pbCancelBttn.Name = "pbCancelBttn";
-            this.pbCancelBttn.Size = new System.Drawing.Size(86, 25);
-            this.pbCancelBttn.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pbCancelBttn.TabIndex = 17;
-            this.pbCancelBttn.TabStop = false;
-            this.pbCancelBttn.Visible = false;
-            this.pbCancelBttn.Click += new System.EventHandler(this.pbCancelBttn_Click);
-            this.pbCancelBttn.MouseEnter += new System.EventHandler(this.pbCancelBttn_MouseEnter);
-            this.pbCancelBttn.MouseLeave += new System.EventHandler(this.pbCancelBttn_MouseLeave);
-            // 
-            // pbDeleteBttn
-            // 
-            this.pbDeleteBttn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.pbDeleteBttn.ErrorImage = global::EasyNote.Properties.Resources.Dark_Delete_Button;
-            this.pbDeleteBttn.Image = global::EasyNote.Properties.Resources.Dark_Delete_Button;
-            this.pbDeleteBttn.Location = new System.Drawing.Point(453, 147);
-            this.pbDeleteBttn.Margin = new System.Windows.Forms.Padding(2);
-            this.pbDeleteBttn.Name = "pbDeleteBttn";
-            this.pbDeleteBttn.Size = new System.Drawing.Size(86, 25);
-            this.pbDeleteBttn.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pbDeleteBttn.TabIndex = 16;
-            this.pbDeleteBttn.TabStop = false;
-            this.pbDeleteBttn.Visible = false;
-            this.pbDeleteBttn.Click += new System.EventHandler(this.pbDeleteBttn_Click);
-            this.pbDeleteBttn.MouseEnter += new System.EventHandler(this.pbDeleteBttn_MouseEnter);
-            this.pbDeleteBttn.MouseLeave += new System.EventHandler(this.pbDeleteBttn_MouseLeave);
-            // 
-            // pbExit
-            // 
-            this.pbExit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.pbExit.Image = global::EasyNote.Properties.Resources.Dark_Exit_Button;
-            this.pbExit.Location = new System.Drawing.Point(453, 260);
-            this.pbExit.Margin = new System.Windows.Forms.Padding(2);
-            this.pbExit.Name = "pbExit";
-            this.pbExit.Size = new System.Drawing.Size(86, 25);
-            this.pbExit.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pbExit.TabIndex = 15;
-            this.pbExit.TabStop = false;
-            this.pbExit.Click += new System.EventHandler(this.pbExit_Click);
-            this.pbExit.MouseEnter += new System.EventHandler(this.pbExit_MouseEnter);
-            this.pbExit.MouseLeave += new System.EventHandler(this.pbExit_MouseLeave);
-            // 
-            // pbAddNote
-            // 
-            this.pbAddNote.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.pbAddNote.Image = global::EasyNote.Properties.Resources.Dark_Add_Button;
-            this.pbAddNote.Location = new System.Drawing.Point(453, 93);
-            this.pbAddNote.Margin = new System.Windows.Forms.Padding(2);
-            this.pbAddNote.Name = "pbAddNote";
-            this.pbAddNote.Size = new System.Drawing.Size(86, 25);
-            this.pbAddNote.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pbAddNote.TabIndex = 13;
-            this.pbAddNote.TabStop = false;
-            this.pbAddNote.Click += new System.EventHandler(this.pbAddNote_Click);
-            this.pbAddNote.MouseEnter += new System.EventHandler(this.pbAddNote_MouseEnter);
-            this.pbAddNote.MouseLeave += new System.EventHandler(this.pbAddNote_MouseLeave);
-            // 
-            // pbSaveBttn
-            // 
-            this.pbSaveBttn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.pbSaveBttn.Image = global::EasyNote.Properties.Resources.Dark_Save_Button;
-            this.pbSaveBttn.Location = new System.Drawing.Point(453, 93);
-            this.pbSaveBttn.Margin = new System.Windows.Forms.Padding(2);
-            this.pbSaveBttn.Name = "pbSaveBttn";
-            this.pbSaveBttn.Size = new System.Drawing.Size(86, 25);
-            this.pbSaveBttn.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pbSaveBttn.TabIndex = 18;
-            this.pbSaveBttn.TabStop = false;
-            this.pbSaveBttn.Visible = false;
-            this.pbSaveBttn.Click += new System.EventHandler(this.pbSaveBttn_Click);
-            this.pbSaveBttn.MouseEnter += new System.EventHandler(this.pbSaveBttn_MouseEnter);
-            this.pbSaveBttn.MouseLeave += new System.EventHandler(this.pbSaveBttn_MouseLeave);
-            // 
             // label3
             // 
             this.label3.AllowDrop = true;
@@ -255,10 +178,6 @@
             this.label3.TabIndex = 20;
             this.label3.Text = "Double click a note to view/edit/delete.   To sort, click on the column to sort b" +
     "y.";
-            // 
-            // noteBindingSource
-            // 
-            this.noteBindingSource.DataSource = typeof(NoteLibrary.Note);
             // 
             // tbSearch
             // 
@@ -303,6 +222,21 @@
             this.lbMatching.Text = "Number of matches: ##";
             this.lbMatching.Visible = false;
             // 
+            // pbAttachBtn
+            // 
+            this.pbAttachBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.pbAttachBtn.Image = global::EasyNote.Properties.Resources.Dark_Attach_Button;
+            this.pbAttachBtn.Location = new System.Drawing.Point(453, 134);
+            this.pbAttachBtn.Margin = new System.Windows.Forms.Padding(2);
+            this.pbAttachBtn.Name = "pbAttachBtn";
+            this.pbAttachBtn.Size = new System.Drawing.Size(86, 25);
+            this.pbAttachBtn.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pbAttachBtn.TabIndex = 26;
+            this.pbAttachBtn.TabStop = false;
+            this.pbAttachBtn.Click += new System.EventHandler(this.pbAttachBtn_Click);
+            this.pbAttachBtn.MouseEnter += new System.EventHandler(this.pbAttachBtn_MouseEnter);
+            this.pbAttachBtn.MouseLeave += new System.EventHandler(this.pbAttachBtn_MouseLeave);
+            // 
             // pbClearBtn
             // 
             this.pbClearBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -318,12 +252,96 @@
             this.pbClearBtn.MouseEnter += new System.EventHandler(this.pbClearBtn_MouseEnter);
             this.pbClearBtn.MouseLeave += new System.EventHandler(this.pbClearBtn_MouseLeave);
             // 
+            // pbSaveBttn
+            // 
+            this.pbSaveBttn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.pbSaveBttn.Image = global::EasyNote.Properties.Resources.Dark_Save_Button;
+            this.pbSaveBttn.Location = new System.Drawing.Point(453, 93);
+            this.pbSaveBttn.Margin = new System.Windows.Forms.Padding(2);
+            this.pbSaveBttn.Name = "pbSaveBttn";
+            this.pbSaveBttn.Size = new System.Drawing.Size(86, 25);
+            this.pbSaveBttn.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pbSaveBttn.TabIndex = 18;
+            this.pbSaveBttn.TabStop = false;
+            this.pbSaveBttn.Visible = false;
+            this.pbSaveBttn.Click += new System.EventHandler(this.pbSaveBttn_Click);
+            this.pbSaveBttn.MouseEnter += new System.EventHandler(this.pbSaveBttn_MouseEnter);
+            this.pbSaveBttn.MouseLeave += new System.EventHandler(this.pbSaveBttn_MouseLeave);
+            // 
+            // pbCancelBttn
+            // 
+            this.pbCancelBttn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.pbCancelBttn.Image = global::EasyNote.Properties.Resources.Dark_Cancel_Button;
+            this.pbCancelBttn.Location = new System.Drawing.Point(453, 212);
+            this.pbCancelBttn.Margin = new System.Windows.Forms.Padding(2);
+            this.pbCancelBttn.Name = "pbCancelBttn";
+            this.pbCancelBttn.Size = new System.Drawing.Size(86, 25);
+            this.pbCancelBttn.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pbCancelBttn.TabIndex = 17;
+            this.pbCancelBttn.TabStop = false;
+            this.pbCancelBttn.Visible = false;
+            this.pbCancelBttn.Click += new System.EventHandler(this.pbCancelBttn_Click);
+            this.pbCancelBttn.MouseEnter += new System.EventHandler(this.pbCancelBttn_MouseEnter);
+            this.pbCancelBttn.MouseLeave += new System.EventHandler(this.pbCancelBttn_MouseLeave);
+            // 
+            // pbDeleteBttn
+            // 
+            this.pbDeleteBttn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.pbDeleteBttn.ErrorImage = global::EasyNote.Properties.Resources.Dark_Delete_Button;
+            this.pbDeleteBttn.Image = global::EasyNote.Properties.Resources.Dark_Delete_Button;
+            this.pbDeleteBttn.Location = new System.Drawing.Point(453, 172);
+            this.pbDeleteBttn.Margin = new System.Windows.Forms.Padding(2);
+            this.pbDeleteBttn.Name = "pbDeleteBttn";
+            this.pbDeleteBttn.Size = new System.Drawing.Size(86, 25);
+            this.pbDeleteBttn.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pbDeleteBttn.TabIndex = 16;
+            this.pbDeleteBttn.TabStop = false;
+            this.pbDeleteBttn.Visible = false;
+            this.pbDeleteBttn.Click += new System.EventHandler(this.pbDeleteBttn_Click);
+            this.pbDeleteBttn.MouseEnter += new System.EventHandler(this.pbDeleteBttn_MouseEnter);
+            this.pbDeleteBttn.MouseLeave += new System.EventHandler(this.pbDeleteBttn_MouseLeave);
+            // 
+            // pbExit
+            // 
+            this.pbExit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.pbExit.Image = global::EasyNote.Properties.Resources.Dark_Exit_Button;
+            this.pbExit.Location = new System.Drawing.Point(453, 251);
+            this.pbExit.Margin = new System.Windows.Forms.Padding(2);
+            this.pbExit.Name = "pbExit";
+            this.pbExit.Size = new System.Drawing.Size(86, 25);
+            this.pbExit.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pbExit.TabIndex = 15;
+            this.pbExit.TabStop = false;
+            this.pbExit.Click += new System.EventHandler(this.pbExit_Click);
+            this.pbExit.MouseEnter += new System.EventHandler(this.pbExit_MouseEnter);
+            this.pbExit.MouseLeave += new System.EventHandler(this.pbExit_MouseLeave);
+            // 
+            // pbAddNote
+            // 
+            this.pbAddNote.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.pbAddNote.Image = global::EasyNote.Properties.Resources.Dark_Add_Button;
+            this.pbAddNote.Location = new System.Drawing.Point(453, 93);
+            this.pbAddNote.Margin = new System.Windows.Forms.Padding(2);
+            this.pbAddNote.Name = "pbAddNote";
+            this.pbAddNote.Size = new System.Drawing.Size(86, 25);
+            this.pbAddNote.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pbAddNote.TabIndex = 13;
+            this.pbAddNote.TabStop = false;
+            this.pbAddNote.Click += new System.EventHandler(this.pbAddNote_Click);
+            this.pbAddNote.MouseEnter += new System.EventHandler(this.pbAddNote_MouseEnter);
+            this.pbAddNote.MouseLeave += new System.EventHandler(this.pbAddNote_MouseLeave);
+            // 
+            // noteBindingSource
+            // 
+            this.noteBindingSource.DataSource = typeof(NoteLibrary.Note);
+            // 
             // MyNotes
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.HotTrack;
             this.ClientSize = new System.Drawing.Size(571, 599);
+            this.Controls.Add(this.pbAttachBtn);
             this.Controls.Add(this.pbClearBtn);
             this.Controls.Add(this.lbMatching);
             this.Controls.Add(this.label5);
@@ -350,14 +368,15 @@
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.MyNotes_Paint);
             ((System.ComponentModel.ISupportInitialize)(this.dataSet1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvNotesList)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbAttachBtn)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbClearBtn)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbSaveBttn)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbCancelBttn)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbDeleteBttn)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbExit)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbAddNote)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbSaveBttn)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.myNotesBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.noteBindingSource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbClearBtn)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -387,6 +406,7 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label lbMatching;
         private System.Windows.Forms.PictureBox pbClearBtn;
+        private System.Windows.Forms.PictureBox pbAttachBtn;
     }
 }
 

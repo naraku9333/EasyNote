@@ -73,6 +73,16 @@ namespace EasyNote.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Dark_Attach_Button {
+            get {
+                object obj = ResourceManager.GetObject("Dark_Attach_Button", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Dark_Cancel_Button {
             get {
                 object obj = ResourceManager.GetObject("Dark_Cancel_Button", resourceCulture);
@@ -146,6 +156,16 @@ namespace EasyNote.Properties {
         internal static System.Drawing.Bitmap Light_Add_Button {
             get {
                 object obj = ResourceManager.GetObject("Light_Add_Button", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Light_Attach_Button {
+            get {
+                object obj = ResourceManager.GetObject("Light_Attach_Button", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

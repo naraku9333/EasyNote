@@ -903,5 +903,53 @@ namespace EasyNote
             Image ClearButton = EasyNote.Properties.Resources.Dark_Clear_Button;
             pbClearBtn.Image = ClearButton;
         }
+        /************************New for Assignment 3*******************************************
+      * FUNCTION:   private void pbAttachBtn_Click(object sender, EventArgs e)
+      *
+      * ARGUMENTS: sender - object that is calling the function
+      *            e - any arguments pass for the event
+      *
+      * RETURNS:   This function has no return value
+      *
+      * NOTES:     This function is called when the pbAttachedBtn is clicked
+      *            
+      **************************************************************************************/
+        private void pbAttachBtn_Click(object sender, EventArgs e)
+        {
+
+        }
+        /**************************New for Assignment 3************************************************************
+         * FUNCTION:  private void pbAttachBtn_MouseEnter(object sender, EventArgs e)
+         *
+         * ARGUMENTS: sender - object that is calling the function
+         *            e - any arguments pass for the event
+         *
+         * RETURNS:   This function has no return value
+         *
+         * NOTES:     This function is called when the mouse is moved over pbAttachBtn and changes
+         *            the displayed image
+         **************************************************************************************/
+        private void pbAttachBtn_MouseEnter(object sender, EventArgs e)
+        {
+            Image AttachButton = EasyNote.Properties.Resources.Light_Attach_Button;
+            pbAttachBtn.Image = AttachButton;
+
+        }
+        /************************************New for Assignment 3*********************************************
+        * FUNCTION:  private void pbAttachBtn_MouseLeave(object sender, EventArgs e)
+        *
+        * ARGUMENTS: sender - object that is calling the function
+        *            e - any arguments pass for the event
+        *
+        * RETURNS:   This function has no return value
+        *
+        * NOTES:     This function is called when the mouse is off of pbAttachBtn and changes
+        *            the displayed image
+        **************************************************************************************/
+        private void pbAttachBtn_MouseLeave(object sender, EventArgs e)
+        {
+            Image AttachButton = EasyNote.Properties.Resources.Dark_Attach_Button;
+            pbAttachBtn.Image = AttachButton;
+        }
     }
 }

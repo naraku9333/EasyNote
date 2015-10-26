@@ -13,37 +13,25 @@
  *            notes, deleting them, or updating them.  
  **************************************************************************************/
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
-using NoteLibrary;
-using System.IO;
 using System.Drawing.Text;
 using System.Data.SqlClient;
-using System.Text;
+using EasyNote.Properties;
 
 namespace EasyNote
 {
     public partial class MyNotes : Form
     {
-        private const String FILE_LOCATION = "notefile.txt";
-
-        private List<Note> notes = new List<Note>();
-
-        private Note currentNote = null;            //currently selected note iff its a stored note
-
         private SqlConnection connection = null;    //Holds the connection to the database, using conString.
-
-        private SqlCommand command = null;          //Holds a command to be executed on the database.  
-
-        private SqlDataReader reader = null;        //Holds the result of a query from the database.  
 
         //The connection string to use for connecting to the notebase2 database.  
         private const string conString = "server=10.158.56.48;uid=net2;pwd=dtbz2;database=notebase2;";
 
         private int selectedNote;               //The current note_id selected in the dgv
         private int selectedRow;                //The current row selected in the dgv
+
         private DataTable notesTable = null;
 
         /**************************************************************************************
@@ -60,8 +48,6 @@ namespace EasyNote
         {
             InitializeComponent();
             ResizeRedraw = true;//force redraw on window resize
-//           readNotesFile();
-//            getDllNotes();
             createNoteTable();
         }
 
@@ -116,132 +102,32 @@ namespace EasyNote
         }
 
         /**************************************************************************************
-         * FUNCTION:  private void readNotesFile()
+         * FUNCTION:  private void createNoteTable()
          *
          * ARGUMENTS: none
          *
          * RETURNS:   This function has no return value
          *
-         * NOTES:     This function reads lines from a note file and constructs a Note from the
-         *            data in the line. The Note is then added to a list of Notes
+         * NOTES:     This function gets the note and tag data from the Notes and Tags tables in
+         *            the database and places them into a dataGridView.  
          **************************************************************************************/
-        private void readNotesFile()
-        {
-            String[] line;  //A line from the file that has been split up into its individual parts (based on *)
-            String name;    //The name of the note, appears as the first argument on a line.
-            String body;    //The body of the note, appears as the second argument on the line.
-            String tags;    //The tags of the note, appears as the third argument on the line.
-
-           try
-           {
-                using(StreamReader reader = new StreamReader(FILE_LOCATION) )
-                {
-
-                    //Read the notes file, splitting the line into its parts.  Then, use these parts to construct a note.
-                    while (!reader.EndOfStream)
-                    {
-                        line = reader.ReadLine().Split('*');
-                        if (line.Length == 3)
-                        {
-                            name = line[0];
-                            body = line[1];
-                            tags = line[2];
-
-                            this.addNewNote(line[0], line[1], line[2]);
-                        }
-                    }
-                }
-            }
-            catch (FileNotFoundException e)
-            {
-                MessageBox.Show("There was an error processing the file: " + e.Message);
-                Environment.Exit(-1);
-            }
-        }
-
-        /**************************************************************************************
-         * FUNCTION:  private void writeNotesFile()
-         *
-         * ARGUMENTS: none
-         *
-         * RETURNS:   This function has no return value
-         *
-         * NOTES:     This function overwrites the notefile with the current data
-         *            in the notes list
-         **************************************************************************************/
-        private void writeNotesFile()
-        {
-            using (StreamWriter sw = new StreamWriter(FILE_LOCATION))
-            {
-                foreach(Note n in notes)
-                {
-                    if(n.Modifiable)
-                        sw.WriteLine(n.Title + "*" + n.Body + "*" + n.getTagString());
-                }
-            }
-        }
-
-        /**************************************************************************************
-        * FUNCTION:  private void createNoteTable()
-        *
-        * ARGUMENTS: none
-        *
-        * RETURNS:   This function has no return value
-        *
-        * NOTES:     This function gets the note and tag data from the Notes and Tags tables in
-        *            the database and places them into a dataGridView.  
-        **************************************************************************************/
         private void createNoteTable()
         {
             //Try to execute the following Sql statements
             try
             {
-                //Connect to the notebase2 database.  
+                ////Connect to the notebase2 database.                  
                 using (connection = new SqlConnection(conString))
                 {
-                    connection.Open();
-
-                    //Grab all of the notes (not including their tags) from the notes table
-                    using (SqlDataAdapter data = new SqlDataAdapter("select * from Notes", connection))
+                    using (var com = new SqlCommand("notedisplay", connection) { CommandType = CommandType.StoredProcedure })
                     {
-                        //Create a datatable and fill it with the table from our query.   
+                        com.Connection = connection;
                         notesTable = new DataTable();
-                        data.Fill(notesTable);
-
-                        //The tags for each note are added in an additional column and the NotesTable is bound to the datagrid.  
-                        notesTable.Columns.Add("Tags");
-                        dgvNotesList.DataSource = notesTable;
-                        
-                        //Hide the note id, but keep it in the table to make future Sql commands easier.  
-            //            dgvNotesList.Rows[0].Visible = false;
-
-                        //Add the notes for each row based on the note id for that row.  
-                        foreach (DataGridViewRow row in dgvNotesList.Rows)
+                        using (var adapter = new SqlDataAdapter(com))
                         {
-                            //The primary key of the note, used to determine what tags are associated with this row.  
-                            int noteID = (int)row.Cells[0].Value;
-
-                            //Use a StringBuilder to hold a combination of all of the tags.  
-                            StringBuilder tagString = new StringBuilder();
-
-                            //Grab all of the tags that are associated with the note.
-                            command = new SqlCommand("select Tag.text from Tag,NoteTags,Notes where Tag.tag_id = NoteTags.tag_id and NoteTags.note_id = Notes.note_id and Notes.note_id = " + noteID, connection);
-
-                            //Read the results of the SqlCommand and create a tagString from the individual tags associated with the note, 
-                            //then place it in the table.
-                            using (reader = command.ExecuteReader())
-                            {
-                                while (reader.Read())
-                                {
-                                    tagString.Append(reader.GetString(0) + ":");
-                                }
-
-                                //Remove the last ':' from the tag string.
-                                if (tagString.Length != 0)
-                                    tagString.Remove(tagString.Length - 1, 1);
-
-                                row.Cells["Tags"].Value = tagString.ToString();
-                            }
+                            adapter.Fill(notesTable);
+                            dgvNotesList.DataSource = notesTable;
+                            dgvNotesList.Columns["ID"].Visible = false;
                         }
                     }
                 }
@@ -292,7 +178,7 @@ namespace EasyNote
         private void pbAddNote_MouseEnter(object sender, EventArgs e)
         {
             //create image from resource and display
-            Image addButton =  EasyNote.Properties.Resources.Light_Add_Button;
+            Image addButton = Resources.Light_Add_Button;
             pbAddNote.Image = addButton;
         }
 
@@ -310,7 +196,7 @@ namespace EasyNote
         private void pbAddNote_MouseLeave(object sender, EventArgs e)
         {
             //create image from resource and display
-            Image addButton = EasyNote.Properties.Resources.Dark_Add_Button;
+            Image addButton = Resources.Dark_Add_Button;
             pbAddNote.Image = addButton;
         }
 
@@ -328,7 +214,7 @@ namespace EasyNote
         private void pbExit_MouseEnter(object sender, EventArgs e)
         {
             //create image from resource and display
-            Image exitButton = EasyNote.Properties.Resources.Light_Exit_Button;
+            Image exitButton = Resources.Light_Exit_Button;
             pbExit.Image = exitButton;
         }
 
@@ -346,7 +232,7 @@ namespace EasyNote
         private void pbExit_MouseLeave(object sender, EventArgs e)
         {
             //create image from resource and display
-            Image exitButton = EasyNote.Properties.Resources.Dark_Exit_Button;
+            Image exitButton = Resources.Dark_Exit_Button;
             pbExit.Image = exitButton;
         }
 
@@ -364,7 +250,7 @@ namespace EasyNote
         private void pbShowTags_MouseEnter(object sender, EventArgs e)
         {
             //create image from resource and display
-            Image showButton = EasyNote.Properties.Resources.Light_Show_Button;
+            Image showButton = Resources.Light_Show_Button;
             pbShowTags.Image = showButton;
         }
 
@@ -386,43 +272,6 @@ namespace EasyNote
             pbShowTags.Image = showButton;
         }
 
-        /**************************************************************************************
-         * FUNCTION:  private addNewNote(string title, string text, string tagString)
-         *
-         * ARGUMENTS: title - the title of the note
-         *            body - the body text of the note
-         *            tagString - all of the tags for the note, in one combined string.
-         *
-         * RETURNS:   This function returns true if note is sucsessfully created, and the notes
-         *            list will be modified to have a new note with the entered values.
-         *
-         * NOTES:    AddNewNote not only adds the note, but it also does the exception checking for
-         *           it as well.
-         **************************************************************************************/
-        private bool addNewNote(string title, string text, string tagString, bool mod = true)
-        {
-            try
-            {
-                String[] tags = Note.splitTags(tagString);
-                notes.Add(new Note(title, text, tags, mod));  //CEdge add modifiable arg
-                return true;
-            }
-            catch (NoteException ne)
-            {
-                //If there was an innerException contained with the note exception, but its message in the caption.
-                if (ne.InnerException != null)
-                {
-                    MessageBox.Show(ne.Message + ne.Tag, ne.InnerException.Message);
-                }
-                //Otherwise there is no innerException, just show the message.
-                else
-                {
-                    MessageBox.Show(ne.Message, "Note Exception");
-                }
-            }
-            return false;
-        }
-
         /***************************Updated for Assignment 3************************************
          * FUNCTION:  private void pbAddNote_Click(object sender, EventArgs e)
          *
@@ -433,40 +282,43 @@ namespace EasyNote
          *
          * NOTES:     This function is called when the pbAddNote button is clicked It calls the 
          *            CustomerMessageBox Class and displays a confirmation box to the user to 
-         *            cofirm they wish to add the note. If they do, it adds the new note to note list and notfile
+         *            cofirm they wish to add the note. If they do, it adds the new note to 
+         *            note list and notfile
          **************************************************************************************/
         private void pbAddNote_Click(object sender, EventArgs e)
         {
             if (tbTitle.Text != "" && tbBody.Text != "")
-            {
-                Image lightAdd = EasyNote.Properties.Resources.Light_Ok_Button;
-                Image darkAdd = EasyNote.Properties.Resources.Dark_Ok_Button;
-                Image lightCancel = EasyNote.Properties.Resources.Light_Cancel_Button;
-                Image darkCancel = EasyNote.Properties.Resources.Dark_Cancel_Button;
-
-                DialogResult result =  CustomMessageBox.Show("Are you sure you wish to add this note?", "Add Note", lightCancel, darkCancel, lightAdd, darkAdd);
+            {                
+                DialogResult result =  CustomMessageBox.Show("Are you sure you wish to add this note?", "Add Note",
+                    Resources.Light_Cancel_Button, Resources.Dark_Cancel_Button, Resources.Light_Ok_Button, Resources.Dark_Ok_Button);
                
                 //if the user confirms the adding of the note
                 if (result == DialogResult.Yes)
-                {                    
-                    using (connection = new SqlConnection(conString))
+                {
+                    try
                     {
-                        connection.Open();
-                        using (var com = new SqlCommand("addnote", connection) { CommandType = CommandType.StoredProcedure })
+                        using (connection = new SqlConnection(conString))
                         {
-                            com.Connection = connection;
-                            com.Parameters.AddWithValue("@title", tbTitle.Text);
-                            com.Parameters.AddWithValue("@body", tbBody.Text);
-                            com.Parameters.AddWithValue("@tags", tbTags.Text);
+                            using (var com = new SqlCommand("addnote", connection) { CommandType = CommandType.StoredProcedure })
+                            {
+                                com.Connection = connection;
+                                com.Parameters.AddWithValue("@title", tbTitle.Text);
+                                com.Parameters.AddWithValue("@body", tbBody.Text);
+                                com.Parameters.AddWithValue("@tags", tbTags.Text);
 
-                            using (var adapter = new SqlDataAdapter(com))
-                            {                                
-                                adapter.Fill(notesTable);
-                                createNoteTable();
-                            }                            
+                                using (var adapter = new SqlDataAdapter(com))
+                                {
+                                    adapter.Fill(notesTable);
+                                    createNoteTable();
+                                }
+                            }
                         }
+                        clearText();
                     }
-                    clearText();
+                    catch (SqlException sqle)
+                    {
+                        MessageBox.Show("There was an issue saving the update to the database: " + sqle.Message);
+                    }
                 }                
             }
         }
@@ -479,8 +331,8 @@ namespace EasyNote
          *
          * RETURNS:   No return value, but textFields in the program will be modified.
          *
-         * NOTES:     This function takes the values for the note selected in the dataGridView and copies
-         *            them into textFields for the user to modify.  
+         * NOTES:     This function takes the values for the note selected in the dataGridView 
+         *            and copies them into textFields for the user to modify.  
          **************************************************************************************/
         private void dgvNotesList_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -495,12 +347,12 @@ namespace EasyNote
 
             //Grab the title, body, and tags associated with the selected note and put them in
             //textfields for the user to see.  
-            tbTitle.Text = dgvNotesList.Rows[selectedRow].Cells["title"].Value as string;
-            tbBody.Text = dgvNotesList.Rows[selectedRow].Cells["body"].Value as string;
+            tbTitle.Text = dgvNotesList.Rows[selectedRow].Cells["Title"].Value as string;
+            tbBody.Text = dgvNotesList.Rows[selectedRow].Cells["Text"].Value as string;
             tbTags.Text = dgvNotesList.Rows[selectedRow].Cells["Tags"].Value as string;
 
             //Grab the id of the note the user selected from the table for later queries.  
-            selectedNote = (int)dgvNotesList.Rows[selectedRow].Cells["note_id"].Value;
+            selectedNote = (int)dgvNotesList.Rows[selectedRow].Cells["ID"].Value;
             
         }
 
@@ -518,7 +370,7 @@ namespace EasyNote
         private void pbCancelBttn_MouseEnter(object sender, EventArgs e)
         {
             //create image from resource and display
-            Image cancelButton = EasyNote.Properties.Resources.Light_Cancel_Button;
+            Image cancelButton = Resources.Light_Cancel_Button;
             pbCancelBttn.Image = cancelButton;
 
         }
@@ -537,7 +389,7 @@ namespace EasyNote
         private void pbCancelBttn_MouseLeave(object sender, EventArgs e)
         {
             //create image from resource and display
-            Image cancelButton = EasyNote.Properties.Resources.Dark_Cancel_Button;
+            Image cancelButton = Resources.Dark_Cancel_Button;
             pbCancelBttn.Image = cancelButton;
         }
 
@@ -549,13 +401,13 @@ namespace EasyNote
          *
          * RETURNS:   This function has no return value
          *
-         * NOTES:     This function is called when the mouse is moved over pbDeleteBttn and changes
-         *            the displayed image
+         * NOTES:     This function is called when the mouse is moved over pbDeleteBttn and 
+         *            changes the displayed image
          **************************************************************************************/
         private void pbDeleteBttn_MouseEnter(object sender, EventArgs e)
         {
             //create image from resource and display
-            Image deleteButton = EasyNote.Properties.Resources.Light_Delete_Button;
+            Image deleteButton = Resources.Light_Delete_Button;
             pbDeleteBttn.Image = deleteButton;
         }
 
@@ -573,11 +425,11 @@ namespace EasyNote
         private void pbDeleteBttn_MouseLeave(object sender, EventArgs e)
         {
             //create image from resource and display
-            Image deleteButton = EasyNote.Properties.Resources.Dark_Delete_Button;
+            Image deleteButton = Resources.Dark_Delete_Button;
             pbDeleteBttn.Image = deleteButton;
         }
 
-        /*******************************Updated for Assignment 3*******************************************************
+        /*******************************Updated for Assignment 3*******************************
          * FUNCTION:  private void pbSaveBttn_Click(object sender, EventArgs e)
          *
          * ARGUMENTS: sender - object that is calling the function
@@ -592,104 +444,38 @@ namespace EasyNote
          **************************************************************************************/
         private void pbSaveBttn_Click(object sender, EventArgs e)
         {
-            //Images for the message buttons on the message box.  Used to ask the user to confirm saving the note.  
-            Image lightForward = EasyNote.Properties.Resources.Light_Ok_Button;
-            Image darkForward = EasyNote.Properties.Resources.Dark_Ok_Button;
-            Image lightBack = EasyNote.Properties.Resources.Light_Cancel_Button;
-            Image darkBack = EasyNote.Properties.Resources.Dark_Cancel_Button;
-
-            DialogResult result = CustomMessageBox.Show("Are you sure you wish to save this note?", "Save Note", lightBack, darkBack, lightForward, darkForward);
+            DialogResult result = CustomMessageBox.Show("Are you sure you wish to save this note?", "Save Note",
+                Resources.Light_Cancel_Button, Resources.Dark_Cancel_Button, Resources.Light_Ok_Button, Resources.Dark_Ok_Button);
 
             //If the user wants to save the note, then start modifying the tables.   
             if (result == DialogResult.Yes)
             {
                 //Remove the save / cancel button.  
-                changeButtonView(); 
-
-                //Get the time for the updated field of the note.  
-                DateTime updatedTime =  DateTime.Now;
+                changeButtonView();
                 try
                 {
-                    //Start by opening a new connection.  
                     using (connection = new SqlConnection(conString))
                     {
-                        connection.Open();
-
-                        //Grab the new title and body from the text boxes and update the database with them.  
-                        using (command = new SqlCommand("update Notes set title = @title, body = @body, updated = @update where note_id = @id", connection))
+                        using (var com = new SqlCommand("updatenote", connection) { CommandType = CommandType.StoredProcedure })
                         {
-                            command.Parameters.AddWithValue("title", tbTitle.Text);
-                            command.Parameters.AddWithValue("body", tbBody.Text);
-                            command.Parameters.AddWithValue("update", updatedTime);
-                            command.Parameters.AddWithValue("id", selectedNote);
-                            command.ExecuteNonQuery();
+                            com.Connection = connection;
+                            com.Parameters.AddWithValue("@noteid", selectedNote);
+                            com.Parameters.AddWithValue("@title", tbTitle.Text);
+                            com.Parameters.AddWithValue("@body", tbBody.Text);
+                            com.Parameters.AddWithValue("@tags", tbTags.Text);
 
-                            //For simplicity, just delete all the tags associated with the note.  We will add these tags back in next.  
-                            //Without doing this, the program would have to check if each tag were still valid.  
-                            command.CommandText = "delete from NoteTags where note_id = @id";
-                            command.ExecuteNonQuery();
-
-                            //Add two new parameters for sql commands for the tag text and tag_id.  They are defined here as they may change during
-                            //the following loop.  
-                            command.Parameters.AddWithValue("tag", "");
-                            command.Parameters.AddWithValue("tagid", "");
-
-                            string[] tags = Note.splitTags(tbTags.Text);            //Holds all of the tags the user typed in.  
-
-                            //Now determine the tags from what the user input into the textfield.  If a tag exists, it will be added into the NoteTag table.  
-                            //If a tag doesn't exist, it is created here before being added to the table.  
-                            foreach (string tag in tags)
+                            using (var adapter = new SqlDataAdapter(com))
                             {
-                                //Try to get the tag if it exists.  
-                                command.CommandText = "select tag_id from Tag where text = @tag";
-                                command.Parameters["tag"].Value = tag;
-
-                                reader = command.ExecuteReader();
-
-                                //It the tag existed, then add it to NoteTags
-                                if (reader.Read())
-                                {
-                                    command.CommandText = "insert into NoteTags values (@id,@tagid)";
-                                    command.Parameters["tagid"].Value = reader.GetInt32(0);
-                                    reader.Close();
-                                    command.ExecuteNonQuery();
-                                }
-                                //Otherwise, create the tag, then get its tag_id and insert it into note tags.  
-                                else
-                                {
-                                    reader.Close();
-                                    command.CommandText = "insert into Tag values (@tag)";
-                                    command.ExecuteNonQuery();
-
-                                    //Grab the tag_id of the tag we just created
-                                    command.CommandText = "select tag_id from Tag where text = @tag";
-                                    reader = command.ExecuteReader();
-                                    reader.Read();
-
-                                    //Use the tag_id and note_id to link the tag with the note.  
-                                    command.CommandText = "insert into NoteTags values (@id,@tagid)";
-                                    command.Parameters["tagid"].Value = reader.GetInt32(0);
-
-                                    reader.Close();
-
-                                    command.ExecuteNonQuery();
-                                }
+                                adapter.Fill(notesTable);
+                                createNoteTable();
                             }
                         }
-
-                        //Update the dataGridView to reflect the new entry.  
-                        dgvNotesList.Rows[selectedRow].Cells["title"].Value = tbTitle.Text;
-                        dgvNotesList.Rows[selectedRow].Cells["body"].Value = tbBody.Text;
-                        dgvNotesList.Rows[selectedRow].Cells["updated"].Value = updatedTime;
-                        dgvNotesList.Rows[selectedRow].Cells["Tags"].Value = tbTags.Text;
-                        clearText();
                     }
                 }
-                catch(SqlException sqle)
+                catch (SqlException sqle)
                 {
                     MessageBox.Show("There was an issue saving the update to the database: " + sqle.Message);
-                }
-
+                }                
             } //end if dialogresult == yes        
         }
 
@@ -707,7 +493,7 @@ namespace EasyNote
         private void pbSaveBttn_MouseEnter(object sender, EventArgs e)
         {
             //create image from resource and display
-            Image SaveButton = EasyNote.Properties.Resources.Light_Save_Button;
+            Image SaveButton = Resources.Light_Save_Button;
             pbSaveBttn.Image = SaveButton;
         }
 
@@ -725,7 +511,7 @@ namespace EasyNote
         private void pbSaveBttn_MouseLeave(object sender, EventArgs e)
         {
             //create image from resource and display
-            Image SaveButton = EasyNote.Properties.Resources.Dark_Save_Button;
+            Image SaveButton = Resources.Dark_Save_Button;
             pbSaveBttn.Image = SaveButton;
         }
 
@@ -742,12 +528,11 @@ namespace EasyNote
          **************************************************************************************/
         private void pbCancelBttn_Click(object sender, EventArgs e)
         {
-            currentNote = null;
             changeButtonView();
             clearText();
         }
 
-        /**********************Updated for Assignment 3****************************************************************
+        /**********************Updated for Assignment 3***************************************
          * FUNCTION:  private void pbDeleteBttn_Click(object sender, EventArgs e)
          *
          * ARGUMENTS: sender - object that is calling the function
@@ -757,19 +542,14 @@ namespace EasyNote
          *            removed.  The database will also have this value deleted.  
          *
          * NOTES:     This function is called when the pbSaveBttn is clicked
-         *            It deletes the currently selected row from the datagridview and the currently
-         *            selected note from that row from the database.  
+         *            It deletes the currently selected row from the datagridview and the 
+         *            currently selected note from that row from the database.  
          *
          **************************************************************************************/
         private void pbDeleteBttn_Click(object sender, EventArgs e)
-        {
-            //Create the images for the custom message box, then display this message box to the user to determine if they want to delete this note.  
-            Image lightForward = EasyNote.Properties.Resources.Light_Ok_Button;
-            Image darkForward = EasyNote.Properties.Resources.Dark_Ok_Button;
-            Image lightBack = EasyNote.Properties.Resources.Light_Cancel_Button;
-            Image darkBack = EasyNote.Properties.Resources.Dark_Cancel_Button;
-
-            DialogResult result = CustomMessageBox.Show("Are you sure you wish to delete this note?", "Add Note", lightBack, darkBack, lightForward, darkForward);
+        {           
+            DialogResult result = CustomMessageBox.Show("Are you sure you wish to delete this note?", "Add Note",
+                Resources.Light_Cancel_Button, Resources.Dark_Cancel_Button, Resources.Light_Ok_Button, Resources.Dark_Ok_Button);
 
             //If the user does want to delete the note, remove it from the notes table as well as well as any references in the NoteTags table.  
             if (result == DialogResult.Yes)
@@ -782,14 +562,10 @@ namespace EasyNote
                         connection.Open();
 
                         //Remove references to the note in note_tags.  
-                        using (command = new SqlCommand("delete from NoteTags where note_id = @id", connection))
+                        using (var command = new SqlCommand("delete from Notes where note_id = @id", connection))
                         {
                             command.Parameters.AddWithValue("id", selectedNote);
-                            command.ExecuteNonQuery();
-
-                            //Then delete the note itself.  
-                            command.CommandText = "delete from Notes where note_id = @id";
-                            command.ExecuteNonQuery();
+                            command.ExecuteNonQuery();                            
                         }
 
                         clearText();
@@ -808,7 +584,6 @@ namespace EasyNote
             }
         }
         
-
         /**************************************************************************************
          * FUNCTION:  private void clearText()
          *
@@ -824,30 +599,7 @@ namespace EasyNote
             tbTitle.Clear();
             tbBody.Clear();
             dgvNotesList.ClearSelection();
-        }
-
-        /**************************************************************************************
-        * FUNCTION:  private void getDllNotes
-        *
-        * ARGUMENTS: none
-        *
-        * RETURNS:   This function has no return value
-        *
-        * NOTES:     This function fetches the notes stored in a referenced dll using a
-        *             stringbuilder, save result to string, and string reader loop and then
-        *             calls the addNewNote method to add the titles, bodies, and tags to the
-        *             Notes List.
-        **************************************************************************************/
-        private void getDllNotes()
-        {
-            Notes.NoteComponents n = new Notes.NoteComponents();
-
-            for (int i = 0; i < n.Count; i++)
-            {
-                //send title, body, tags, and false to modifier args
-                this.addNewNote(n[i].Title, n[i].Body, String.Join(":", n[i].Tags.ToArray()), false);
-            }
-        }
+        }        
 
         /**************************************************************************************
          * FUNCTION:  private void changeButtonView()
@@ -866,18 +618,19 @@ namespace EasyNote
             pbCancelBttn.Visible = !pbCancelBttn.Visible;
         }
 
-        /****************************New for Assignment 3***********************************************
-        * FUNCTION:   private void tbSearch_TextChanged(object sender, EventArgs e)
-        *
-        * ARGUMENTS: sender - object that is calling the function
-        *            e - any arguments pass for the event
-        *
-        * RETURNS:   This function has no return value
-        *
-        * NOTES:     This function is called when the text of tbSearch changes.  It sets the the clear 
-        *            button visiblity appropriately, filters the results displayed in the DataGridView,
-        *            and isplays the number of numbers that have tags containing the search text entered.   
-        **************************************************************************************/
+        /****************************New for Assignment 3**************************************
+         * FUNCTION:   private void tbSearch_TextChanged(object sender, EventArgs e)
+         *
+         * ARGUMENTS: sender - object that is calling the function
+         *            e - any arguments pass for the event
+         *
+         * RETURNS:   This function has no return value
+         *
+         * NOTES:     This function is called when the text of tbSearch changes.  It sets the 
+         *            the clear button visiblity appropriately, filters the results displayed 
+         *            in the DataGridView, and isplays the number of numbers that have tags 
+         *            containing the search text entered.   
+         **************************************************************************************/
         private void tbSearch_TextChanged(object sender, EventArgs e)
         {
             int count = 0;                              //tracks matching number of notes
@@ -922,22 +675,24 @@ namespace EasyNote
             }
 
         }
+
         /************************New for Assignment 3*******************************************
-       * FUNCTION:  private void pbClearButton_Click(object sender, EventArgs e)
-       *
-       * ARGUMENTS: sender - object that is calling the function
-       *            e - any arguments pass for the event
-       *
-       * RETURNS:   This function has no return value
-       *
-       * NOTES:     This function is called when the pbClearButton is clicked
-       *            It clears the tbSearch.
-       **************************************************************************************/
+         * FUNCTION:  private void pbClearButton_Click(object sender, EventArgs e)
+         *
+         * ARGUMENTS: sender - object that is calling the function
+         *            e - any arguments pass for the event
+         *
+         * RETURNS:   This function has no return value
+         *
+         * NOTES:     This function is called when the pbClearButton is clicked
+         *            It clears the tbSearch.
+         **************************************************************************************/
         private void pbClearBtn_Click(object sender, EventArgs e)
         {
             tbSearch.Text = "";
         }
-        /**************************New for Assignment 3************************************************************
+
+        /**************************New for Assignment 3****************************************
          * FUNCTION:  private void pbClearButton_MouseEnter(object sender, EventArgs e)
          *
          * ARGUMENTS: sender - object that is calling the function
@@ -945,28 +700,29 @@ namespace EasyNote
          *
          * RETURNS:   This function has no return value
          *
-         * NOTES:     This function is called when the mouse is moved over pbClearButton and changes
-         *            the displayed image
+         * NOTES:     This function is called when the mouse is moved over pbClearButton and 
+         *            changes the displayed image
          **************************************************************************************/
         private void pbClearBtn_MouseEnter(object sender, EventArgs e)
         {
-            Image ClearButton = EasyNote.Properties.Resources.Light_Clear_Button;
+            Image ClearButton = Resources.Light_Clear_Button;
             pbClearBtn.Image = ClearButton;
         }
-        /************************************New for Assignment 3*********************************************
-        * FUNCTION:  private void pbClearButton_MouseLeave(object sender, EventArgs e)
-        *
-        * ARGUMENTS: sender - object that is calling the function
-        *            e - any arguments pass for the event
-        *
-        * RETURNS:   This function has no return value
-        *
-        * NOTES:     This function is called when the mouse is off of pbClearButton and changes
-        *            the displayed image
-        **************************************************************************************/
+
+        /************************************New for Assignment 3******************************
+         * FUNCTION:  private void pbClearButton_MouseLeave(object sender, EventArgs e)
+         *
+         * ARGUMENTS: sender - object that is calling the function
+         *            e - any arguments pass for the event
+         *
+         * RETURNS:   This function has no return value
+         *
+         * NOTES:     This function is called when the mouse is off of pbClearButton and changes
+         *            the displayed image
+         **************************************************************************************/
         private void pbClearBtn_MouseLeave(object sender, EventArgs e)
         {
-            Image ClearButton = EasyNote.Properties.Resources.Dark_Clear_Button;
+            Image ClearButton = Resources.Dark_Clear_Button;
             pbClearBtn.Image = ClearButton;
         }
     }

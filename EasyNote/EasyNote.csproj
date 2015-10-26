@@ -8,7 +8,7 @@
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>EasyNote</RootNamespace>
-    <AssemblyName>Assignment1</AssemblyName>
+    <AssemblyName>Assignment2</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -37,7 +37,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ClassLibrary1">
-      <HintPath>..\..\..\..\Downloads\ClassLibrary1.dll</HintPath>
+      <HintPath>Resources\ClassLibrary1.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -47,6 +47,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CustomMessageBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CustomMessageBox.Designer.cs">
+      <DependentUpon>CustomMessageBox.cs</DependentUpon>
+    </Compile>
     <Compile Include="MyNotes.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -55,6 +61,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="CustomMessageBox.resx">
+      <DependentUpon>CustomMessageBox.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MyNotes.resx">
       <DependentUpon>MyNotes.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -69,6 +78,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="CustomMessage.resx" />
     <None Include="app.config" />
     <None Include="Properties\DataSources\MyNotes.datasource" />
     <None Include="Properties\DataSources\NoteLibrary.Note.datasource" />
@@ -128,8 +138,27 @@
   <ItemGroup>
     <None Include="Dark Delete Button.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Dark Clear Button.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Light Clear Button.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Dark Ok Button.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Light Ok Button.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PostBuildEvent>xcopy /y "$(ProjectDir)Resources\notefile.txt" "$(ProjectDir)$(OutDir)"</PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>

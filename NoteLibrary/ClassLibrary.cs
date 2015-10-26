@@ -28,7 +28,7 @@ namespace NoteLibrary
          * NOTES:     Constructor
          *            Sets values of data members
          **************************************************************************************/
-        public Note(string title, string body, string[] tags, bool mod)
+        public Note(string title, string body, string[] tags, bool mod = true)
         {
             this.Title = title;
             this.Body = body;
@@ -76,6 +76,7 @@ namespace NoteLibrary
          **************************************************************************************/
         public static string[] splitTags(String tags)
         {
+            /*
             //If we encounter a tags of "to-do" just throw a basic note exception.  
             if (tags == "to-do")
             {
@@ -100,12 +101,19 @@ namespace NoteLibrary
                 {
                     throw new NoteException("An exception with spliting the tags was encountered: ", e, tags);
                 }
-            }
+            } */
 
             return tags.Split(':');
         }        
     }
 
+    /***********************************************************************************************************************
+     * Class NoteException
+     * 
+     * NoteException is an exception class that handles various errors that may occur in the note class.
+     * It contains a string to hold the tags related with any exception and provides a custom constructor to set
+     * this. In addition, it provides the three default constructors for an exception.
+     * *********************************************************************************************************************/
     public class NoteException : Exception
     {
         private string tag;
@@ -115,9 +123,18 @@ namespace NoteLibrary
             set { tag = value; }
         }
 
+        //Create the Note Exception using the default error.
         public NoteException() : base() { }
+
+        //Create the NoteException using a customized message.
         public NoteException(string message) : base(message) { }
+
+        //Create the NoteException using a customized message and another exception for more information
+        //(to be used as the inner exception).
         public NoteException(string message, Exception innerException) : base(message, innerException) { }
+
+        //Create the NoteException using a customized message, inner exception, and with the tags that are
+        //related to the error
         public NoteException(string message, Exception innerException, string tag)
             : base(message, innerException)
         {

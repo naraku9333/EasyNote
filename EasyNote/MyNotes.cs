@@ -19,6 +19,7 @@ using System.Windows.Forms;
 using System.Drawing.Text;
 using System.Data.SqlClient;
 using EasyNote.Properties;
+using System.IO;
 
 namespace EasyNote
 {
@@ -32,6 +33,7 @@ namespace EasyNote
         private int selectedNote;               //The current note_id selected in the dgv
         private int selectedRow;                //The current row selected in the dgv
 
+        private byte[] attachment = null;
         private DataTable notesTable = null;
 
         /**************************************************************************************
@@ -64,9 +66,7 @@ namespace EasyNote
         private void pbExit_Click(object sender, EventArgs e)
         {
             this.Close();
-        }
-
-       
+        }       
 
         /**************************************************************************************
          * FUNCTION:  private void createNoteTable()
@@ -236,12 +236,16 @@ namespace EasyNote
                                 com.Parameters.AddWithValue("@title", tbTitle.Text);
                                 com.Parameters.AddWithValue("@body", tbBody.Text);
                                 com.Parameters.AddWithValue("@tags", tbTags.Text);
+                                var param = new SqlParameter("@note_id", SqlDbType.Int) { Direction = ParameterDirection.Output };
+                                com.Parameters.Add(param);
 
                                 using (var adapter = new SqlDataAdapter(com))
                                 {
                                     adapter.Fill(notesTable);
-                                    createNoteTable();
+                                    createNoteTable();                                    
                                 }
+                                int note_id = int.Parse(param.Value.ToString());
+                                /* call attach function here */
                             }
                         }
                         clearText();
@@ -402,6 +406,7 @@ namespace EasyNote
                             }
                         }
                     }
+                    clearText();
                 }
                 catch (SqlException sqle)
                 {
@@ -602,9 +607,7 @@ namespace EasyNote
                 {
                     dgvNotesList.Rows[row.Index].Visible = true;
                 }
-
             }
-
         }
 
         /************************New for Assignment 3*******************************************
@@ -656,22 +659,32 @@ namespace EasyNote
             Image ClearButton = Resources.Dark_Clear_Button;
             pbClearBtn.Image = ClearButton;
         }
+
         /************************New for Assignment 3*******************************************
-      * FUNCTION:   private void pbAttachBtn_Click(object sender, EventArgs e)
-      *
-      * ARGUMENTS: sender - object that is calling the function
-      *            e - any arguments pass for the event
-      *
-      * RETURNS:   This function has no return value
-      *
-      * NOTES:     This function is called when the pbAttachedBtn is clicked
-      *            
-      **************************************************************************************/
+         * FUNCTION:   private void pbAttachBtn_Click(object sender, EventArgs e)
+         *
+         * ARGUMENTS: sender - object that is calling the function
+         *            e - any arguments pass for the event
+         *
+         * RETURNS:   This function has no return value
+         *
+         * NOTES:     This function is called when the pbAttachedBtn is clicked
+         *            
+         **************************************************************************************/
         private void pbAttachBtn_Click(object sender, EventArgs e)
         {
+            using (OpenFileDialog open = new OpenFileDialog())
+            {
+                open.Multiselect = false;
 
+                if (open.ShowDialog(this) == DialogResult.OK)
+                {
+                    attachment = File.ReadAllBytes(open.FileName);
+                }
+            }
         }
-        /**************************New for Assignment 3************************************************************
+
+        /**************************New for Assignment 3***************************************
          * FUNCTION:  private void pbAttachBtn_MouseEnter(object sender, EventArgs e)
          *
          * ARGUMENTS: sender - object that is calling the function
@@ -686,19 +699,19 @@ namespace EasyNote
         {
             Image AttachButton = Resources.Light_Attach_Button;
             pbAttachBtn.Image = AttachButton;
-
         }
-        /************************************New for Assignment 3*********************************************
-        * FUNCTION:  private void pbAttachBtn_MouseLeave(object sender, EventArgs e)
-        *
-        * ARGUMENTS: sender - object that is calling the function
-        *            e - any arguments pass for the event
-        *
-        * RETURNS:   This function has no return value
-        *
-        * NOTES:     This function is called when the mouse is off of pbAttachBtn and changes
-        *            the displayed image
-        **************************************************************************************/
+
+        /************************************New for Assignment 3******************************
+         * FUNCTION:  private void pbAttachBtn_MouseLeave(object sender, EventArgs e)
+         *
+         * ARGUMENTS: sender - object that is calling the function
+         *            e - any arguments pass for the event
+         *
+         * RETURNS:   This function has no return value
+         *
+         * NOTES:     This function is called when the mouse is off of pbAttachBtn and changes
+         *            the displayed image
+         **************************************************************************************/
         private void pbAttachBtn_MouseLeave(object sender, EventArgs e)
         {
             Image AttachButton = Resources.Dark_Attach_Button;

@@ -66,40 +66,7 @@ namespace EasyNote
             this.Close();
         }
 
-        /**************************************************************************************
-         * FUNCTION:  private void pbShowTgs_Click(object sender, EventArgs e)
-         *
-         * ARGUMENTS: sender - object that is calling the function
-         *            e - any arguments pass for the event
-         *
-         * RETURNS:   This function has no return value
-         *
-         * NOTES:     This function is called when the show tags button is clicked
-         *            creating a messagebox showing the tags in current note
-         **************************************************************************************/
-        private void pbShowTags_Click(object sender, EventArgs e)
-        {
-            char[] delimiterChars = { ':' };
-
-            //assign text data in text box Tags
-            string text = tbTags.Text;
-
-            //parse text in text box using delimiter characters
-            string[] words = text.Split(delimiterChars);
-
-            //add title and new line
-            string wordsShow = " Tags: " + Environment.NewLine;
-
-
-            //for each string in words add to wordsShow with a newline after
-            foreach (string s in words)
-            {
-                wordsShow += s + Environment.NewLine;
-            }
-
-            //message box showing the strings
-            MessageBox.Show(wordsShow, "Tags");
-        }
+       
 
         /**************************************************************************************
          * FUNCTION:  private void createNoteTable()
@@ -234,42 +201,6 @@ namespace EasyNote
             //create image from resource and display
             Image exitButton = Resources.Dark_Exit_Button;
             pbExit.Image = exitButton;
-        }
-
-        /**************************************************************************************
-         * FUNCTION:  private void pbShowTags_MouseEnter(object sender, EventArgs e)
-         *
-         * ARGUMENTS: sender - object that is calling the function
-         *            e - any arguments pass for the event
-         *
-         * RETURNS:   This function has no return value
-         *
-         * NOTES:     This function is called when the mouse is moved over pbShowTags and changes
-         *            the displayed image
-         **************************************************************************************/
-        private void pbShowTags_MouseEnter(object sender, EventArgs e)
-        {
-            //create image from resource and display
-            Image showButton = Resources.Light_Show_Button;
-            pbShowTags.Image = showButton;
-        }
-
-        /**************************************************************************************
-         * FUNCTION:  private void pbShowTgs_MouseLeave(object sender, EventArgs e)
-         *
-         * ARGUMENTS: sender - object that is calling the function
-         *            e - any arguments pass for the event
-         *
-         * RETURNS:   This function has no return value
-         *
-         * NOTES:     This function is called when the mouse is off of pbShowTags and changes
-         *            the displayed image
-         **************************************************************************************/
-        private void pbShowTags_MouseLeave(object sender, EventArgs e)
-        {
-            //create image from resource and display
-            Image showButton = EasyNote.Properties.Resources.Dark_Show_Button;
-            pbShowTags.Image = showButton;
         }
 
         /***************************Updated for Assignment 3************************************
@@ -724,6 +655,54 @@ namespace EasyNote
         {
             Image ClearButton = Resources.Dark_Clear_Button;
             pbClearBtn.Image = ClearButton;
+        }
+        /************************New for Assignment 3*******************************************
+      * FUNCTION:   private void pbAttachBtn_Click(object sender, EventArgs e)
+      *
+      * ARGUMENTS: sender - object that is calling the function
+      *            e - any arguments pass for the event
+      *
+      * RETURNS:   This function has no return value
+      *
+      * NOTES:     This function is called when the pbAttachedBtn is clicked
+      *            
+      **************************************************************************************/
+        private void pbAttachBtn_Click(object sender, EventArgs e)
+        {
+
+        }
+        /**************************New for Assignment 3************************************************************
+         * FUNCTION:  private void pbAttachBtn_MouseEnter(object sender, EventArgs e)
+         *
+         * ARGUMENTS: sender - object that is calling the function
+         *            e - any arguments pass for the event
+         *
+         * RETURNS:   This function has no return value
+         *
+         * NOTES:     This function is called when the mouse is moved over pbAttachBtn and changes
+         *            the displayed image
+         **************************************************************************************/
+        private void pbAttachBtn_MouseEnter(object sender, EventArgs e)
+        {
+            Image AttachButton = Resources.Light_Attach_Button;
+            pbAttachBtn.Image = AttachButton;
+
+        }
+        /************************************New for Assignment 3*********************************************
+        * FUNCTION:  private void pbAttachBtn_MouseLeave(object sender, EventArgs e)
+        *
+        * ARGUMENTS: sender - object that is calling the function
+        *            e - any arguments pass for the event
+        *
+        * RETURNS:   This function has no return value
+        *
+        * NOTES:     This function is called when the mouse is off of pbAttachBtn and changes
+        *            the displayed image
+        **************************************************************************************/
+        private void pbAttachBtn_MouseLeave(object sender, EventArgs e)
+        {
+            Image AttachButton = Resources.Dark_Attach_Button;
+            pbAttachBtn.Image = AttachButton;
         }
     }
 }

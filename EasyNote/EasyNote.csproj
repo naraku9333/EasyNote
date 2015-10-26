@@ -47,6 +47,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CustomMessage.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CustomMessage.resx</DependentUpon>
+    </Compile>
     <Compile Include="CustomMessageBox.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -78,7 +83,10 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="CustomMessage.resx" />
+    <EmbeddedResource Include="CustomMessage.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>CustomMessage.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <None Include="app.config" />
     <None Include="Properties\DataSources\MyNotes.datasource" />
     <None Include="Properties\DataSources\NoteLibrary.Note.datasource" />
@@ -149,6 +157,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Light Ok Button.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Dark Attach Button.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Light Attach Button.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

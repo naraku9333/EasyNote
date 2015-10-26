@@ -22,3 +22,9 @@ C:\Users\Rob\Documents\GitHub\EasyNote\NoteLibrary\bin\Debug\NoteLibrary.dll
 C:\Users\Rob\Documents\GitHub\EasyNote\NoteLibrary\bin\Debug\NoteLibrary.pdb
 C:\Users\Rob\Documents\GitHub\EasyNote\NoteLibrary\obj\Debug\NoteLibrary.dll
 C:\Users\Rob\Documents\GitHub\EasyNote\NoteLibrary\obj\Debug\NoteLibrary.pdb
+G:\Dropbox\GitHub\EasyNote\NoteLibrary\bin\Debug\NoteLibrary.dll
+G:\Dropbox\GitHub\EasyNote\NoteLibrary\bin\Debug\NoteLibrary.pdb
+G:\Dropbox\GitHub\EasyNote\NoteLibrary\bin\Debug\ClassLibrary1.dll
+G:\Dropbox\GitHub\EasyNote\NoteLibrary\obj\Debug\NoteLibrary.csprojResolveAssemblyReference.cache
+G:\Dropbox\GitHub\EasyNote\NoteLibrary\obj\Debug\NoteLibrary.dll
+G:\Dropbox\GitHub\EasyNote\NoteLibrary\obj\Debug\NoteLibrary.pdb

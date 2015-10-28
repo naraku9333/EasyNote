@@ -853,12 +853,16 @@ namespace EasyNote
                         {
                             while(reader.Read())
                             {
-                                object o = reader.GetValue(0);
-                                attachment = (byte[])o;
-                                pictureForm.changePicture(attachment);
+                                attachment = (byte[])reader.GetSqlBinary(0);
                                 filename = reader.GetString(1);
-                                File.WriteAllBytes(filename, attachment);
-                                Process.Start(filename);
+
+                                string ext = Path.GetExtension(filename);
+                                if (ext == ".png" || ext == ".jpg" || ext == ".gif" || ext == ".tiff" || ext == ".bmp")
+                                    pictureForm.changePicture(attachment);
+                                else MessageBox.Show("Attachment not an image");
+
+                                //File.WriteAllBytes(filename, attachment);
+                                //Process.Start(filename);
                             }
                         }
                     }

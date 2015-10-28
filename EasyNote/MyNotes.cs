@@ -34,10 +34,13 @@ namespace EasyNote
         private int selectedNote;               //The current note_id selected in the dgv
         private int selectedRow;                //The current row selected in the dgv
 
-        private byte[] attachment = null;
-        private string filename = null;
+        private string filename = null;         //filename of attachment, for use with attachment table
 
-        private DataTable notesTable = null;
+        private byte[] attachment = null;       //Holds the provided attachment as its individual bytes, for use with attachment table.  
+        private DataTable notesTable = null;    //The source for the dgv that holds queried data from the database.  
+        private bool changingValue = false;     //A flag for a value being either updated/viewed/deleted.  It is used to prevent the switching
+                                                //of the save, delete, and cancel buttons when selecting another value in the table.  It is
+                                                //reset after save,delete, or cancel is clicked.  
 
         enum View {  Add, Save }
 
@@ -71,9 +74,9 @@ namespace EasyNote
         private void pbExit_Click(object sender, EventArgs e)
         {
             this.Close();
-        }       
+        }
 
-        /**************************************************************************************
+        /******************************Updated for Assignment 3********************************
          * FUNCTION:  private void createNoteTable()
          *
          * ARGUMENTS: none
@@ -91,10 +94,13 @@ namespace EasyNote
                 ////Connect to the notebase2 database.                  
                 using (connection = new SqlConnection(conString))
                 {
+                    //Use the notedisplay stored procedure to generate the data for the noteTable.  
                     using (var com = new SqlCommand("notedisplay", connection) { CommandType = CommandType.StoredProcedure })
                     {
                         com.Connection = connection;
                         notesTable = new DataTable();
+
+                        //Fill the dgv with the data from the notesTable and hide the noteID field.   
                         using (var adapter = new SqlDataAdapter(com))
                         {
                             adapter.Fill(notesTable);
@@ -219,12 +225,14 @@ namespace EasyNote
          * NOTES:     This function is called when the pbAddNote button is clicked It calls the 
          *            CustomerMessageBox Class and displays a confirmation box to the user to 
          *            cofirm they wish to add the note. If they do, it adds the new note to 
-         *            note list and notfile
+         *            the database.
          **************************************************************************************/
         private void pbAddNote_Click(object sender, EventArgs e)
         {
+            //Ensure there is something to add.  
             if (tbTitle.Text != "" && tbBody.Text != "")
             {                
+                //CustomMessageBox the user to confirm their add.  
                 DialogResult result =  CustomMessageBox.Show("Are you sure you wish to add this note?", "Add Note",
                     Resources.Light_Cancel_Button, Resources.Dark_Cancel_Button, Resources.Light_Ok_Button, Resources.Dark_Ok_Button);
                
@@ -238,12 +246,14 @@ namespace EasyNote
                         {
                             using (var com = new SqlCommand("addnote", connection) { CommandType = CommandType.StoredProcedure })
                             {
+                                //Grab the title,text, and body from the textboxes for the stored procedure.  
                                 com.Connection = connection;
                                 com.Parameters.AddWithValue("@title", tbTitle.Text);
                                 com.Parameters.AddWithValue("@body", tbBody.Text);
                                 com.Parameters.AddWithValue("@tags", tbTags.Text);
                                 com.Parameters.Add("@note_id", SqlDbType.Int).Direction = ParameterDirection.Output;                                
 
+                                //Update the local table to show the new note.  
                                 using (var adapter = new SqlDataAdapter(com))
                                 {
                                     adapter.Fill(notesTable);
@@ -263,6 +273,16 @@ namespace EasyNote
             }
         }
 
+        /********************************New for Assignment 3**********************************
+         * FUNCTION:  private void attachFile(int id)
+         *
+         * ARGUMENTS: id - note id of note to attach to
+         *
+         * RETURNS:   No return value, but textFields in the program will be modified.
+         *
+         * NOTES:     This function adds a file attachment to the database and links it to 
+         *            the corresponding note.  
+         **************************************************************************************/
         private void attachFile(int id)
         {
             try
@@ -292,7 +312,7 @@ namespace EasyNote
             }
         }
 
-        /**************************************************************************************
+        /********************************Updated for Assignment 3******************************
          * FUNCTION:  private dgvNotesList_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
          *
          * ARGUMENTS: sender - object that is calling the function
@@ -306,13 +326,14 @@ namespace EasyNote
         private void dgvNotesList_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             //If the column or line headers were double clicked, do nothing
-            if (e.RowIndex < 0 || e.ColumnIndex < 0)
+            if (e.RowIndex < 0 || e.ColumnIndex < 0 )
                 return;
 
             selectedRow = e.RowIndex;
 
-            //Show the save,delete, and cancel buttons.  
-            changeButtonView(View.Add);
+            //Show the save,delete, and cancel buttons. 
+            if(!changingValue)
+                changeButtonView(View.Add);
 
             //Grab the title, body, and tags associated with the selected note and put them in
             //textfields for the user to see.  
@@ -323,6 +344,7 @@ namespace EasyNote
             //Grab the id of the note the user selected from the table for later queries.  
             selectedNote = (int)dgvNotesList.Rows[selectedRow].Cells["ID"].Value;
 
+            //check if this note has an attachment and set the correct button visible
             try
             {
                 using (var connection = new SqlConnection(conString))
@@ -350,6 +372,8 @@ namespace EasyNote
                 MessageBox.Show("There was an issue adding attachment: " + ex.Message);
             }
 
+            //Set the changingValue flag to prevent the buttons from switching until the user is done modifying a note.  
+            changingValue = true;
         }
 
         /**************************************************************************************
@@ -452,6 +476,7 @@ namespace EasyNote
                 {
                     using (connection = new SqlConnection(conString))
                     {
+                        //Use the updatenote stored procedure to update the note with the entered values from the textboxes.  
                         using (var com = new SqlCommand("updatenote", connection) { CommandType = CommandType.StoredProcedure })
                         {
                             com.Connection = connection;
@@ -460,6 +485,7 @@ namespace EasyNote
                             com.Parameters.AddWithValue("@body", tbBody.Text);
                             com.Parameters.AddWithValue("@tags", tbTags.Text);
 
+                            //Update the local table to show the updated note/tags.  
                             using (var adapter = new SqlDataAdapter(com))
                             {
                                 adapter.Fill(notesTable);
@@ -472,7 +498,8 @@ namespace EasyNote
                 catch (SqlException sqle)
                 {
                     MessageBox.Show("There was an issue saving the update to the database: " + sqle.Message);
-                }                
+                }
+                changingValue = false;
             } //end if dialogresult == yes        
         }
 
@@ -526,10 +553,11 @@ namespace EasyNote
         private void pbCancelBttn_Click(object sender, EventArgs e)
         {
             changeButtonView(View.Add);
+            changingValue = false;
             clearText();
         }
 
-        /**********************Updated for Assignment 3***************************************
+        /**********************Updated for Assignment 3****************************************
          * FUNCTION:  private void pbDeleteBttn_Click(object sender, EventArgs e)
          *
          * ARGUMENTS: sender - object that is calling the function
@@ -578,6 +606,8 @@ namespace EasyNote
                 {
                     MessageBox.Show("There was an issue with deleting from the database: " + sqle.Message);
                 }
+
+                changingValue = false;
             }
         }
         
@@ -596,9 +626,9 @@ namespace EasyNote
             tbTitle.Clear();
             tbBody.Clear();
             dgvNotesList.ClearSelection();
-        }        
+        }
 
-        /**************************************************************************************
+        /***************************Updated for Assignment 3***********************************
          * FUNCTION:  private void changeButtonView()
          *
          * ARGUMENTS: This function takes no args
@@ -682,7 +712,7 @@ namespace EasyNote
             }
         }
 
-        /************************New for Assignment 3*******************************************
+        /************************New for Assignment 3******************************************
          * FUNCTION:  private void pbClearButton_Click(object sender, EventArgs e)
          *
          * ARGUMENTS: sender - object that is calling the function
@@ -732,7 +762,7 @@ namespace EasyNote
             pbClearBtn.Image = ClearButton;
         }
 
-        /************************New for Assignment 3*******************************************
+        /************************New for Assignment 3******************************************
          * FUNCTION:   private void pbAttachBtn_Click(object sender, EventArgs e)
          *
          * ARGUMENTS: sender - object that is calling the function
@@ -757,7 +787,7 @@ namespace EasyNote
             }
         }
 
-        /**************************New for Assignment 3***************************************
+        /**************************New for Assignment 3****************************************
          * FUNCTION:  private void pbAttachBtn_MouseEnter(object sender, EventArgs e)
          *
          * ARGUMENTS: sender - object that is calling the function
@@ -791,8 +821,17 @@ namespace EasyNote
             pbAttachBtn.Image = AttachButton;
         }
 
-        /**
-        */
+        /************************New for Assignment 3*******************************************
+         * FUNCTION:   private void pbRetrieveBtn_Click(object sender, EventArgs e)
+         *
+         * ARGUMENTS: sender - object that is calling the function
+         *            e - any arguments pass for the event
+         *
+         * RETURNS:   This function has no return value
+         *
+         * NOTES:     This function is called when the pbRetrieveBtn is clicked
+         *            
+         **************************************************************************************/
         private void pbRetrieveBtn_Click(object sender, EventArgs e)
         {
             try
@@ -828,15 +867,15 @@ namespace EasyNote
             }
         }
 
-        /**************************************************************************************
-         * FUNCTION:  private void pbSaveBttn_MouseEnter(object sender, EventArgs e)
+        /**********************New for Assignment 3********************************************
+         * FUNCTION:  private void pbRetrieveBttn_MouseEnter(object sender, EventArgs e)
          *
          * ARGUMENTS: sender - object that is calling the function
          *            e - any arguments pass for the event
          *
          * RETURNS:   This function has no return value
          *
-         * NOTES:     This function is called when the mouse is moved over pbSaveBttn and changes
+         * NOTES:     This function is called when the mouse is moved over pbRetrieveBttn and changes
          *            the displayed image
          **************************************************************************************/
         private void pbRetrieveBttn_MouseEnter(object sender, EventArgs e)
@@ -846,15 +885,15 @@ namespace EasyNote
             pbRetrieveBttn.Image = retrieveButton;
         }
 
-        /**************************************************************************************
-         * FUNCTION:  private void pbSaveBttn_MouseLeave(object sender, EventArgs e)
+        /************************New for Assignment 3******************************************
+         * FUNCTION:  private void pbRetrieveBttn_MouseLeave(object sender, EventArgs e)
          *
          * ARGUMENTS: sender - object that is calling the function
          *            e - any arguments pass for the event
          *
          * RETURNS:   This function has no return value
          *
-         * NOTES:     This function is called when the mouse is off of pbSaveBttn and changes
+         * NOTES:     This function is called when the mouse is off of pbRetrieveBttn and changes
          *            the displayed image
          **************************************************************************************/
         private void pbRetrieveBttn_MouseLeave(object sender, EventArgs e)

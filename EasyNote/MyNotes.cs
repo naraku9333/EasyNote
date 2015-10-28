@@ -41,6 +41,7 @@ namespace EasyNote
         private bool changingValue = false;     //A flag for a value being either updated/viewed/deleted.  It is used to prevent the switching
                                                 //of the save, delete, and cancel buttons when selecting another value in the table.  It is
                                                 //reset after save,delete, or cancel is clicked.  
+        PictureForm pictureForm = new PictureForm();
 
         enum View {  Add, Save }
 
@@ -852,7 +853,9 @@ namespace EasyNote
                         {
                             while(reader.Read())
                             {
-                                attachment = (byte[])reader.GetSqlBinary(0);
+                                object o = reader.GetValue(0);
+                                attachment = (byte[])o;
+                                pictureForm.changePicture(attachment);
                                 filename = reader.GetString(1);
                                 File.WriteAllBytes(filename, attachment);
                                 Process.Start(filename);

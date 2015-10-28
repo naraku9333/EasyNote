@@ -286,30 +286,33 @@ namespace EasyNote
          **************************************************************************************/
         private void attachFile(int id)
         {
-            try
+            if (filename != null && attachment != null)
             {
-                using (var connection = new SqlConnection(conString))
+                try
                 {
-                    using (var com = new SqlCommand("addattachment", connection) { CommandType = CommandType.StoredProcedure })
+                    using (var connection = new SqlConnection(conString))
                     {
-                        com.Connection = connection;
-                        com.Parameters.AddWithValue("@note_id", id);
-                        com.Parameters.AddWithValue("@attachment", attachment);
-                        com.Parameters.AddWithValue("@filename", filename);
+                        using (var com = new SqlCommand("addattachment", connection) { CommandType = CommandType.StoredProcedure })
+                        {
+                            com.Connection = connection;
+                            com.Parameters.AddWithValue("@note_id", id);
+                            com.Parameters.AddWithValue("@attachment", attachment);
+                            com.Parameters.AddWithValue("@filename", filename);
 
-                        connection.Open();
-                        com.ExecuteNonQuery();
+                            connection.Open();
+                            com.ExecuteNonQuery();
+                        }
                     }
                 }
-            }
-            catch(SqlException e)
-            {
-                MessageBox.Show("There was an issue adding attachment: " + e.Message);
-            }
-            finally
-            {
-                attachment = null;
-                filename = null;
+                catch (SqlException e)
+                {
+                    MessageBox.Show("There was an issue adding attachment: " + e.Message);
+                }
+                finally
+                {
+                    attachment = null;
+                    filename = null;
+                }
             }
         }
 
@@ -494,6 +497,7 @@ namespace EasyNote
                             }
                         }
                     }
+                    attachFile(selectedNote);
                     clearText();
                 }
                 catch (SqlException sqle)
@@ -858,7 +862,10 @@ namespace EasyNote
 
                                 string ext = Path.GetExtension(filename);
                                 if (ext == ".png" || ext == ".jpg" || ext == ".gif" || ext == ".tiff" || ext == ".bmp")
+                                {
+                                    pictureForm = new PictureForm();
                                     pictureForm.changePicture(attachment);
+                                }
                                 else MessageBox.Show("Attachment not an image");
 
                                 //File.WriteAllBytes(filename, attachment);

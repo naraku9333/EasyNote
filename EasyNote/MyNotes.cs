@@ -20,6 +20,7 @@ using System.Drawing.Text;
 using System.Data.SqlClient;
 using EasyNote.Properties;
 using System.IO;
+using System.Diagnostics;
 
 namespace EasyNote
 {
@@ -34,7 +35,11 @@ namespace EasyNote
         private int selectedRow;                //The current row selected in the dgv
 
         private byte[] attachment = null;
+        private string filename = null;
+
         private DataTable notesTable = null;
+
+        enum View {  Add, Save }
 
         /**************************************************************************************
          * FUNCTION:  MyNotes()
@@ -228,6 +233,7 @@ namespace EasyNote
                 {
                     try
                     {
+                        int note_id;
                         using (connection = new SqlConnection(conString))
                         {
                             using (var com = new SqlCommand("addnote", connection) { CommandType = CommandType.StoredProcedure })
@@ -236,18 +242,17 @@ namespace EasyNote
                                 com.Parameters.AddWithValue("@title", tbTitle.Text);
                                 com.Parameters.AddWithValue("@body", tbBody.Text);
                                 com.Parameters.AddWithValue("@tags", tbTags.Text);
-                                var param = new SqlParameter("@note_id", SqlDbType.Int) { Direction = ParameterDirection.Output };
-                                com.Parameters.Add(param);
+                                com.Parameters.Add("@note_id", SqlDbType.Int).Direction = ParameterDirection.Output;                                
 
                                 using (var adapter = new SqlDataAdapter(com))
                                 {
                                     adapter.Fill(notesTable);
                                     createNoteTable();                                    
                                 }
-                                int note_id = int.Parse(param.Value.ToString());
-                                /* call attach function here */
+                                note_id = int.Parse(com.Parameters["@note_id"].Value.ToString());
                             }
                         }
+                        attachFile(note_id);
                         clearText();
                     }
                     catch (SqlException sqle)
@@ -255,6 +260,35 @@ namespace EasyNote
                         MessageBox.Show("There was an issue saving the update to the database: " + sqle.Message);
                     }
                 }                
+            }
+        }
+
+        private void attachFile(int id)
+        {
+            try
+            {
+                using (var connection = new SqlConnection(conString))
+                {
+                    using (var com = new SqlCommand("addattachment", connection) { CommandType = CommandType.StoredProcedure })
+                    {
+                        com.Connection = connection;
+                        com.Parameters.AddWithValue("@note_id", id);
+                        com.Parameters.AddWithValue("@attachment", attachment);
+                        com.Parameters.AddWithValue("@filename", filename);
+
+                        connection.Open();
+                        com.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch(SqlException e)
+            {
+                MessageBox.Show("There was an issue adding attachment: " + e.Message);
+            }
+            finally
+            {
+                attachment = null;
+                filename = null;
             }
         }
 
@@ -278,7 +312,7 @@ namespace EasyNote
             selectedRow = e.RowIndex;
 
             //Show the save,delete, and cancel buttons.  
-            changeButtonView();
+            changeButtonView(View.Add);
 
             //Grab the title, body, and tags associated with the selected note and put them in
             //textfields for the user to see.  
@@ -288,7 +322,34 @@ namespace EasyNote
 
             //Grab the id of the note the user selected from the table for later queries.  
             selectedNote = (int)dgvNotesList.Rows[selectedRow].Cells["ID"].Value;
-            
+
+            try
+            {
+                using (var connection = new SqlConnection(conString))
+                {
+                    using (var com = new SqlCommand("select count(*) from AttachedNotes where note_id = " + selectedNote, connection))
+                    {
+                        com.Connection = connection;
+                        connection.Open();
+                        int a = (int)com.ExecuteScalar();
+                        if(a != 0)
+                        {
+                            pbRetrieveBttn.Visible = true;
+                            pbAttachBtn.Visible = false;
+                        }
+                        else
+                        {
+                            pbRetrieveBttn.Visible = false;
+                            pbAttachBtn.Visible = true;
+                        }
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                MessageBox.Show("There was an issue adding attachment: " + ex.Message);
+            }
+
         }
 
         /**************************************************************************************
@@ -386,7 +447,7 @@ namespace EasyNote
             if (result == DialogResult.Yes)
             {
                 //Remove the save / cancel button.  
-                changeButtonView();
+                changeButtonView(View.Save);
                 try
                 {
                     using (connection = new SqlConnection(conString))
@@ -464,7 +525,7 @@ namespace EasyNote
          **************************************************************************************/
         private void pbCancelBttn_Click(object sender, EventArgs e)
         {
-            changeButtonView();
+            changeButtonView(View.Add);
             clearText();
         }
 
@@ -507,7 +568,7 @@ namespace EasyNote
                         clearText();
 
                         //Hide the save/cancel/delete button.  
-                        changeButtonView();
+                        changeButtonView(View.Add);
 
                         //Remove the row for the dgv to keep the database and local table in sync.  
                         dgvNotesList.Rows.RemoveAt(selectedRow);
@@ -546,12 +607,23 @@ namespace EasyNote
          *
          * NOTES:     Helper function to swap button images for UI views
          **************************************************************************************/
-        private void changeButtonView()
-        {
+        private void changeButtonView(View v)
+        {            
             pbAddNote.Visible = !pbAddNote.Visible;
             pbSaveBttn.Visible = !pbSaveBttn.Visible;
             pbDeleteBttn.Visible = !pbDeleteBttn.Visible;
             pbCancelBttn.Visible = !pbCancelBttn.Visible;
+
+            if (v == View.Add)
+            {
+                pbAttachBtn.Visible = true;
+                pbRetrieveBttn.Visible = false;
+            }
+            else
+            {
+                pbAttachBtn.Visible = true;
+                pbRetrieveBttn.Visible = false;
+            }
         }
 
         /****************************New for Assignment 3**************************************
@@ -679,6 +751,7 @@ namespace EasyNote
 
                 if (open.ShowDialog(this) == DialogResult.OK)
                 {
+                    filename = Path.GetFileName(open.FileName);
                     attachment = File.ReadAllBytes(open.FileName);
                 }
             }
@@ -716,6 +789,79 @@ namespace EasyNote
         {
             Image AttachButton = Resources.Dark_Attach_Button;
             pbAttachBtn.Image = AttachButton;
+        }
+
+        /**
+        */
+        private void pbRetrieveBtn_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                //Open a connection
+                using (connection = new SqlConnection(conString))
+                {
+                    connection.Open();
+
+                    string sql = "select attachment, filename from Attachment, AttachedNotes "
+                        + "where attachment.attach_id = AttachedNotes.attach_id and AttachedNotes.note_id = @note_id";
+
+                    //Remove references to the note in note_tags.  
+                    using (var command = new SqlCommand(sql, connection))
+                    {
+                        command.Parameters.AddWithValue("@note_id", selectedNote);
+                        using (var reader = command.ExecuteReader())
+                        {
+                            while(reader.Read())
+                            {
+                                attachment = (byte[])reader.GetSqlBinary(0);
+                                filename = reader.GetString(1);
+                                File.WriteAllBytes(filename, attachment);
+                                Process.Start(filename);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (SqlException sqle)
+            {
+                MessageBox.Show("There was an issue with deleting from the database: " + sqle.Message);
+            }
+        }
+
+        /**************************************************************************************
+         * FUNCTION:  private void pbSaveBttn_MouseEnter(object sender, EventArgs e)
+         *
+         * ARGUMENTS: sender - object that is calling the function
+         *            e - any arguments pass for the event
+         *
+         * RETURNS:   This function has no return value
+         *
+         * NOTES:     This function is called when the mouse is moved over pbSaveBttn and changes
+         *            the displayed image
+         **************************************************************************************/
+        private void pbRetrieveBttn_MouseEnter(object sender, EventArgs e)
+        {
+            //create image from resource and display
+            Image retrieveButton = Resources.Light_Retrieve_Button;
+            pbRetrieveBttn.Image = retrieveButton;
+        }
+
+        /**************************************************************************************
+         * FUNCTION:  private void pbSaveBttn_MouseLeave(object sender, EventArgs e)
+         *
+         * ARGUMENTS: sender - object that is calling the function
+         *            e - any arguments pass for the event
+         *
+         * RETURNS:   This function has no return value
+         *
+         * NOTES:     This function is called when the mouse is off of pbSaveBttn and changes
+         *            the displayed image
+         **************************************************************************************/
+        private void pbRetrieveBttn_MouseLeave(object sender, EventArgs e)
+        {
+            //create image from resource and display
+            Image retrieveButton = Resources.Dark_Retrieve_Button;
+            pbRetrieveBttn.Image = retrieveButton;
         }
     }
 }

@@ -164,6 +164,15 @@
   <ItemGroup>
     <None Include="Light Attach Button.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Light_Retrieve_Button.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Light Retrieve Button.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Dark Retrieve Button.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>

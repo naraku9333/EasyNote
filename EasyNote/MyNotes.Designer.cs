@@ -52,6 +52,7 @@
             this.pbAddNote = new System.Windows.Forms.PictureBox();
             this.myNotesBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.noteBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.pbRetrieveBttn = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataSet1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvNotesList)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbAttachBtn)).BeginInit();
@@ -63,6 +64,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.pbAddNote)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.myNotesBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.noteBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbRetrieveBttn)).BeginInit();
             this.SuspendLayout();
             // 
             // lbTitle
@@ -335,12 +337,28 @@
             // 
             this.noteBindingSource.DataSource = typeof(NoteLibrary.Note);
             // 
+            // pbRetrieveBttn
+            // 
+            this.pbRetrieveBttn.Image = global::EasyNote.Properties.Resources.Dark_Retrieve_Button;
+            this.pbRetrieveBttn.Location = new System.Drawing.Point(453, 134);
+            this.pbRetrieveBttn.Margin = new System.Windows.Forms.Padding(2);
+            this.pbRetrieveBttn.Name = "pbRetrieveBttn";
+            this.pbRetrieveBttn.Size = new System.Drawing.Size(86, 25);
+            this.pbRetrieveBttn.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pbRetrieveBttn.TabIndex = 28;
+            this.pbRetrieveBttn.TabStop = false;
+            this.pbRetrieveBttn.Visible = false;
+            this.pbRetrieveBttn.Click += new System.EventHandler(this.pbRetrieveBtn_Click);
+            this.pbRetrieveBttn.MouseEnter += new System.EventHandler(this.pbRetrieveBttn_MouseEnter);
+            this.pbRetrieveBttn.MouseLeave += new System.EventHandler(this.pbRetrieveBttn_MouseLeave);
+            // 
             // MyNotes
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.HotTrack;
             this.ClientSize = new System.Drawing.Size(571, 599);
+            this.Controls.Add(this.pbRetrieveBttn);
             this.Controls.Add(this.pbAttachBtn);
             this.Controls.Add(this.pbClearBtn);
             this.Controls.Add(this.lbMatching);
@@ -377,6 +395,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.pbAddNote)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.myNotesBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.noteBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbRetrieveBttn)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -407,6 +426,7 @@
         private System.Windows.Forms.Label lbMatching;
         private System.Windows.Forms.PictureBox pbClearBtn;
         private System.Windows.Forms.PictureBox pbAttachBtn;
+        private System.Windows.Forms.PictureBox pbRetrieveBttn;
     }
 }
 

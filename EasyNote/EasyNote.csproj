@@ -8,7 +8,7 @@
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>EasyNote</RootNamespace>
-    <AssemblyName>Assignment2</AssemblyName>
+    <AssemblyName>EasyNote</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -163,6 +163,15 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Light Attach Button.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Light_Retrieve_Button.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Light Retrieve Button.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Dark Retrieve Button.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

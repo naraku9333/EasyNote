@@ -53,7 +53,7 @@
         </style>
 </head>
 
-<body bgcolor="#0066CC">
+<body bgcolor="#0066CC" text="white">
     <center>
     <form id="form1" runat="server">
         <h1 style = "font-family: 'Vladimir Script'">Easy Note Web</h1>
@@ -67,13 +67,13 @@
         </div>
         <div>
             <asp:Label style="margin-right:.5em" ID="lbText" runat="server" Text="Text  " Font-Bold="True"></asp:Label>
-            <asp:TextBox ID="tbBody" runat="server" Height="131px" Width="348px"></asp:TextBox>
+            <asp:TextBox ID="tbBody" runat="server" Height="131px" Width="348px" TextMode="MultiLine"></asp:TextBox>
         </div>
         <br />
 
         <div style="width: 549px; height: 31px; margin-left: 0px;"><span>
             <asp:Label style="margin-right:.5em" ID="lbSearch" runat="server" Text="Search  " Font-Bold="True"></asp:Label>
-            <asp:TextBox style="margin-right:.5em" ID="tbSearch" runat="server" Width="290px"></asp:TextBox>
+            <asp:TextBox style="margin-right:.5em" ID="tbSearch" runat="server" Width="170px"></asp:TextBox>
             <asp:ImageButton style="margin-right:.5em" ID="pbSearch" runat="server" Height="25px" ImageUrl="~/images/Light Search Button.png" Width="80px" OnClick="pbSearch_Click" />
             <asp:ImageButton style="margin-right:.5em" ID="pbClearBtn" runat="server" Height="25px" ImageUrl="~/images/Light Clear Button.png" OnClick="pbClear_Click" Width="80px" />
             <asp:Label ID="lbFound" runat="server"></asp:Label></span>
@@ -96,7 +96,7 @@
         <div style="width: 358px; margin-left: 0px">           
             <asp:ImageButton style="margin-right:.5em; float:left" ID="pbAttachBtn" runat="server" Height="25px" ImageUrl="~/images/Light Attach Button.png" OnClick="pbAttachBtn_Click" Width="80px" />                       
             <asp:ImageButton style="margin-right:.5em; float:left" ID="pbRetrieveBttn" runat="server" Height="25px" ImageUrl="~/images/Light Retrieve Button.png" OnClick="pbRetrieveBttn_Click" Visible="False" Width="80px" />
-            <span style="position:absolute">
+            <span style="position:absolute; top: 440px; left: 707px;">
                 <asp:ImageButton style="margin-right:.5em; float:left" ID="pbSelectBttn" runat="server" Height="25px" ImageUrl="~/images/Light Select Button.png" Width="80px" />
                 <asp:FileUpload class="file" Style="margin-right: .5em; width: 80px; height: 26px; left: -80px;" ID="UploadAttachment" runat="server" />
             </span>
@@ -104,9 +104,11 @@
 
         <br /><br />
         <div style="width: 705px; margin-left: 0px">
-            <asp:GridView bgcolor="#C0C0C0" ID="dgvNotesList" runat="server" AllowSorting="True" 
+            <asp:GridView bgcolor="#C0C0C0" text="black" ID="dgvNotesList" runat="server" AllowSorting="True" 
                 onselectedindexchanged="dgvNotesList_SelectedIndexChanged" 
                 onsorting="dgvNotesList_Sorting" Width="350px" AutoGenerateSelectButton="True">
+                <HeaderStyle BackColor="#565656" Font-Bold="True" ForeColor="White" />
+                <RowStyle BackColor="white" ForeColor="black" />
             </asp:GridView>
         </div>
         <asp:HiddenField ID="NoteField" runat="server" />

@@ -4,7 +4,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <title></title>
+    <title>Easy Note Web</title>
     <style type="text/css">
         .style1
         {
@@ -19,41 +19,99 @@
             height: 23px;
             width: 851px;
         }
+        span{
+			display: inline-block;
+            margin-left: 0px;
+            height: 29px;
+        }
+        ImageButton{
+            margin-right:.5em;
+        }
+        div.fileinputs {
+	        position: relative;
+        }
+
+        div.fakefile {
+	        position: absolute;
+	        top: 0px;
+	        left: 0px;
+	        z-index: 1;
+        }
+
+        input.file {
+	        position: relative;
+	        text-align: right;
+	        -moz-opacity:0;
+	        filter:alpha(opacity: 0);
+	        opacity: 0;
+	        z-index: 1;
+            top: 1px;
+            /*left: -77px;*/
+            margin-top: 0px;
+        }
+        
         </style>
 </head>
-<body>
+
+<body bgcolor="#0066CC">
+    <center>
     <form id="form1" runat="server">
-        <asp:Label ID="lbTitle" runat="server" Text="Title"></asp:Label>
-        <asp:TextBox ID="tbTitle" runat="server" Width="349px"></asp:TextBox>
-&nbsp;<div>
+        <h1 style = "font-family: 'Vladimir Script'">Easy Note Web</h1>
+        <asp:Label style="margin-right:.5em" ID="lbTitle" runat="server" Text="Title  " Font-Bold="True"></asp:Label>
+        <asp:TextBox ID="tbTitle" runat="server" Width="349px"></asp:TextBox><br />
+&nbsp;
+        <div>
     
-                    <asp:Label ID="lbTags" runat="server" Text="Tags"></asp:Label>
-                    <asp:TextBox ID="tbTags" runat="server" Width="342px"></asp:TextBox>
-    
-    </div>
-        <asp:Label ID="lbText" runat="server" Text="Text"></asp:Label>
-        <asp:TextBox ID="tbBody" runat="server" Height="131px" Width="348px"></asp:TextBox>
-        <div style="width: 340px">
-            <asp:Label ID="lbSearch" runat="server" Text="Search"></asp:Label>
-            <asp:TextBox ID="tbSearch" runat="server" Width="290px"></asp:TextBox>
-        <asp:Button ID="pbSearch" runat="server" Text="Search" Height="20px" OnClick="pbSearch_Click" Width="51px" />
-            <asp:Button ID="pbClear" runat="server" Height="19px" OnClick="pbClear_Click" Text="Clear" />
-            <asp:Label ID="lbFound" runat="server"></asp:Label>
+            <asp:Label style="margin-right:.5em" ID="lbTags" runat="server" Text="Tags" Font-Bold="True"></asp:Label>
+            <asp:TextBox ID="tbTags" runat="server" Width="347px"></asp:TextBox><br /><br />
         </div>
-        <asp:Button ID="pbSaveBttn" runat="server" OnClick="pbSaveBttn_Click" Text="Save" Visible="False" />
-        <asp:Button ID="pbAddNote" runat="server"  Text="Add" OnClick="pbAddNote_Click" />
-        <asp:Button ID="pbRetrieveBttn" runat="server" Text="Retrieve" Visible="False" />
-        <asp:FileUpload ID="UploadAttachment" runat="server" />
-        <asp:Button ID="pbAttachBtn" runat="server" Text="Attach" OnClick="pbAttachBtn_Click" />
-        <asp:Button ID="pbDeleteBttn" runat="server" OnClick="pbDeleteBttn_Click" Text="Delete" Visible="False" />
-        <asp:Button ID="pbCancelBttn" runat="server" Text="Cancel" Visible="False" />
-        <asp:Button ID="pbClearBtn" runat="server" Text="Clear" Visible="False" />
-        <asp:Button ID="pbExit" runat="server" Text="Exit" />
-                    <asp:GridView ID="dgvNotesList" runat="server" AllowSorting="True" 
-                        onselectedindexchanged="dgvNotesList_SelectedIndexChanged" 
-                        onsorting="dgvNotesList_Sorting" Width="389px" AutoGenerateSelectButton="True">
-                    </asp:GridView>
+        <div>
+            <asp:Label style="margin-right:.5em" ID="lbText" runat="server" Text="Text  " Font-Bold="True"></asp:Label>
+            <asp:TextBox ID="tbBody" runat="server" Height="131px" Width="348px"></asp:TextBox>
+        </div>
+        <br />
+
+        <div style="width: 549px; height: 31px; margin-left: 0px;"><span>
+            <asp:Label style="margin-right:.5em" ID="lbSearch" runat="server" Text="Search  " Font-Bold="True"></asp:Label>
+            <asp:TextBox style="margin-right:.5em" ID="tbSearch" runat="server" Width="290px"></asp:TextBox>
+            <asp:ImageButton style="margin-right:.5em" ID="pbSearch" runat="server" Height="25px" ImageUrl="~/images/Light Search Button.png" Width="80px" OnClick="pbSearch_Click" />
+            <asp:ImageButton style="margin-right:.5em" ID="pbClearBtn" runat="server" Height="25px" ImageUrl="~/images/Light Clear Button.png" OnClick="pbClear_Click" Width="80px" />
+            <asp:Label ID="lbFound" runat="server"></asp:Label></span>
+        </div>
+        <br /><br />
+
+        <div style="width: 358px; margin-left: 0px">
+            <asp:ImageButton style="margin-right:.5em; float:left" ID="pbSaveBttn" runat="server" Height="25px" ImageUrl="~/images/Light Save Button.png" Width="80px" OnClick="pbSaveBttn_Click" Visible="False" />
+            <asp:ImageButton style="margin-right:.5em; float:left" ID="pbAddNote" runat="server" Height="25px" ImageUrl="~/images/Light Add Button.png" OnClick="pbAddNote_Click" Width="80px" />
+            <asp:ImageButton style="margin-right:.5em; float:left" ID="pbDeleteBttn" runat="server" Height="25px" ImageUrl="~/images/Light Delete Button.png" OnClick="pbDeleteBttn_Click" Visible="False" Width="80px" />
+            <asp:ImageButton style="margin-right:.5em; " ID="pbCancelBttn" runat="server" Height="25px" ImageUrl="~/images/Light Cancel Button.png" Width="80px" OnClick="pbCancelBttn_Click" />
+            <!--<div class="fileinputs">
+	            <input ID="file" type="file" class="file" />
+	            <div class="fakefile">
+		           
+		        </div>
+            </div>-->
+        </div>
+        <br />
+        <div style="width: 358px; margin-left: 0px">           
+            <asp:ImageButton style="margin-right:.5em; float:left" ID="pbAttachBtn" runat="server" Height="25px" ImageUrl="~/images/Light Attach Button.png" OnClick="pbAttachBtn_Click" Width="80px" />                       
+            <asp:ImageButton style="margin-right:.5em; float:left" ID="pbRetrieveBttn" runat="server" Height="25px" ImageUrl="~/images/Light Retrieve Button.png" OnClick="pbRetrieveBttn_Click" Visible="False" Width="80px" />
+            <span style="position:absolute">
+                <asp:ImageButton style="margin-right:.5em; float:left" ID="pbSelectBttn" runat="server" Height="25px" ImageUrl="~/images/Light Select Button.png" Width="80px" />
+                <asp:FileUpload class="file" Style="margin-right: .5em; width: 80px; height: 26px; left: -80px;" ID="UploadAttachment" runat="server" />
+            </span>
+        </div>        
+
+        <br /><br />
+        <div style="width: 705px; margin-left: 0px">
+            <asp:GridView bgcolor="#C0C0C0" ID="dgvNotesList" runat="server" AllowSorting="True" 
+                onselectedindexchanged="dgvNotesList_SelectedIndexChanged" 
+                onsorting="dgvNotesList_Sorting" Width="350px" AutoGenerateSelectButton="True">
+            </asp:GridView>
+        </div>
         <asp:HiddenField ID="NoteField" runat="server" />
+        <br /><br />
     </form>
+    </center>
 </body>
 </html>

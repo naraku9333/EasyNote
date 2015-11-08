@@ -191,21 +191,27 @@ public partial class _Default : System.Web.UI.Page
      * NOTES:     Helper function to swap button images for UI views
      **************************************************************************************/
     private void changeButtonView(View v)
-    {
-        pbAddNote.Visible = !pbAddNote.Visible;
-        pbSaveBttn.Visible = !pbSaveBttn.Visible;
-        pbDeleteBttn.Visible = !pbDeleteBttn.Visible;
-        pbCancelBttn.Visible = !pbCancelBttn.Visible;
+    {        
+        //pbCancelBttn.Visible = !pbCancelBttn.Visible;
 
         if (v == View.Add)
         {
+            pbAddNote.Visible = true;
+            pbSaveBttn.Visible = false;
+            pbDeleteBttn.Visible = false;
             pbAttachBtn.Visible = true;
             pbRetrieveBttn.Visible = false;
+            UploadAttachment.Visible = true;
+            pbSelectBttn.Visible = true;
         }
         else
         {
-            pbAttachBtn.Visible = true;
-            pbRetrieveBttn.Visible = false;
+            pbAddNote.Visible = false;
+            pbSaveBttn.Visible = true;
+            pbDeleteBttn.Visible = true;
+            pbAttachBtn.Visible = false;
+            pbRetrieveBttn.Visible = true;
+
         }
     }
 
@@ -245,7 +251,7 @@ public partial class _Default : System.Web.UI.Page
     {
         //Show the save,delete, and cancel buttons. 
         if (!changingValue)
-            changeButtonView(View.Add);
+            changeButtonView(View.Save);
 
         //Grab the title, body, and tags associated with the selected note and put them in
         //textfields for the user to see.  
@@ -274,12 +280,14 @@ public partial class _Default : System.Web.UI.Page
                         pbRetrieveBttn.Visible = true;
                         pbAttachBtn.Visible = false;
                         UploadAttachment.Visible = false;
+                        pbSelectBttn.Visible = false;
                     }
                     else
                     {
                         pbRetrieveBttn.Visible = false;
                         pbAttachBtn.Visible = true;
                         UploadAttachment.Visible = true;
+                        pbSelectBttn.Visible = true;
                     }
                 }
             }
@@ -471,14 +479,16 @@ public partial class _Default : System.Web.UI.Page
     protected void pbAttachBtn_Click(object sender, EventArgs e)
     {
         UploadAttachment.AllowMultiple = false;
-        //UploadAttachment.Visible = true;
         
-        using (Stream fs = UploadAttachment.PostedFile.InputStream)
+        if (UploadAttachment.HasFile)
         {
-            Session["filename"] = Path.GetFileName(UploadAttachment.PostedFile.FileName);
+            using (Stream fs = UploadAttachment.PostedFile.InputStream)
+            {
+                Session["filename"] = Path.GetFileName(UploadAttachment.PostedFile.FileName);
 
-            BinaryReader br = new BinaryReader(fs);
-            Session["attachment"] = br.ReadBytes((int)fs.Length);
+                BinaryReader br = new BinaryReader(fs);
+                Session["attachment"] = br.ReadBytes((int)fs.Length);
+            }
         }
     }
 
@@ -531,6 +541,13 @@ public partial class _Default : System.Web.UI.Page
     protected void pbRetrieveBttn_Click(object sender, EventArgs e)
     {
 
+    }
+
+    protected void pbCancelBttn_Click(object sender, ImageClickEventArgs e)
+    {
+        changeButtonView(View.Add);
+        changingValue = false;
+        clearText();
     }
 }
 

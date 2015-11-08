@@ -1,9 +1,33 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2010
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoteLibrary", "NoteLibrary\NoteLibrary.csproj", "{BA23CFA2-E994-43E0-94DA-FC41DFCB92A8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyNote", "EasyNote\EasyNote.csproj", "{6085796B-E53C-4B7C-9CE8-4662290F186C}"
+EndProject
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "EasyNoteWeb(2)", "EasyNoteWeb\", "{C6BCDF7D-D234-4840-BC3F-6A8984EC4D92}"
+	ProjectSection(WebsiteProperties) = preProject
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.5.2"
+		Debug.AspNetCompiler.VirtualPath = "/localhost_50941"
+		Debug.AspNetCompiler.PhysicalPath = "EasyNoteWeb\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_50941\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/localhost_50941"
+		Release.AspNetCompiler.PhysicalPath = "EasyNoteWeb\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_50941\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "50941"
+		SlnRelativePath = "EasyNoteWeb\"
+		DefaultWebSiteLanguage = "Visual C#"
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,6 +43,10 @@ Global
 		{6085796B-E53C-4B7C-9CE8-4662290F186C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6085796B-E53C-4B7C-9CE8-4662290F186C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6085796B-E53C-4B7C-9CE8-4662290F186C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C6BCDF7D-D234-4840-BC3F-6A8984EC4D92}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6BCDF7D-D234-4840-BC3F-6A8984EC4D92}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6BCDF7D-D234-4840-BC3F-6A8984EC4D92}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6BCDF7D-D234-4840-BC3F-6A8984EC4D92}.Release|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

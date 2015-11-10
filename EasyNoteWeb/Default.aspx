@@ -74,17 +74,23 @@
         <div style="width: 549px; height: 31px; margin-left: 0px;"><span>
             <asp:Label style="margin-right:.5em" ID="lbSearch" runat="server" Text="Search  " Font-Bold="True"></asp:Label>
             <asp:TextBox style="margin-right:.5em" ID="tbSearch" runat="server" Width="170px"></asp:TextBox>
-            <asp:ImageButton style="margin-right:.5em" ID="pbSearch" runat="server" Height="25px" ImageUrl="~/images/Light Search Button.png" Width="80px" OnClick="pbSearch_Click" />
-            <asp:ImageButton style="margin-right:.5em" ID="pbClearBtn" runat="server" Height="25px" ImageUrl="~/images/Light Clear Button.png" OnClick="pbClear_Click" Width="80px" />
+            <asp:ImageButton style="margin-right:.5em" ID="pbSearch" runat="server" Height="25px" ImageUrl="~/images/Dark Search Button.png" Width="80px" 
+                OnClick="pbSearch_Click" OnMouseOver="src='images/Light Search Button.png';" OnMouseOut="src='images/Dark Search Button.png';"/>
+            <asp:ImageButton style="margin-right:.5em" ID="pbClearBtn" runat="server" Height="25px" ImageUrl="~/images/Dark Clear Button.png" 
+                OnClick="pbClear_Click" Width="80px" OnMouseOver="src='images/Light Clear Button.png';" OnMouseOut="src='images/Dark Clear Button.png';"/>
             <asp:Label ID="lbFound" runat="server"></asp:Label></span>
         </div>
         <br /><br />
 
         <div style="width: 358px; margin-left: 0px">
-            <asp:ImageButton style="margin-right:.5em; float:left" ID="pbSaveBttn" runat="server" Height="25px" ImageUrl="~/images/Light Save Button.png" Width="80px" OnClick="pbSaveBttn_Click" Visible="False" />
-            <asp:ImageButton style="margin-right:.5em; float:left" ID="pbAddNote" runat="server" Height="25px" ImageUrl="~/images/Light Add Button.png" OnClick="pbAddNote_Click" Width="80px" />
-            <asp:ImageButton style="margin-right:.5em; float:left" ID="pbDeleteBttn" runat="server" Height="25px" ImageUrl="~/images/Light Delete Button.png" OnClick="pbDeleteBttn_Click" Visible="False" Width="80px" />
-            <asp:ImageButton style="margin-right:.5em; " ID="pbCancelBttn" runat="server" Height="25px" ImageUrl="~/images/Light Cancel Button.png" Width="80px" OnClick="pbCancelBttn_Click" />
+            <asp:ImageButton style="margin-right:.5em; float:left" ID="pbSaveBttn" runat="server" Height="25px" ImageUrl="~/images/Dark Save Button.png" Width="80px" 
+                OnClick="pbSaveBttn_Click" Visible="False" OnMouseOver="src='images/Light Save Button.png';" OnMouseOut="src='images/Dark Save Button.png';"/>
+            <asp:ImageButton style="margin-right:.5em; float:left" ID="pbAddNote" runat="server" Height="25px" ImageUrl="~/images/Dark Add Button.png" 
+                OnClick="pbAddNote_Click" Width="80px" OnMouseOver="src='images/Light Add Button.png';" OnMouseOut="src='images/Dark Add Button.png';"/>
+            <asp:ImageButton style="margin-right:.5em; float:left" ID="pbDeleteBttn" runat="server" Height="25px" ImageUrl="~/images/Dark Delete Button.png" 
+                OnClick="pbDeleteBttn_Click" Visible="False" Width="80px" OnMouseOver="src='images/Light Delete Button.png';" OnMouseOut="src='images/Dark Delete Button.png';"/>
+            <asp:ImageButton style="margin-right:.5em; " ID="pbCancelBttn" runat="server" Height="25px" ImageUrl="~/images/Dark Cancel Button.png" Width="80px" 
+                OnClick="pbCancelBttn_Click" OnMouseOver="src='images/Light Cancel Button.png';" OnMouseOut="src='images/Dark Cancel Button.png';"/>
             <!--<div class="fileinputs">
 	            <input ID="file" type="file" class="file" />
 	            <div class="fakefile">
@@ -94,11 +100,15 @@
         </div>
         <br />
         <div style="width: 358px; margin-left: 0px">           
-            <asp:ImageButton style="margin-right:.5em; float:left" ID="pbAttachBtn" runat="server" Height="25px" ImageUrl="~/images/Light Attach Button.png" OnClick="pbAttachBtn_Click" Width="80px" />                       
-            <asp:ImageButton style="margin-right:.5em; float:left" ID="pbRetrieveBttn" runat="server" Height="25px" ImageUrl="~/images/Light Retrieve Button.png" OnClick="pbRetrieveBttn_Click" Visible="False" Width="80px" />
-            <span style="position:absolute; top: 440px; left: 707px;">
-                <asp:ImageButton style="margin-right:.5em; float:left" ID="pbSelectBttn" runat="server" Height="25px" ImageUrl="~/images/Light Select Button.png" Width="80px" />
-                <asp:FileUpload class="file" Style="margin-right: .5em; width: 80px; height: 26px; left: -80px;" ID="UploadAttachment" runat="server" />
+            <asp:ImageButton style="margin-right:.5em; float:left" ID="pbAttachBtn" runat="server" Height="25px" ImageUrl="~/images/Dark Attach Button.png" 
+                OnClick="pbAttachBtn_Click" Width="80px" OnMouseOver="src='images/Light Attach Button.png';" OnMouseOut="src='images/Dark Attach Button.png';"/>                       
+            <asp:ImageButton style="margin-right:.5em; float:left" ID="pbRetrieveBttn" runat="server" Height="25px" ImageUrl="~/images/Dark Retrieve Button.png" 
+                OnClick="pbRetrieveBttn_Click" OnMouseOver="src='images/Light Retrieve Button.png';" OnMouseOut="src='images/Dark Retrieve Button.png';" Visible="False" Width="80px" />
+            <span style="position:absolute">
+                <asp:ImageButton style="margin-right:.5em; float:left" ID="pbSelectBttn" runat="server" Height="25px" ImageUrl="~/images/Dark Select Button.png" Width="80px" 
+                    OnMouseOver="src='images/Light Select Button.png';" OnMouseOut="src='images/Dark Select Button.png';"/>
+                <asp:FileUpload class="file" Style="margin-right: .5em; width: 80px; height: 26px; left: -80px;" ID="UploadAttachment" runat="server" 
+                    OnMouseOver="src='images/Light Select Button.png';" OnMouseOut="src='images/Dark Select Button.png';"/>
             </span>
         </div>        
 

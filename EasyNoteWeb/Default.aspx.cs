@@ -530,9 +530,41 @@ public partial class _Default : System.Web.UI.Page
 
     protected void pbRetrieveBttn_Click(object sender, EventArgs e)
     {
+        try
+        {
+            int selectedNote = (int)Session["selectedNote"];
+            //Open a connection
+            using (connection = new SqlConnection(conString))
+            {
+                connection.Open();
 
+                string sql = "select attachment, filename from Attachment, AttachedNotes "
+                    + "where attachment.attach_id = AttachedNotes.attach_id and AttachedNotes.note_id = @note_id";
+
+                //Remove references to the note in note_tags.  
+                using (var command = new SqlCommand(sql, connection))
+                {
+                    command.Parameters.AddWithValue("@note_id", selectedNote);
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            attachment = (byte[])reader.GetSqlBinary(0);
+                            filename = reader.GetString(1);
+
+                            Response.AppendHeader("Content-Disposition", "attachment; filename=" + filename);
+                            Response.BinaryWrite(attachment);
+                            Response.Flush();
+                            Response.End();
+                        }
+                    }
+                }
+            }
+        }
+        catch (SqlException sqle)
+        {
+            Response.Write("There was an issue with deleting from the database: " + sqle.Message);
+        }
     }
 }
-
-        
-       
+               

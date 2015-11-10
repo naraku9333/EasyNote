@@ -42,7 +42,7 @@
         </div>
         <asp:Button ID="pbSaveBttn" runat="server" OnClick="pbSaveBttn_Click" Text="Save" Visible="False" />
         <asp:Button ID="pbAddNote" runat="server"  Text="Add" OnClick="pbAddNote_Click" />
-        <asp:Button ID="pbRetrieveBttn" runat="server" Text="Retrieve" Visible="False" />
+        <asp:Button ID="pbRetrieveBttn" runat="server" Text="Retrieve" Visible="False" OnClick="pbRetrieveBttn_Click" />
         <asp:FileUpload ID="UploadAttachment" runat="server" />
         <asp:Button ID="pbAttachBtn" runat="server" Text="Attach" OnClick="pbAttachBtn_Click" />
         <asp:Button ID="pbDeleteBttn" runat="server" OnClick="pbDeleteBttn_Click" Text="Delete" Visible="False" />

@@ -137,13 +137,7 @@ public partial class _Default : System.Web.UI.Page
     *            
     **************************************************************************************/
     public void pbSaveBttn_Click(object sender, EventArgs e)
-    {
-        //       DialogResult result = CustomMessageBox.Show("Are you sure you wish to save this note?", "Save Note",
-        //            Resources.Light_Cancel_Button, Resources.Dark_Cancel_Button, Resources.Light_Ok_Button, Resources.Dark_Ok_Button);
-
-        //If the user wants to save the note, then start modifying the tables.   
-        //       if (result == DialogResult.Yes)
-        //       {
+    {        
         //Remove the save / cancel button.  
         changeButtonView(View.Save);
         try
@@ -174,8 +168,6 @@ public partial class _Default : System.Web.UI.Page
         catch (SqlException sqle)
         {
             Response.Write(sqle.Message);
-
-            //              MessageBox.Show("There was an issue saving the update to the database: " + sqle.Message);
         }
         changingValue = false;
     } //end if dialogresult == yes  
@@ -191,21 +183,27 @@ public partial class _Default : System.Web.UI.Page
      * NOTES:     Helper function to swap button images for UI views
      **************************************************************************************/
     private void changeButtonView(View v)
-    {
-        pbAddNote.Visible = !pbAddNote.Visible;
-        pbSaveBttn.Visible = !pbSaveBttn.Visible;
-        pbDeleteBttn.Visible = !pbDeleteBttn.Visible;
-        pbCancelBttn.Visible = !pbCancelBttn.Visible;
+    {        
+        //pbCancelBttn.Visible = !pbCancelBttn.Visible;
 
         if (v == View.Add)
         {
+            pbAddNote.Visible = true;
+            pbSaveBttn.Visible = false;
+            pbDeleteBttn.Visible = false;
             pbAttachBtn.Visible = true;
             pbRetrieveBttn.Visible = false;
+            UploadAttachment.Visible = true;
+            //pbSelectBttn.Visible = true;
         }
         else
         {
-            pbAttachBtn.Visible = true;
-            pbRetrieveBttn.Visible = false;
+            pbAddNote.Visible = false;
+            pbSaveBttn.Visible = true;
+            pbDeleteBttn.Visible = true;
+            pbAttachBtn.Visible = false;
+            pbRetrieveBttn.Visible = true;
+
         }
     }
 
@@ -245,7 +243,7 @@ public partial class _Default : System.Web.UI.Page
     {
         //Show the save,delete, and cancel buttons. 
         if (!changingValue)
-            changeButtonView(View.Add);
+            changeButtonView(View.Save);
 
         //Grab the title, body, and tags associated with the selected note and put them in
         //textfields for the user to see.  
@@ -274,12 +272,14 @@ public partial class _Default : System.Web.UI.Page
                         pbRetrieveBttn.Visible = true;
                         pbAttachBtn.Visible = false;
                         UploadAttachment.Visible = false;
+                        //pbSelectBttn.Visible = false;
                     }
                     else
                     {
                         pbRetrieveBttn.Visible = false;
                         pbAttachBtn.Visible = true;
                         UploadAttachment.Visible = true;
+                        //pbSelectBttn.Visible = true;
                     }
                 }
             }
@@ -287,7 +287,6 @@ public partial class _Default : System.Web.UI.Page
         catch (SqlException ex)
         {
             Response.Write("There was an issue adding attachment: " + ex.Message);
-            //                MessageBox.Show("There was an issue adding attachment: " + ex.Message);
         }
 
         //Set the changingValue flag to prevent the buttons from switching until the user is done modifying a note.  
@@ -310,13 +309,6 @@ public partial class _Default : System.Web.UI.Page
          **************************************************************************************/
     public void pbDeleteBttn_Click(object sender, EventArgs e)
     {
-        //            DialogResult result = CustomMessageBox.Show("Are you sure you wish to delete this note?", "Add Note",
-        //                Resources.Light_Cancel_Button, Resources.Dark_Cancel_Button, Resources.Light_Ok_Button, Resources.Dark_Ok_Button);
-
-        //If the user does want to delete the note, remove it from the notes table as well as well as any references in the NoteTags table.  
-        //            if (result == DialogResult.Yes)
-        //            {
-
         int selectedNote = (int)Session["selectedNote"];
 
         try
@@ -330,7 +322,7 @@ public partial class _Default : System.Web.UI.Page
                 using (var command = new SqlCommand("delete from Notes where note_id = @id", connection))
                 {
                     command.Parameters.AddWithValue("id", selectedNote);
-                    command.ExecuteNonQuery(); Response.Write("IN DELETE");
+                    command.ExecuteNonQuery();
                 }
 
                 clearText();
@@ -345,11 +337,9 @@ public partial class _Default : System.Web.UI.Page
         catch (SqlException sqle)
         {
             Response.Write("There was an issue with deleting from the database: " + sqle.Message);
-            //                   MessageBox.Show("There was an issue with deleting from the database: " + sqle.Message);
         }
 
         changingValue = false;
-        //           }
     }
     /****************************************************************************************
          * FUNCTION:   protected void pbAddNote_Click(object sender, EventArgs e)
@@ -470,15 +460,17 @@ public partial class _Default : System.Web.UI.Page
 
     protected void pbAttachBtn_Click(object sender, EventArgs e)
     {
-        UploadAttachment.AllowMultiple = false;
-        //UploadAttachment.Visible = true;
-        
-        using (Stream fs = UploadAttachment.PostedFile.InputStream)
-        {
-            Session["filename"] = Path.GetFileName(UploadAttachment.PostedFile.FileName);
+        //UploadAttachment.AllowMultiple = false;
 
-            BinaryReader br = new BinaryReader(fs);
-            Session["attachment"] = br.ReadBytes((int)fs.Length);
+       // if (UploadAttachment.HasFile)
+        {
+            using (Stream fs = UploadAttachment.PostedFile.InputStream)
+            {
+                Session["filename"] = Path.GetFileName(UploadAttachment.PostedFile.FileName);
+
+                BinaryReader br = new BinaryReader(fs);
+                Session["attachment"] = br.ReadBytes((int)fs.Length);
+            }
         }
     }
 
@@ -513,7 +505,6 @@ public partial class _Default : System.Web.UI.Page
                         connection.Open();
                         com.ExecuteNonQuery();
                     }
-                    Response.Write("attached file: " + filename);
                 }
             }
             catch (SqlException e)
@@ -530,9 +521,48 @@ public partial class _Default : System.Web.UI.Page
 
     protected void pbRetrieveBttn_Click(object sender, EventArgs e)
     {
+        try
+        {
+            int selectedNote = (int)Session["selectedNote"];
+            //Open a connection
+            using (connection = new SqlConnection(conString))
+            {
+                connection.Open();
 
+                string sql = "select attachment, filename from Attachment, AttachedNotes "
+                    + "where attachment.attach_id = AttachedNotes.attach_id and AttachedNotes.note_id = @note_id";
+
+                //Remove references to the note in note_tags.  
+                using (var command = new SqlCommand(sql, connection))
+                {
+                    command.Parameters.AddWithValue("@note_id", selectedNote);
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            attachment = (byte[])reader.GetSqlBinary(0);
+                            filename = reader.GetString(1);
+                           
+                            Response.AppendHeader("Content-Disposition", "attachment; filename=" + filename);
+                            Response.BinaryWrite(attachment);
+                            Response.Flush();
+                            Response.End();                            
+                        }
+                    }
+                }
+            }
+        }
+        catch (SqlException sqle)
+        {
+            Response.Write("There was an issue with deleting from the database: " + sqle.Message);
+        }
+    }
+
+    protected void pbCancelBttn_Click(object sender, ImageClickEventArgs e)
+    {
+        changeButtonView(View.Add);
+        changingValue = false;
+        clearText();
     }
 }
-
-        
-       
+           

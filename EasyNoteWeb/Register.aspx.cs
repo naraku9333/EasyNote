@@ -11,4 +11,13 @@ public partial class Register : System.Web.UI.Page
     {
 
     }
+    public void pbLoginBtn_Click(object sender, EventArgs e)
+    {
+
+    }
+    public void pbRegisterBtn_Click(object sender, EventArgs e)
+    {
+
+
+    }
 }

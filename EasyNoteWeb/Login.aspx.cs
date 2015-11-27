@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 
 public partial class Login : System.Web.UI.Page
 {
@@ -13,11 +9,14 @@ public partial class Login : System.Web.UI.Page
     }
     public void pbLoginBtn_Click(object sender, EventArgs e)
     {
-
+        pnlLogin.Visible = true;
+        pnlRegister.Visible = false;
+        HttpContext.Current.Response.Write("<SCRIPT LANGUAGE='JavaScript'>alert('This the Login page')</SCRIPT>");
     }
     public void pbRegisterBtn_Click(object sender, EventArgs e)
     {
-        
+        pnlLogin.Visible = false;
+        pnlRegister.Visible = true;
 
     }
 }

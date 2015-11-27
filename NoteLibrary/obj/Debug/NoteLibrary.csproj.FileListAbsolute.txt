@@ -34,3 +34,15 @@ C:\Users\Anthony\Documents\GitHub\EasyNote\NoteLibrary\bin\Debug\ClassLibrary1.d
 C:\Users\Anthony\Documents\GitHub\EasyNote\NoteLibrary\obj\Debug\NoteLibrary.csprojResolveAssemblyReference.cache
 C:\Users\Anthony\Documents\GitHub\EasyNote\NoteLibrary\obj\Debug\NoteLibrary.dll
 C:\Users\Anthony\Documents\GitHub\EasyNote\NoteLibrary\obj\Debug\NoteLibrary.pdb
+C:\Users\Rob\Dropbox\GitHub\EasyNote-sean_dev\NoteLibrary\bin\Debug\NoteLibrary.dll
+C:\Users\Rob\Dropbox\GitHub\EasyNote-sean_dev\NoteLibrary\bin\Debug\NoteLibrary.pdb
+C:\Users\Rob\Dropbox\GitHub\EasyNote-sean_dev\NoteLibrary\bin\Debug\ClassLibrary1.dll
+C:\Users\Rob\Dropbox\GitHub\EasyNote-sean_dev\NoteLibrary\obj\Debug\NoteLibrary.csprojResolveAssemblyReference.cache
+C:\Users\Rob\Dropbox\GitHub\EasyNote-sean_dev\NoteLibrary\obj\Debug\NoteLibrary.dll
+C:\Users\Rob\Dropbox\GitHub\EasyNote-sean_dev\NoteLibrary\obj\Debug\NoteLibrary.pdb
+C:\Users\Rob\Dropbox\GitHub\EasyNote-web ui\NoteLibrary\bin\Debug\NoteLibrary.dll
+C:\Users\Rob\Dropbox\GitHub\EasyNote-web ui\NoteLibrary\bin\Debug\NoteLibrary.pdb
+C:\Users\Rob\Dropbox\GitHub\EasyNote-web ui\NoteLibrary\bin\Debug\ClassLibrary1.dll
+C:\Users\Rob\Dropbox\GitHub\EasyNote-web ui\NoteLibrary\obj\Debug\NoteLibrary.csprojResolveAssemblyReference.cache
+C:\Users\Rob\Dropbox\GitHub\EasyNote-web ui\NoteLibrary\obj\Debug\NoteLibrary.dll
+C:\Users\Rob\Dropbox\GitHub\EasyNote-web ui\NoteLibrary\obj\Debug\NoteLibrary.pdb

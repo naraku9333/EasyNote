@@ -42,7 +42,6 @@ public partial class _Default : System.Web.UI.Page
     private void createNoteTable()
     {
         //Try to execute the following Sql statements
-        
         try
         {
             ////Connect to the notebase2 database.                  
@@ -544,6 +543,7 @@ public partial class _Default : System.Web.UI.Page
                             Response.BinaryWrite(attachment);
                             Response.Flush();
                             Response.End();                            
+
                         }
                     }
                 }

@@ -10,13 +10,35 @@ public partial class Login : System.Web.UI.Page
 {
     private string connString;
 
+    /******************************Added for Assignment 5********************************
+    * FUNCTION:  private void Page_Load(object sender, EventArgs e)
+    *
+    * ARGUMENTS: sender - object that is calling the function
+    *            e - any arguments pass for the event
+    *
+    * RETURNS:   This function has no return value
+    *
+    * NOTES:     This function gets called when the page is loaded and sets the 
+    *            connection string on first load
+    **************************************************************************************/
     protected void Page_Load(object sender, EventArgs e)
     {
-        var conn = ConfigurationManager.ConnectionStrings;
-        var settings = conn["sqlserver"];
-        connString = settings.ConnectionString;
+        connString = ConfigurationManager.ConnectionStrings["sqlserver"].ConnectionString;
     }
 
+    /******************************Added for Assignment 5********************************
+    * FUNCTION:  private void pbLoginBtn_Click(object sender, EventArgs e)
+    *
+    * ARGUMENTS: sender - object that is calling the function
+    *            e - any arguments pass for the event
+    *
+    * RETURNS:   This function has no return value
+    *
+    * NOTES:     This function handles the Login button click.
+    *            It checks the DB for the specified username, if found it verifies the 
+    *            passwords match and alerts user if they don't. If user is not found
+    *            user is shown the register interface.
+    **************************************************************************************/
     public void pbLoginBtn_Click(object sender, EventArgs e)
     {
         using (var con = new SqlConnection(connString))
@@ -40,6 +62,7 @@ public partial class Login : System.Web.UI.Page
                     string providedPW = FormsAuthentication.HashPasswordForStoringInConfigFile(tbPassword.Text + salt, "SHA1");
                     if(storedPW == providedPW)
                     {
+                        Session["user"] = tbUserID.Text;
                         FormsAuthentication.RedirectFromLoginPage(tbUserID.Text, false);
                     }
                     else
@@ -51,22 +74,25 @@ public partial class Login : System.Web.UI.Page
         }                    
     }
 
+    /******************************Added for Assignment 5********************************
+    * FUNCTION:  private void pbRegisterBtn_Click(object sender, EventArgs e)
+    *
+    * ARGUMENTS: sender - object that is calling the function
+    *            e - any arguments pass for the event
+    *
+    * RETURNS:   This function has no return value
+    *
+    * NOTES:     This function handles register button click.
+    *            It gets the required information and stores it in the DB and redirects 
+    *            user to the app.
+    **************************************************************************************/
     public void pbRegisterBtn_Click(object sender, EventArgs e)
     {
         if(pnlLogin.Visible == true)
         {
             pnlLogin.Visible = false;
             pnlRegister.Visible = true;
-        }
-        //if (tbUserID0.Text == "" || tbFirstName.Text == "" || tbLastName.Text == "" || tbCreditCard.Text == ""
-        //    || tbPassword1.Text == "" || tbPassword2.Text == "")
-        //{
-        //    HttpContext.Current.Response.Write("<SCRIPT LANGUAGE='JavaScript'>alert('All fields are required')</SCRIPT>");
-        //}
-        //else if (tbPassword1.Text != tbPassword2.Text)
-        //{
-        //    HttpContext.Current.Response.Write("<SCRIPT LANGUAGE='JavaScript'>alert('Passwords do not match')</SCRIPT>");
-        //}
+        }        
         else
         {
             using (var con = new SqlConnection(connString))
@@ -97,11 +123,13 @@ public partial class Login : System.Web.UI.Page
                     com.Parameters.AddWithValue("@un", tbUserID0.Text);
                     com.Parameters.AddWithValue("@hp", hashedpw);
                     com.Parameters.AddWithValue("@salt", salt);
-                    com.Parameters.AddWithValue("@enccc", enccc);
+                    com.Parameters.AddWithValue("@enccc", Convert.ToBase64String(enccc));
                     com.Parameters.AddWithValue("@key", Convert.ToBase64String(key));
                     com.Parameters.AddWithValue("@iv", Convert.ToBase64String(iv));
 
                     com.ExecuteNonQuery();
+
+                    Session["user"] = tbUserID.Text;
                     FormsAuthentication.RedirectFromLoginPage(tbUserID0.Text, false);
                 }
             }

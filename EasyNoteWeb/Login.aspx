@@ -20,23 +20,13 @@
                 <h2>Please Login</h2>
                 <div>
                     <asp:Label style="margin-right:.4em" ID="lbTitle" runat="server" Text="User ID  " Font-Bold="True" Width="100px"></asp:Label>
-                    <asp:TextBox ID="tbUserID" runat="server" Width="349px" CausesValidation="True"></asp:TextBox>
-                    <!--<asp:RequiredFieldValidator id="validator1" runat="server"
-                        ControlToValidate="tbUserID"
-                        ErrorMessage="*"
-                        ForeColor="Red">
-                    </asp:RequiredFieldValidator>-->
+                    <asp:TextBox ID="tbUserID" runat="server" Width="349px" ></asp:TextBox>                    
                     <br />
                     <br />
                 </div>
                 <div>
                     <asp:Label style="margin-right:.4em" ID="Label1" runat="server" Text="Password" Font-Bold="True" Width="100px"></asp:Label>
-                    <asp:TextBox ID="tbPassword" runat="server" Width="349px" TextMode="Password" CausesValidation="True"></asp:TextBox>
-                    <!--<asp:RequiredFieldValidator id="validator2" runat="server"
-                        ControlToValidate="tbPassword"
-                        ErrorMessage="*"
-                        ForeColor="Red">
-                    </asp:RequiredFieldValidator>-->
+                    <asp:TextBox ID="tbPassword" runat="server" Width="349px" TextMode="Password" ></asp:TextBox>                   
                     <br />
                 </div>
                 <br />
@@ -119,18 +109,17 @@
                     <br />
                 </div>
                 <br />
-                <asp:ImageButton style="margin-right:.5em" ID="pbRegisterBtn0" runat="server" Height="24px" ImageUrl="~/images/Dark Register Button.png" 
-                    OnClick="pbRegisterBtn_Click" Width="80px" OnMouseOver="src='images/Light Register Button.png';" OnMouseOut="src='images/Dark Register Button.png';"/>
-                <asp:Label style="margin-right:.5em" ID="Label8" runat="server" Text=" or " Font-Bold="True"></asp:Label>
-                <asp:ImageButton style="margin-right:.5em" ID="pbLoginBtn0" runat="server" Height="24px" ImageUrl="~/images/Dark Login Button.png" Width="80px" 
-                    OnClick="pbLoginBtn_Click" OnMouseOver="src='images/Light Login Button.png';" OnMouseOut="src='images/Dark Login Button.png';"/>
+                <asp:ImageButton style="margin-right:.5em" ID="pbSubmitBtn" runat="server" Height="24px" Width="80px"
+                    ImageUrl="~/images/Dark Submit Button.png" OnClick="pbSubmitBtn_Click"  
+                    OnMouseOver="src='images/Light Submit Button.png';" OnMouseOut="src='images/Dark Submit Button.png';"/>
                 <br />
-                <asp:RegularExpressionValidator ID="cc_validation" runat="SERVER" ControlToValidate="tbCreditCard" ErrorMessage="Enter a valid credit card number." ValidationExpression="\d{4}-?\d{4}-?\d{4}-?\d{4}">
-                    </asp:RegularExpressionValidator>
+                <asp:RegularExpressionValidator ID="cc_validation" runat="SERVER" 
+                    ControlToValidate="tbCreditCard" ErrorMessage="Enter a valid credit card number." 
+                    ValidationExpression="\d{4}-?\d{4}-?\d{4}-?\d{4}">
+                </asp:RegularExpressionValidator>
             </form>
         </center>
     </asp:Panel>
-    <p>
-        &nbsp;</p>
+    <p>&nbsp;</p>
 </body>
 </html>

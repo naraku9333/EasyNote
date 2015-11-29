@@ -39,7 +39,7 @@ public partial class Login : System.Web.UI.Page
     *            passwords match and alerts user if they don't. If user is not found
     *            user is shown the register interface.
     **************************************************************************************/
-    public void pbLoginBtn_Click(object sender, EventArgs e)
+    protected void pbLoginBtn_Click(object sender, EventArgs e)
     {
         using (var con = new SqlConnection(connString))
         {
@@ -86,52 +86,62 @@ public partial class Login : System.Web.UI.Page
     *            It gets the required information and stores it in the DB and redirects 
     *            user to the app.
     **************************************************************************************/
-    public void pbRegisterBtn_Click(object sender, EventArgs e)
+    protected void pbRegisterBtn_Click(object sender, EventArgs e)
+    {       
+        pnlLogin.Visible = false;
+        pnlRegister.Visible = true;        
+    }
+
+    /******************************Added for Assignment 5********************************
+    * FUNCTION:  private void pbSubmitBtn_Click(object sender, EventArgs e)
+    *
+    * ARGUMENTS: sender - object that is calling the function
+    *            e - any arguments pass for the event
+    *
+    * RETURNS:   This function has no return value
+    *
+    * NOTES:     This function handles register button click.
+    *            It gets the required information and stores it in the DB and redirects 
+    *            user to the app.
+    **************************************************************************************/
+    protected void pbSubmitBtn_Click(object sender, System.Web.UI.ImageClickEventArgs e)
     {
-        if(pnlLogin.Visible == true)
+        using (var con = new SqlConnection(connString))
         {
-            pnlLogin.Visible = false;
-            pnlRegister.Visible = true;
-        }        
-        else
-        {
-            using (var con = new SqlConnection(connString))
+            con.Open();
+            using (var com = new SqlCommand("insert into Customers values(@fn, @ln, @un, @hp, @salt, @enccc, @key, @iv)", con))
             {
-                con.Open();
-                using (var com = new SqlCommand("insert into Customers values(@fn, @ln, @un, @hp, @salt, @enccc, @key, @iv)", con))
+                string salt = SaltGeneratorService.GenerateSaltString();
+                string hashedpw = FormsAuthentication.HashPasswordForStoringInConfigFile(tbPassword1.Text + salt, "SHA1");
+                byte[] enccc, key, iv;
+
+                using (var aes = Rijndael.Create())
                 {
-                    string salt = SaltGeneratorService.GenerateSaltString();
-                    string hashedpw = FormsAuthentication.HashPasswordForStoringInConfigFile(tbPassword1.Text + salt, "SHA1");
-                    byte[] enccc, key, iv;
-                     
-                    using (var aes = Rijndael.Create())
+                    using (var ms = new MemoryStream())
                     {
-                        using (var ms = new MemoryStream())
+                        using (var cs = new CryptoStream(ms, aes.CreateEncryptor(), CryptoStreamMode.Write))
                         {
-                            using (var cs = new CryptoStream(ms, aes.CreateEncryptor(), CryptoStreamMode.Write))
-                            {
-                                byte[] b = System.Text.Encoding.UTF8.GetBytes(tbCreditCard.Text);
-                                cs.Write(b, 0, b.Length);
-                                key = aes.Key;
-                                iv = aes.IV;
-                            }
-                            enccc = ms.ToArray();
+                            byte[] b = System.Text.Encoding.UTF8.GetBytes(tbCreditCard.Text);
+                            cs.Write(b, 0, b.Length);
+                            key = aes.Key;
+                            iv = aes.IV;
                         }
+                        enccc = ms.ToArray();
                     }
-                    com.Parameters.AddWithValue("@fn", tbFirstName.Text);
-                    com.Parameters.AddWithValue("@ln", tbLastName.Text);
-                    com.Parameters.AddWithValue("@un", tbUserID0.Text);
-                    com.Parameters.AddWithValue("@hp", hashedpw);
-                    com.Parameters.AddWithValue("@salt", salt);
-                    com.Parameters.AddWithValue("@enccc", Convert.ToBase64String(enccc));
-                    com.Parameters.AddWithValue("@key", Convert.ToBase64String(key));
-                    com.Parameters.AddWithValue("@iv", Convert.ToBase64String(iv));
-
-                    com.ExecuteNonQuery();
-
-                    Session["user"] = tbUserID.Text;
-                    FormsAuthentication.RedirectFromLoginPage(tbUserID0.Text, false);
                 }
+                com.Parameters.AddWithValue("@fn", tbFirstName.Text);
+                com.Parameters.AddWithValue("@ln", tbLastName.Text);
+                com.Parameters.AddWithValue("@un", tbUserID0.Text);
+                com.Parameters.AddWithValue("@hp", hashedpw);
+                com.Parameters.AddWithValue("@salt", salt);
+                com.Parameters.AddWithValue("@enccc", Convert.ToBase64String(enccc));
+                com.Parameters.AddWithValue("@key", Convert.ToBase64String(key));
+                com.Parameters.AddWithValue("@iv", Convert.ToBase64String(iv));
+
+                com.ExecuteNonQuery();
+
+                Session["user"] = tbUserID.Text;
+                FormsAuthentication.RedirectFromLoginPage(tbUserID0.Text, false);
             }
         }
     }

@@ -99,7 +99,7 @@
                     <br />
                 </div>
                 <div>
-                    <asp:Label  style="margin-right:.5em; text-align: right;" ID="Label7" runat="server" Text="Re-Enetr Password" Font-Bold="True" Width="200px"></asp:Label>
+                    <asp:Label  style="margin-right:.5em; text-align: right;" ID="Label7" runat="server" Text="Re-Enter Password" Font-Bold="True" Width="200px"></asp:Label>
                     <asp:TextBox ID="tbPassword2" runat="server" Width="349px" TextMode="Password" CausesValidation="True"></asp:TextBox>
                     <asp:RequiredFieldValidator id="validator8" runat="server"
                         ControlToValidate="tbPassword2"

@@ -44,9 +44,12 @@ public partial class Login : System.Web.UI.Page
         using (var con = new SqlConnection(connString))
         {
             con.Open();
+            //Try to get the hashed password and salt value for the input user.  
             using (var com = new SqlCommand("select hashedpassword, salt from Customers where username=@user", con))
             {
                 com.Parameters.AddWithValue("@user", tbUserID.Text);
+
+                //If there wasn't a value (couldn't read), let the user know that the username was invalid and show the registration panel.  
                 var reader = com.ExecuteReader();
                 if(!reader.Read())
                 {
@@ -54,13 +57,16 @@ public partial class Login : System.Web.UI.Page
                     pnlLogin.Visible = false;
                     pnlRegister.Visible = true;
                 }
+                //Otherwise compare the hashed password vs the hash of the provided password.  
                 else
                 {
                     string salt = reader["salt"] as string;
                     string storedPW = reader["hashedpassword"] as string;
 
                     string providedPW = FormsAuthentication.HashPasswordForStoringInConfigFile(tbPassword.Text + salt, "SHA1");
-                    if(storedPW == providedPW)
+
+                    //If the passwords are equal, log the user in.  Otherwise, notify them there was an error.  
+                    if (storedPW == providedPW)
                     {
                         Session["user"] = tbUserID.Text;
                         FormsAuthentication.RedirectFromLoginPage(tbUserID.Text, false);
@@ -106,42 +112,68 @@ public partial class Login : System.Web.UI.Page
     **************************************************************************************/
     protected void pbSubmitBtn_Click(object sender, System.Web.UI.ImageClickEventArgs e)
     {
-        using (var con = new SqlConnection(connString))
+        if (tbPassword1.Text != tbPassword2.Text)
         {
-            con.Open();
-            using (var com = new SqlCommand("insert into Customers values(@fn, @ln, @un, @hp, @salt, @enccc, @key, @iv)", con))
+            HttpContext.Current.Response.Write("<SCRIPT LANGUAGE='JavaScript'>alert('Passwords do not match')</SCRIPT>");
+        }
+        else
+        {
+            using (var con = new SqlConnection(connString))
             {
-                string salt = SaltGeneratorService.GenerateSaltString();
-                string hashedpw = FormsAuthentication.HashPasswordForStoringInConfigFile(tbPassword1.Text + salt, "SHA1");
-                byte[] enccc, key, iv;
-
-                using (var aes = Rijndael.Create())
+                con.Open();
+                using (var com = new SqlCommand("select count(*) from Customers where username='" + tbUserID0.Text+"'", con))
                 {
-                    using (var ms = new MemoryStream())
+                    var r = com.ExecuteScalar();
+                    if((int)r > 0)
                     {
-                        using (var cs = new CryptoStream(ms, aes.CreateEncryptor(), CryptoStreamMode.Write))
-                        {
-                            byte[] b = System.Text.Encoding.UTF8.GetBytes(tbCreditCard.Text);
-                            cs.Write(b, 0, b.Length);
-                            key = aes.Key;
-                            iv = aes.IV;
-                        }
-                        enccc = ms.ToArray();
+                        HttpContext.Current.Response.Write("<SCRIPT LANGUAGE='JavaScript'>alert('"+
+                            tbUserID0.Text+" already in use. Pick another username')</SCRIPT>");
+                        con.Close();
+                        return;
                     }
                 }
-                com.Parameters.AddWithValue("@fn", tbFirstName.Text);
-                com.Parameters.AddWithValue("@ln", tbLastName.Text);
-                com.Parameters.AddWithValue("@un", tbUserID0.Text);
-                com.Parameters.AddWithValue("@hp", hashedpw);
-                com.Parameters.AddWithValue("@salt", salt);
-                com.Parameters.AddWithValue("@enccc", Convert.ToBase64String(enccc));
-                com.Parameters.AddWithValue("@key", Convert.ToBase64String(key));
-                com.Parameters.AddWithValue("@iv", Convert.ToBase64String(iv));
 
-                com.ExecuteNonQuery();
+                using (var com = new SqlCommand("insert into Customers values(@fn, @ln, @un, @hp, @salt, @enccc, @key, @iv)", con))
+                {
+                    string salt = SaltGeneratorService.GenerateSaltString();//A series of random bytes to make the password longer. 
+                    string hashedpw = FormsAuthentication.HashPasswordForStoringInConfigFile(tbPassword1.Text + salt, "SHA1");
+                    byte[] enccc, key, iv; //The encrypted credit card, key for the aes algorithm, and iv from the algorithm.  
 
-                Session["user"] = tbUserID.Text;
-                FormsAuthentication.RedirectFromLoginPage(tbUserID0.Text, false);
+                    //Create an algorithm to use for symmettric encryption. 
+                    using (var aes = Rijndael.Create())
+                    {
+                        //Create the memory stream to hold the output of encrpytion. 
+                        using (var ms = new MemoryStream())
+                        {
+                            //Use a cryptostream with an encryptor to perofrm the encryption.  
+                            //Then save these values to be placed in the database. 
+                            using (var cs = new CryptoStream(ms, aes.CreateEncryptor(), CryptoStreamMode.Write))
+                            {
+                                byte[] b = System.Text.Encoding.UTF8.GetBytes(tbCreditCard.Text);
+                                cs.Write(b, 0, b.Length);
+                                key = aes.Key;
+                                iv = aes.IV;
+                            }
+                            enccc = ms.ToArray();
+                        }
+                    }
+
+                    //Grab the parameters from the textboxes.  The hashedpassword, encrypted credit card, key, and IV
+                    //have been calculated above and will be placed into the database as well. 
+                    com.Parameters.AddWithValue("@fn", tbFirstName.Text);
+                    com.Parameters.AddWithValue("@ln", tbLastName.Text);
+                    com.Parameters.AddWithValue("@un", tbUserID0.Text);
+                    com.Parameters.AddWithValue("@hp", hashedpw);
+                    com.Parameters.AddWithValue("@salt", salt);
+                    com.Parameters.AddWithValue("@enccc", Convert.ToBase64String(enccc));
+                    com.Parameters.AddWithValue("@key", Convert.ToBase64String(key));
+                    com.Parameters.AddWithValue("@iv", Convert.ToBase64String(iv));
+
+                    com.ExecuteNonQuery();
+
+                    Session["user"] = tbUserID.Text;
+                    FormsAuthentication.RedirectFromLoginPage(tbUserID0.Text, false);
+                }
             }
         }
     }

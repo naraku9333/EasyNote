@@ -40,7 +40,7 @@ public class SaltGeneratorService : System.Web.Services.WebService
     *            salt and converts this into a string to be returned.  
     **************************************************************************************/
     [WebMethod(Description="Returns a salt string generated from a RNGCryptoServiceProvider")]
-    public string GenerateSaltString()
+    public static string GenerateSaltString()
     {
         RNGCryptoServiceProvider prng = new RNGCryptoServiceProvider();         //The Pseudo Random Number Generator for the salt.  
         byte[] saltArray = new byte[50];

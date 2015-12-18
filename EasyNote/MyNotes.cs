@@ -17,19 +17,18 @@ using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Drawing.Text;
-using System.Data.SqlClient;
+using MySql.Data.MySqlClient;
 using EasyNote.Properties;
 using System.IO;
-using System.Diagnostics;
 
 namespace EasyNote
 {
     public partial class MyNotes : Form
     {
-        private SqlConnection connection = null;    //Holds the connection to the database, using conString.
+        private MySqlConnection connection = null;    //Holds the connection to the database, using conString.
 
         //The connection string to use for connecting to the notebase2 database.  
-        private const string conString = "server=10.158.56.48;uid=net2;pwd=dtbz2;database=notebase2;";
+        private const string conString = "server=vps1.svogel.me;user=naraku9333;database=notebase;port=3306;password=Mikal9333;";
 
         private int selectedNote;               //The current note_id selected in the dgv
         private int selectedRow;                //The current row selected in the dgv
@@ -93,16 +92,16 @@ namespace EasyNote
             try
             {
                 ////Connect to the notebase2 database.                  
-                using (connection = new SqlConnection(conString))
+                using (connection = new MySqlConnection(conString))
                 {
                     //Use the notedisplay stored procedure to generate the data for the noteTable.  
-                    using (var com = new SqlCommand("notedisplay", connection) { CommandType = CommandType.StoredProcedure })
+                    using (var com = new MySqlCommand("notedisplay", connection) { CommandType = CommandType.StoredProcedure })
                     {
                         com.Connection = connection;
                         notesTable = new DataTable();
 
                         //Fill the dgv with the data from the notesTable and hide the noteID field.   
-                        using (var adapter = new SqlDataAdapter(com))
+                        using (var adapter = new MySqlDataAdapter(com))
                         {
                             adapter.Fill(notesTable);
                             dgvNotesList.DataSource = notesTable;
@@ -111,7 +110,7 @@ namespace EasyNote
                     }
                 }
             }
-            catch (SqlException e)
+            catch (MySqlException e)
             {
                 MessageBox.Show("Creating the DataGridView of the notes list failed:" + e.Message + "\n" + e.ToString());
             }
@@ -242,20 +241,20 @@ namespace EasyNote
                 {
                     try
                     {
-                        int note_id;
-                        using (connection = new SqlConnection(conString))
+                        int note_id = 0;
+                        using (connection = new MySqlConnection(conString))
                         {
-                            using (var com = new SqlCommand("addnote", connection) { CommandType = CommandType.StoredProcedure })
+                            using (var com = new MySqlCommand("addnote", connection) { CommandType = CommandType.StoredProcedure })
                             {
                                 //Grab the title,text, and body from the textboxes for the stored procedure.  
                                 com.Connection = connection;
                                 com.Parameters.AddWithValue("@title", tbTitle.Text);
                                 com.Parameters.AddWithValue("@body", tbBody.Text);
                                 com.Parameters.AddWithValue("@tags", tbTags.Text);
-                                com.Parameters.Add("@note_id", SqlDbType.Int).Direction = ParameterDirection.Output;                                
+                                com.Parameters.AddWithValue("@note_id", note_id).Direction = ParameterDirection.Output;                                
 
                                 //Update the local table to show the new note.  
-                                using (var adapter = new SqlDataAdapter(com))
+                                using (var adapter = new MySqlDataAdapter(com))
                                 {
                                     adapter.Fill(notesTable);
                                     createNoteTable();                                    
@@ -266,7 +265,7 @@ namespace EasyNote
                         attachFile(note_id);
                         clearText();
                     }
-                    catch (SqlException sqle)
+                    catch (MySqlException sqle)
                     {
                         MessageBox.Show("There was an issue saving the update to the database: " + sqle.Message);
                     }
@@ -290,12 +289,12 @@ namespace EasyNote
             {
                 try
                 {
-                    using (var connection = new SqlConnection(conString))
+                    using (var connection = new MySqlConnection(conString))
                     {
-                        using (var com = new SqlCommand("addattachment", connection) { CommandType = CommandType.StoredProcedure })
+                        using (var com = new MySqlCommand("addattachment", connection) { CommandType = CommandType.StoredProcedure })
                         {
                             com.Connection = connection;
-                            com.Parameters.AddWithValue("@note_id", id);
+                            com.Parameters.AddWithValue("@noteid", id);
                             com.Parameters.AddWithValue("@attachment", attachment);
                             com.Parameters.AddWithValue("@filename", filename);
 
@@ -304,7 +303,7 @@ namespace EasyNote
                         }
                     }
                 }
-                catch (SqlException e)
+                catch (MySqlException e)
                 {
                     MessageBox.Show("There was an issue adding attachment: " + e.Message);
                 }
@@ -351,13 +350,14 @@ namespace EasyNote
             //check if this note has an attachment and set the correct button visible
             try
             {
-                using (var connection = new SqlConnection(conString))
+                using (var connection = new MySqlConnection(conString))
                 {
-                    using (var com = new SqlCommand("select count(*) from AttachedNotes where note_id = " + selectedNote, connection))
+                    connection.Open();
+                    using (var com = new MySqlCommand("select count(*) from AttachedNotes where note_id = @note", connection))
                     {
                         com.Connection = connection;
-                        connection.Open();
-                        int a = (int)com.ExecuteScalar();
+                        com.Parameters.AddWithValue("@note", selectedNote);
+                        long a = (long)com.ExecuteScalar();
                         if(a != 0)
                         {
                             pbRetrieveBttn.Visible = true;
@@ -371,7 +371,7 @@ namespace EasyNote
                     }
                 }
             }
-            catch (SqlException ex)
+            catch (MySqlException ex)
             {
                 MessageBox.Show("There was an issue adding attachment: " + ex.Message);
             }
@@ -478,10 +478,10 @@ namespace EasyNote
                 changeButtonView(View.Save);
                 try
                 {
-                    using (connection = new SqlConnection(conString))
+                    using (connection = new MySqlConnection(conString))
                     {
                         //Use the updatenote stored procedure to update the note with the entered values from the textboxes.  
-                        using (var com = new SqlCommand("updatenote", connection) { CommandType = CommandType.StoredProcedure })
+                        using (var com = new MySqlCommand("updatenote", connection) { CommandType = CommandType.StoredProcedure })
                         {
                             com.Connection = connection;
                             com.Parameters.AddWithValue("@noteid", selectedNote);
@@ -490,7 +490,7 @@ namespace EasyNote
                             com.Parameters.AddWithValue("@tags", tbTags.Text);
 
                             //Update the local table to show the updated note/tags.  
-                            using (var adapter = new SqlDataAdapter(com))
+                            using (var adapter = new MySqlDataAdapter(com))
                             {
                                 adapter.Fill(notesTable);
                                 createNoteTable();
@@ -500,7 +500,7 @@ namespace EasyNote
                     attachFile(selectedNote);
                     clearText();
                 }
-                catch (SqlException sqle)
+                catch (MySqlException sqle)
                 {
                     MessageBox.Show("There was an issue saving the update to the database: " + sqle.Message);
                 }
@@ -587,12 +587,12 @@ namespace EasyNote
                 try
                 {
                     //Open a connection
-                    using (connection = new SqlConnection(conString))
+                    using (connection = new MySqlConnection(conString))
                     {
                         connection.Open();
 
                         //Remove references to the note in note_tags.  
-                        using (var command = new SqlCommand("delete from Notes where note_id = @id", connection))
+                        using (var command = new MySqlCommand("delete from Notes where note_id = @id", connection))
                         {
                             command.Parameters.AddWithValue("id", selectedNote);
                             command.ExecuteNonQuery();                            
@@ -607,7 +607,7 @@ namespace EasyNote
                         dgvNotesList.Rows.RemoveAt(selectedRow);
                     }
                 }
-                catch (SqlException sqle)
+                catch (MySqlException sqle)
                 {
                     MessageBox.Show("There was an issue with deleting from the database: " + sqle.Message);
                 }
@@ -842,22 +842,24 @@ namespace EasyNote
             try
             {
                 //Open a connection
-                using (connection = new SqlConnection(conString))
+                using (connection = new MySqlConnection(conString))
                 {
                     connection.Open();
 
                     string sql = "select attachment, filename from Attachment, AttachedNotes "
-                        + "where attachment.attach_id = AttachedNotes.attach_id and AttachedNotes.note_id = @note_id";
+                        + "where Attachment.attach_id = AttachedNotes.attach_id and AttachedNotes.note_id = @note_id";
 
                     //Remove references to the note in note_tags.  
-                    using (var command = new SqlCommand(sql, connection))
+                    using (var command = new MySqlCommand(sql, connection))
                     {
                         command.Parameters.AddWithValue("@note_id", selectedNote);
                         using (var reader = command.ExecuteReader())
                         {
                             while(reader.Read())
                             {
-                                attachment = (byte[])reader.GetSqlBinary(0);
+                                long l = reader.GetBytes(0,0,null,0,0);
+                                attachment = new byte[l];
+                                reader.GetBytes(0, 0, attachment, 0, (int)l);
                                 filename = reader.GetString(1);
 
                                 string ext = Path.GetExtension(filename);
@@ -875,9 +877,9 @@ namespace EasyNote
                     }
                 }
             }
-            catch (SqlException sqle)
+            catch (MySqlException sqle)
             {
-                MessageBox.Show("There was an issue with deleting from the database: " + sqle.Message);
+                MessageBox.Show("There was an issue with retrieving attachment: " + sqle.Message);
             }
         }
 

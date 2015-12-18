@@ -4,13 +4,14 @@ using System.Web.UI.WebControls;
 using System.Data.SqlClient;
 using System.Data;
 using System.IO;
+using MySql.Data.MySqlClient;
 
 public partial class _Default : System.Web.UI.Page
 {
-    private SqlConnection connection = null;    //Holds the connection to the database, using conString.
+    private MySqlConnection connection = null;    //Holds the connection to the database, using conString.
 
     //The connection string to use for connecting to the notebase2 database.  
-    private const string conString = "server=10.158.56.48;uid=net2;pwd=dtbz2;database=notebase2;";
+    private const string conString = "server=vps1.svogel.me;user=naraku9333;database=notebase;port=3306;password=Mikal9333;";
 
     private int selectedRow;                //The current row selected in the dgv
 
@@ -45,16 +46,16 @@ public partial class _Default : System.Web.UI.Page
         try
         {
             ////Connect to the notebase2 database.                  
-            using (connection = new SqlConnection(conString))
+            using (connection = new MySqlConnection(conString))
             {
                 //Use the notedisplay stored procedure to generate the data for the noteTable.  
-                using (var com = new SqlCommand("notedisplay", connection) { CommandType = CommandType.StoredProcedure })
+                using (var com = new MySqlCommand("notedisplay", connection) { CommandType = CommandType.StoredProcedure })
                 {
                     com.Connection = connection;
                     notesTable = new DataTable();
 
                     //Fill the dgv with the data from the notesTable.   
-                    using (var adapter = new SqlDataAdapter(com))
+                    using (var adapter = new MySqlDataAdapter(com))
                     {
                         adapter.Fill(notesTable);
 
@@ -73,7 +74,7 @@ public partial class _Default : System.Web.UI.Page
                 }
             }
         }
-        catch (SqlException e)
+        catch (MySqlException e)
         {
             Response.Write("Creating the DataGridView of the notes list failed:" + e.Message + "\n" + e.ToString());
         }
@@ -139,10 +140,10 @@ public partial class _Default : System.Web.UI.Page
         try
         {
             int selectedNote = (int)Session["selectedNote"];
-            using (connection = new SqlConnection(conString))
+            using (connection = new MySqlConnection(conString))
             {
                 //Use the updatenote stored procedure to update the note with the entered values from the textboxes.  
-                using (var com = new SqlCommand("updatenote", connection) { CommandType = CommandType.StoredProcedure })
+                using (var com = new MySqlCommand("updatenote", connection) { CommandType = CommandType.StoredProcedure })
                 {               
                     com.Connection = connection;
                     com.Parameters.AddWithValue("@noteid", selectedNote);
@@ -151,7 +152,7 @@ public partial class _Default : System.Web.UI.Page
                     com.Parameters.AddWithValue("@tags", tbTags.Text);
 
                     //Update the local table to show the updated note/tags.  
-                    using (var adapter = new SqlDataAdapter(com))
+                    using (var adapter = new MySqlDataAdapter(com))
                     {
                         adapter.Fill(notesTable);
                         createNoteTable();
@@ -161,7 +162,7 @@ public partial class _Default : System.Web.UI.Page
             attachFile(selectedNote);
             clearText();
         }
-        catch (SqlException sqle)
+        catch (MySqlException sqle)
         {
             Response.Write(sqle.Message);
         }
@@ -256,13 +257,13 @@ public partial class _Default : System.Web.UI.Page
         //check if this note has an attachment and set the correct button visible
         try
         {
-            using (var connection = new SqlConnection(conString))
+            using (var connection = new MySqlConnection(conString))
             {
-                using (var com = new SqlCommand("select count(*) from AttachedNotes where note_id = " + selectedNote, connection))
+                using (var com = new MySqlCommand("select count(*) from AttachedNotes where note_id = " + selectedNote, connection))
                 {
                     com.Connection = connection;
                     connection.Open();
-                    int a = (int)com.ExecuteScalar();
+                    long a = (long)com.ExecuteScalar();
                     if (a != 0)
                     {
                         pbRetrieveBttn.Visible = true;
@@ -280,7 +281,7 @@ public partial class _Default : System.Web.UI.Page
                 }
             }
         }
-        catch (SqlException ex)
+        catch (MySqlException ex)
         {
             Response.Write("There was an issue adding attachment: " + ex.Message);
         }
@@ -290,19 +291,19 @@ public partial class _Default : System.Web.UI.Page
     }
 
     /**********************Updated for Assignment 4****************************************
-         * FUNCTION:  private void pbDeleteBttn_Click(object sender, EventArgs e)
-         *
-         * ARGUMENTS: sender - object that is calling the function
-         *            e - any arguments pass for the event
-         *
-         * RETURNS:   This function has no return value, but the dataGridView may have a row be
-         *            removed.  The database will also have this value deleted.  
-         *
-         * NOTES:     This function is called when the pbSaveBttn is clicked
-         *            It deletes the currently selected row from the datagridview and the 
-         *            currently selected note from that row from the database.  
-         *
-         **************************************************************************************/
+    * FUNCTION:  private void pbDeleteBttn_Click(object sender, EventArgs e)
+    *
+    * ARGUMENTS: sender - object that is calling the function
+    *            e - any arguments pass for the event
+    *
+    * RETURNS:   This function has no return value, but the dataGridView may have a row be
+    *            removed.  The database will also have this value deleted.  
+    *
+    * NOTES:     This function is called when the pbSaveBttn is clicked
+    *            It deletes the currently selected row from the datagridview and the 
+    *            currently selected note from that row from the database.  
+    *
+    **************************************************************************************/
     public void pbDeleteBttn_Click(object sender, EventArgs e)
     {
         int selectedNote = (int)Session["selectedNote"];
@@ -310,12 +311,12 @@ public partial class _Default : System.Web.UI.Page
         try
         {
             //Open a connection
-            using (connection = new SqlConnection(conString))
+            using (connection = new MySqlConnection(conString))
             {
                 connection.Open();
 
                 //Remove references to the note in note_tags.  
-                using (var command = new SqlCommand("delete from Notes where note_id = @id", connection))
+                using (var command = new MySqlCommand("delete from Notes where note_id = @id", connection))
                 {
                     command.Parameters.AddWithValue("id", selectedNote);
                     command.ExecuteNonQuery();
@@ -330,24 +331,25 @@ public partial class _Default : System.Web.UI.Page
                 createNoteTable();
             }
         }
-        catch (SqlException sqle)
+        catch (MySqlException sqle)
         {
             Response.Write("There was an issue with deleting from the database: " + sqle.Message);
         }
 
         changingValue = false;
     }
+
     /****************************************************************************************
-         * FUNCTION:   protected void pbAddNote_Click(object sender, EventArgs e)
-         *
-         * ARGUMENTS: sender - object that is calling the function
-         *            e - any arguments pass for the event
-         *
-         * RETURNS:   This function has no return value
-         *
-         * NOTES:     This function is called when the pbAddNote button is clicked  It adds the new note to 
-         *            the database.
-         **************************************************************************************/
+    * FUNCTION:   protected void pbAddNote_Click(object sender, EventArgs e)
+    *
+    * ARGUMENTS: sender - object that is calling the function
+    *            e - any arguments pass for the event
+    *
+    * RETURNS:   This function has no return value
+    *
+    * NOTES:     This function is called when the pbAddNote button is clicked  It adds the new note to 
+    *            the database.
+    **************************************************************************************/
     protected void pbAddNote_Click(object sender, EventArgs e)
     {
         //Ensure there is something to add.  
@@ -356,31 +358,31 @@ public partial class _Default : System.Web.UI.Page
             try
             {
                 int note_id;
-                using (connection = new SqlConnection(conString))
+                using (connection = new MySqlConnection(conString))
                 {
                     //Use the updatenote stored procedure to update the note with the entered values from the textboxes.  
-                    using (var com = new SqlCommand("addnote", connection) { CommandType = CommandType.StoredProcedure })
+                    using (var com = new MySqlCommand("addnote", connection) { CommandType = CommandType.StoredProcedure })
                     {
                         //Grab the title,text, and body from the textboxes for the stored procedure. 
                         com.Connection = connection;
-                        com.Parameters.AddWithValue("@note_id", SqlDbType.Int).Direction = ParameterDirection.Output;
+                        com.Parameters.AddWithValue("@nid", SqlDbType.Int).Direction = ParameterDirection.Output;
                         com.Parameters.AddWithValue("@title", tbTitle.Text);
                         com.Parameters.AddWithValue("@body", tbBody.Text);
                         com.Parameters.AddWithValue("@tags", tbTags.Text);
 
                         //Update the local table to show the updated note/tags.  
-                        using (var adapter = new SqlDataAdapter(com))
+                        using (var adapter = new MySqlDataAdapter(com))
                         {
                             adapter.Fill(notesTable);
                             createNoteTable();
                         }
-                        note_id = int.Parse(com.Parameters["@note_id"].Value.ToString());
+                        note_id = int.Parse(com.Parameters["@nid"].Value.ToString());
                     }
                 }         
                 attachFile(note_id);
                 clearText();
             }
-            catch (SqlException sqle)
+            catch (MySqlException sqle)
             {
                 Response.Write(sqle.Message);    
             }
@@ -489,12 +491,12 @@ public partial class _Default : System.Web.UI.Page
         {
             try
             {
-                using (var connection = new SqlConnection(conString))
+                using (var connection = new MySqlConnection(conString))
                 {
-                    using (var com = new SqlCommand("addattachment", connection) { CommandType = CommandType.StoredProcedure })
+                    using (var com = new MySqlCommand("addattachment", connection) { CommandType = CommandType.StoredProcedure })
                     {
                         com.Connection = connection;
-                        com.Parameters.AddWithValue("@note_id", id);
+                        com.Parameters.AddWithValue("@noteid", id);
                         com.Parameters.AddWithValue("@attachment", attachment);
                         com.Parameters.AddWithValue("@filename", filename);
 
@@ -503,7 +505,7 @@ public partial class _Default : System.Web.UI.Page
                     }
                 }
             }
-            catch (SqlException e)
+            catch (MySqlException e)
             {
                 Response.Write("There was an issue adding attachment: " + e.Message);
             }
@@ -521,22 +523,24 @@ public partial class _Default : System.Web.UI.Page
         {
             int selectedNote = (int)Session["selectedNote"];
             //Open a connection
-            using (connection = new SqlConnection(conString))
+            using (connection = new MySqlConnection(conString))
             {
                 connection.Open();
 
                 string sql = "select attachment, filename from Attachment, AttachedNotes "
-                    + "where attachment.attach_id = AttachedNotes.attach_id and AttachedNotes.note_id = @note_id";
+                    + "where Attachment.attach_id = AttachedNotes.attach_id and AttachedNotes.note_id = @note_id";
 
                 //Remove references to the note in note_tags.  
-                using (var command = new SqlCommand(sql, connection))
+                using (var command = new MySqlCommand(sql, connection))
                 {
                     command.Parameters.AddWithValue("@note_id", selectedNote);
                     using (var reader = command.ExecuteReader())
                     {
                         while (reader.Read())
                         {
-                            attachment = (byte[])reader.GetSqlBinary(0);
+                            long l = reader.GetBytes(0, 0, null, 0, 0);
+                            attachment = new byte[l];
+                            reader.GetBytes(0, 0, attachment, 0, (int)l);
                             filename = reader.GetString(1);
                            
                             Response.AppendHeader("Content-Disposition", "attachment; filename=" + filename);
@@ -549,9 +553,9 @@ public partial class _Default : System.Web.UI.Page
                 }
             }
         }
-        catch (SqlException sqle)
+        catch (MySqlException sqle)
         {
-            Response.Write("There was an issue with deleting from the database: " + sqle.Message);
+            Response.Write("There was an issue with retrieving attachment from the database: " + sqle.Message);
         }
     }
 

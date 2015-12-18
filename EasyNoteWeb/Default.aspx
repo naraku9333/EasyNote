@@ -154,7 +154,7 @@
         <div style="width: 705px; margin-left: 0px">
             <asp:GridView bgcolor="#C0C0C0" text="black" ID="dgvNotesList" runat="server" AllowSorting="True" 
                 onselectedindexchanged="dgvNotesList_SelectedIndexChanged" 
-                onsorting="dgvNotesList_Sorting" Width="350px" AutoGenerateSelectButton="True">
+                onsorting="dgvNotesList_Sorting" Width="704px" AutoGenerateSelectButton="True" style="margin-left: 0px">
                 <HeaderStyle BackColor="#565656" Font-Bold="True" ForeColor="White" />
                 <RowStyle BackColor="white" ForeColor="black" />
             </asp:GridView>

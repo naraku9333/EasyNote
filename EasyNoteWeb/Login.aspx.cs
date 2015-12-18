@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Configuration;
 using System.Web;
-using System.Data.SqlClient;
 using System.Web.Security;
 using System.Security.Cryptography;
 using System.IO;
+using MySql.Data.MySqlClient;
 
 public partial class Login : System.Web.UI.Page
 {
@@ -41,11 +41,11 @@ public partial class Login : System.Web.UI.Page
     **************************************************************************************/
     protected void pbLoginBtn_Click(object sender, EventArgs e)
     {
-        using (var con = new SqlConnection(connString))
+        using (var con = new MySqlConnection(connString))
         {
             con.Open();
             //Try to get the hashed password and salt value for the input user.  
-            using (var com = new SqlCommand("select hashedpassword, salt from Customers where username=@user", con))
+            using (var com = new MySqlCommand("select hashedpassword, salt from Customers where username=@user", con))
             {
                 com.Parameters.AddWithValue("@user", tbUserID.Text);
 
@@ -118,13 +118,13 @@ public partial class Login : System.Web.UI.Page
         }
         else
         {
-            using (var con = new SqlConnection(connString))
+            using (var con = new MySqlConnection(connString))
             {
                 con.Open();
-                using (var com = new SqlCommand("select count(*) from Customers where username='" + tbUserID0.Text+"'", con))
+                using (var com = new MySqlCommand("select count(*) from Customers where username='" + tbUserID0.Text+"'", con))
                 {
                     var r = com.ExecuteScalar();
-                    if((int)r > 0)
+                    if((long)r > 0)
                     {
                         HttpContext.Current.Response.Write("<SCRIPT LANGUAGE='JavaScript'>alert('"+
                             tbUserID0.Text+" already in use. Pick another username')</SCRIPT>");
@@ -133,7 +133,9 @@ public partial class Login : System.Web.UI.Page
                     }
                 }
 
-                using (var com = new SqlCommand("insert into Customers values(@fn, @ln, @un, @hp, @salt, @enccc, @key, @iv)", con))
+                using (var com = new MySqlCommand(
+                    "insert into Customers(firstname, lastname, username, hashedpassword, salt, enccardnum, enckey, iv)"
+                    +" values(@fn, @ln, @un, @hp, @salt, @enccc, @key, @iv)", con))
                 {
                     string salt = SaltGeneratorService.GenerateSaltString();//A series of random bytes to make the password longer. 
                     string hashedpw = FormsAuthentication.HashPasswordForStoringInConfigFile(tbPassword1.Text + salt, "SHA1");

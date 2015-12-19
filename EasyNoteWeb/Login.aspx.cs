@@ -5,6 +5,7 @@ using System.Web.Security;
 using System.Security.Cryptography;
 using System.IO;
 using MySql.Data.MySqlClient;
+using System.Text;
 
 public partial class Login : System.Web.UI.Page
 {
@@ -136,8 +137,8 @@ public partial class Login : System.Web.UI.Page
                 using (var com = new MySqlCommand(
                     "insert into Customers(firstname, lastname, username, hashedpassword, salt, enccardnum, enckey, iv)"
                     +" values(@fn, @ln, @un, @hp, @salt, @enccc, @key, @iv)", con))
-                {
-                    string salt = SaltGeneratorService.GenerateSaltString();//A series of random bytes to make the password longer. 
+                {                  
+                    string salt = GenerateSaltString();//A series of random bytes to make the password longer. 
                     string hashedpw = FormsAuthentication.HashPasswordForStoringInConfigFile(tbPassword1.Text + salt, "SHA1");
                     byte[] enccc, key, iv; //The encrypted credit card, key for the aes algorithm, and iv from the algorithm.  
 
@@ -178,5 +179,14 @@ public partial class Login : System.Web.UI.Page
                 }
             }
         }
+    }
+
+    private static string GenerateSaltString()
+    {
+        RNGCryptoServiceProvider prng = new RNGCryptoServiceProvider();         //The Pseudo Random Number Generator for the salt.  
+        byte[] saltArray = new byte[50];
+
+        prng.GetBytes(saltArray);
+        return Encoding.Default.GetString(saltArray);
     }
 }

@@ -28,7 +28,7 @@ namespace EasyNote
         private MySqlConnection connection = null;    //Holds the connection to the database, using conString.
 
         //The connection string to use for connecting to the notebase2 database.  
-        private const string conString = "server=vps1.svogel.me;user=naraku9333;database=notebase;port=3306;password=Mikal9333;";
+        private const string conString = "server=vps1.svogel.me;user=easynote;database=notebase;port=3306;password=CSCI_473;";
 
         private int selectedNote;               //The current note_id selected in the dgv
         private int selectedRow;                //The current row selected in the dgv
@@ -105,6 +105,7 @@ namespace EasyNote
                         {
                             adapter.Fill(notesTable);
                             dgvNotesList.DataSource = notesTable;
+                            dgvNotesList.Sort(dgvNotesList.Columns["Created"], System.ComponentModel.ListSortDirection.Ascending);
                             dgvNotesList.Columns["ID"].Visible = false;
                         }
                     }
@@ -251,7 +252,7 @@ namespace EasyNote
                                 com.Parameters.AddWithValue("@title", tbTitle.Text);
                                 com.Parameters.AddWithValue("@body", tbBody.Text);
                                 com.Parameters.AddWithValue("@tags", tbTags.Text);
-                                com.Parameters.AddWithValue("@note_id", note_id).Direction = ParameterDirection.Output;                                
+                                com.Parameters.AddWithValue("@nid", note_id).Direction = ParameterDirection.Output;                                
 
                                 //Update the local table to show the new note.  
                                 using (var adapter = new MySqlDataAdapter(com))
@@ -259,7 +260,7 @@ namespace EasyNote
                                     adapter.Fill(notesTable);
                                     createNoteTable();                                    
                                 }
-                                note_id = int.Parse(com.Parameters["@note_id"].Value.ToString());
+                                note_id = int.Parse(com.Parameters["@nid"].Value.ToString());
                             }
                         }
                         attachFile(note_id);

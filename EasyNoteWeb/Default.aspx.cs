@@ -11,7 +11,7 @@ public partial class _Default : System.Web.UI.Page
     private MySqlConnection connection = null;    //Holds the connection to the database, using conString.
 
     //The connection string to use for connecting to the notebase2 database.  
-    private const string conString = "server=vps1.svogel.me;user=naraku9333;database=notebase;port=3306;password=Mikal9333;";
+    private const string conString = "server=vps1.svogel.me;user=easynote;database=notebase;port=3306;password=CSCI_473;";
 
     private int selectedRow;                //The current row selected in the dgv
 
@@ -26,8 +26,8 @@ public partial class _Default : System.Web.UI.Page
 
     protected void Page_Load(object sender, EventArgs e)
     {
+       // if(!IsPostBack) Session["sortString"] = "ID ASC";
         createNoteTable();
-
     }
 
     /******************************Updated for Assignment 4********************************
@@ -81,19 +81,19 @@ public partial class _Default : System.Web.UI.Page
     }
 
     /********************************New for Assignment 4******************************
-        * FUNCTION:  protected void dgvNotesList_Sorting(object sender, GridViewSortEventArgs e)
-        *
-        * ARGUMENTS: sender - object that is calling the function
-        *            e - the sorting arguments, including the direction and column.  
-        *
-        * RETURNS:   No return value, but the dgvNotesList will be sorted based on the column selected
-        *            and the sort direction given.   
-        *
-        * NOTES:     This event is fired when any hyperlink is clicked on the dgvNotesList girdview.  
-        *            The event grabs the given sort direction and transforms it into a string, as well
-         *           as the sort expression (Column id).  These two arguments are used to set a DataView's
-        *            Sort property.  This updated table is then shown by changing the dgvNotesList DataSource.  
-        **************************************************************************************/
+    * FUNCTION:  protected void dgvNotesList_Sorting(object sender, GridViewSortEventArgs e)
+    *
+    * ARGUMENTS: sender - object that is calling the function
+    *            e - the sorting arguments, including the direction and column.  
+    *
+    * RETURNS:   No return value, but the dgvNotesList will be sorted based on the column selected
+    *            and the sort direction given.   
+    *
+    * NOTES:     This event is fired when any hyperlink is clicked on the dgvNotesList girdview.  
+    *            The event grabs the given sort direction and transforms it into a string, as well
+    *            as the sort expression (Column id).  These two arguments are used to set a DataView's
+    *            Sort property.  This updated table is then shown by changing the dgvNotesList DataSource.  
+    **************************************************************************************/
     protected void dgvNotesList_Sorting(object sender, GridViewSortEventArgs e)
     {
         string sortString = "ASC";          //The direction of the sort as a string.  
@@ -170,15 +170,15 @@ public partial class _Default : System.Web.UI.Page
     } //end if dialogresult == yes  
 
     /**************************Updated for Assignment 4************************************
-     * FUNCTION:  private void changeButtonView()
-     *
-     * ARGUMENTS: View v - an enmeration used to determine whether to display the attach or
-     *                     retrieve button.  It will be set to View.Add for the add button.  
-     *
-     * RETURNS:   This function has no return value
-     *
-     * NOTES:     Helper function to swap button images for UI views
-     **************************************************************************************/
+    * FUNCTION:  private void changeButtonView()
+    *
+    * ARGUMENTS: View v - an enmeration used to determine whether to display the attach or
+    *                     retrieve button.  It will be set to View.Add for the add button.  
+    *
+    * RETURNS:   This function has no return value
+    *
+    * NOTES:     Helper function to swap button images for UI views
+    **************************************************************************************/
     private void changeButtonView(View v)
     {        
         //pbCancelBttn.Visible = !pbCancelBttn.Visible;
@@ -230,11 +230,11 @@ public partial class _Default : System.Web.UI.Page
     * RETURNS:   No return value, but textFields in the program will be modified.
     *
     * NOTES:     The selectedIndexChanged event for dgvNotesList is fired when any of the
-     *           select hyperlinks in the first column of the dgvNotesList is clicked. 
-     *           It uses the selecte index (row) to retrieve information from the dgvNotesList
-     *           gridview and place it into the Title,Body,and Tags text boxes.  It also places
-     *           the selected note from the row into the session, so that it can be used later
-     *           to determine what note to modify/delete.  
+    *            select hyperlinks in the first column of the dgvNotesList is clicked. 
+    *            It uses the selecte index (row) to retrieve information from the dgvNotesList
+    *            gridview and place it into the Title,Body,and Tags text boxes.  It also places
+    *            the selected note from the row into the session, so that it can be used later
+    *            to determine what note to modify/delete.  
     **************************************************************************************/
     protected void dgvNotesList_SelectedIndexChanged(object sender, EventArgs e)
     {
@@ -340,7 +340,7 @@ public partial class _Default : System.Web.UI.Page
     }
 
     /****************************************************************************************
-    * FUNCTION:   protected void pbAddNote_Click(object sender, EventArgs e)
+    * FUNCTION:  protected void pbAddNote_Click(object sender, EventArgs e)
     *
     * ARGUMENTS: sender - object that is calling the function
     *            e - any arguments pass for the event
@@ -390,7 +390,7 @@ public partial class _Default : System.Web.UI.Page
         changingValue = false;
     }
     /****************************************************************************************
-    * FUNCTION:   protected void pbSearch_Click(object sender, EventArgs e)
+    * FUNCTION:  protected void pbSearch_Click(object sender, EventArgs e)
     *
     * ARGUMENTS: sender - object that is calling the function
     *            e - any arguments pass for the event

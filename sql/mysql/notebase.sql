@@ -15,7 +15,9 @@ lastname varchar(50) not null, username varchar(50) not null, hashedpassword var
 salt varchar(50) not null, enccardnum varchar(50) not null, enckey varchar(60) not null, iv varchar(50) not null);
 
 create table NoteTags(note_id int not null, tag_id int not null, primary key(note_id, tag_id),
-foreign key(note_id) references Notes(note_id), foreign key(tag_id) references Tag(tag_id));
+foreign key(note_id) references Notes(note_id) on delete cascade,
+foreign key(tag_id) references Tag(tag_id) on delete cascade);
 
 create table AttachedNotes(note_id int not null, attach_id int not null, primary key(note_id, attach_id),
-foreign key(note_id) references Notes(note_id), foreign key(attach_id) references Attachment(attach_id));
+foreign key(note_id) references Notes(note_id) on delete cascade,
+foreign key(attach_id) references Attachment(attach_id));

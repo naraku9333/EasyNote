@@ -25,6 +25,9 @@ namespace EasyNote
 {
     public partial class MyNotes : Form
     {
+        private string user;
+        private long id;
+
         private MySqlConnection connection = null;    //Holds the connection to the database, using conString.
 
         //The connection string to use for connecting to the notebase2 database.  
@@ -58,7 +61,23 @@ namespace EasyNote
         {
             InitializeComponent();
             ResizeRedraw = true;//force redraw on window resize
-            createNoteTable();
+        }
+
+        private void MyNotes_Load(object sender, EventArgs e)
+        {
+            Login l = new Login();
+            var r = l.ShowDialog();
+            if (r == DialogResult.OK)
+            {
+                lnkLogged.Text = user = l.user;
+                id = l.id;
+                createNoteTable();
+            }
+            else
+            {
+                l.Dispose();
+                Close();
+            }
         }
 
         /**************************************************************************************
@@ -98,6 +117,7 @@ namespace EasyNote
                     using (var com = new MySqlCommand("notedisplay", connection) { CommandType = CommandType.StoredProcedure })
                     {
                         com.Connection = connection;
+                        com.Parameters.AddWithValue("@custid", id);
                         notesTable = new DataTable();
 
                         //Fill the dgv with the data from the notesTable and hide the noteID field.   
@@ -249,6 +269,7 @@ namespace EasyNote
                             {
                                 //Grab the title,text, and body from the textboxes for the stored procedure.  
                                 com.Connection = connection;
+                                com.Parameters.AddWithValue("@custid", id);
                                 com.Parameters.AddWithValue("@title", tbTitle.Text);
                                 com.Parameters.AddWithValue("@body", tbBody.Text);
                                 com.Parameters.AddWithValue("@tags", tbTags.Text);
@@ -374,7 +395,7 @@ namespace EasyNote
             }
             catch (MySqlException ex)
             {
-                MessageBox.Show("There was an issue adding attachment: " + ex.Message);
+                MessageBox.Show("There was an issue reading the note: " + ex.Message);
             }
 
             //Set the changingValue flag to prevent the buttons from switching until the user is done modifying a note.  
@@ -484,7 +505,7 @@ namespace EasyNote
                         //Use the updatenote stored procedure to update the note with the entered values from the textboxes.  
                         using (var com = new MySqlCommand("updatenote", connection) { CommandType = CommandType.StoredProcedure })
                         {
-                            com.Connection = connection;
+                            com.Connection = connection;                           
                             com.Parameters.AddWithValue("@noteid", selectedNote);
                             com.Parameters.AddWithValue("@title", tbTitle.Text);
                             com.Parameters.AddWithValue("@body", tbBody.Text);
@@ -918,6 +939,19 @@ namespace EasyNote
             //create image from resource and display
             Image retrieveButton = Resources.Dark_Retrieve_Button;
             pbRetrieveBttn.Image = retrieveButton;
+        }
+
+        private void lnkLogged_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Login l = new Login();
+            var r = l.ShowDialog();
+            if (r == DialogResult.OK)
+            {
+                lnkLogged.Text = user = l.user;
+                id = l.id;
+                createNoteTable();
+            }
+            else MessageBox.Show("New login failed, staying logged in as " + user);
         }
     }
 }

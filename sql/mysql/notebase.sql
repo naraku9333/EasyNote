@@ -20,4 +20,8 @@ foreign key(tag_id) references Tag(tag_id) on delete cascade);
 
 create table AttachedNotes(note_id int not null, attach_id int not null, primary key(note_id, attach_id),
 foreign key(note_id) references Notes(note_id) on delete cascade,
-foreign key(attach_id) references Attachment(attach_id));
+foreign key(attach_id) references Attachment(attach_id) on delete cascade);
+
+create table CustomerNotes(cust_id int not null, note_id int not null, primary key(cust_id, note_id),
+foreign key(cust_id) references Customers(cust_id) on delete cascade,
+foreign key(note_id) references Notes(note_id) on delete cascade);

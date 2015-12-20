@@ -46,7 +46,7 @@ public partial class Login : System.Web.UI.Page
         {
             con.Open();
             //Try to get the hashed password and salt value for the input user.  
-            using (var com = new MySqlCommand("select hashedpassword, salt from Customers where username=@user", con))
+            using (var com = new MySqlCommand("select cust_id, hashedpassword, salt from Customers where username=@user", con))
             {
                 com.Parameters.AddWithValue("@user", tbUserID.Text);
 
@@ -70,6 +70,7 @@ public partial class Login : System.Web.UI.Page
                     if (storedPW == providedPW)
                     {
                         Session["user"] = tbUserID.Text;
+                        Session["id"] = (int)reader["cust_id"];
                         FormsAuthentication.RedirectFromLoginPage(tbUserID.Text, false);
                     }
                     else
@@ -175,6 +176,7 @@ public partial class Login : System.Web.UI.Page
                     com.ExecuteNonQuery();
 
                     Session["user"] = tbUserID.Text;
+                    Session["id"] = com.LastInsertedId;
                     FormsAuthentication.RedirectFromLoginPage(tbUserID0.Text, false);
                 }
             }

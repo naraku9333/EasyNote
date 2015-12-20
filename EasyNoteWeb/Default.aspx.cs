@@ -26,7 +26,7 @@ public partial class _Default : System.Web.UI.Page
 
     protected void Page_Load(object sender, EventArgs e)
     {
-       // if(!IsPostBack) Session["sortString"] = "ID ASC";
+        lbUser.Text = Session["user"] as string;
         createNoteTable();
     }
 
@@ -52,6 +52,7 @@ public partial class _Default : System.Web.UI.Page
                 using (var com = new MySqlCommand("notedisplay", connection) { CommandType = CommandType.StoredProcedure })
                 {
                     com.Connection = connection;
+                    com.Parameters.AddWithValue("@custid", Session["id"]);
                     notesTable = new DataTable();
 
                     //Fill the dgv with the data from the notesTable.   
@@ -365,6 +366,7 @@ public partial class _Default : System.Web.UI.Page
                     {
                         //Grab the title,text, and body from the textboxes for the stored procedure. 
                         com.Connection = connection;
+                        com.Parameters.AddWithValue("@custid", Session["id"]);
                         com.Parameters.AddWithValue("@nid", SqlDbType.Int).Direction = ParameterDirection.Output;
                         com.Parameters.AddWithValue("@title", tbTitle.Text);
                         com.Parameters.AddWithValue("@body", tbBody.Text);
@@ -564,6 +566,14 @@ public partial class _Default : System.Web.UI.Page
         changeButtonView(View.Add);
         changingValue = false;
         clearText();
+    }
+
+    protected void LinkButton_Click(Object sender, EventArgs e)
+    {
+        Session.Clear();
+        Session.RemoveAll();
+        Session.Abandon();
+        Response.Redirect("Login.aspx");
     }
 }
            

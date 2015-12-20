@@ -112,12 +112,12 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="Dark_Add_Button" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\Dark Add Button.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -136,8 +136,14 @@
   <data name="Dark_Exit_Button" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\Dark Exit Button.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="Dark_Login_Button" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\Dark Login Button.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="Dark_Ok_Button" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\Dark Ok Button.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Dark_Register_Button" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\Dark Register Button.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Dark_Retrieve_Button" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\Dark Retrieve Button.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -147,6 +153,9 @@
   </data>
   <data name="Dark_Show_Button" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\Dark Show Button.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Dark_Submit_Button" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\Dark Submit Button.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Light_Add_Button" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\Light Add Button.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -166,8 +175,14 @@
   <data name="Light_Exit_Button" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\Light Exit Button.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="Light_Login_Button" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\Light Login Button.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="Light_Ok_Button" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\Light Ok Button.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Light_Register_Button" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\Light Register Button.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Light_Retrieve_Button" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\Light Retrieve Button.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -177,5 +192,8 @@
   </data>
   <data name="Light_Show_Button" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\Light Show Button.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Light_Submit_Button" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\Light Submit Button.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

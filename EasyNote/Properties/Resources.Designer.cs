@@ -123,9 +123,29 @@ namespace EasyNote.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Dark_Login_Button {
+            get {
+                object obj = ResourceManager.GetObject("Dark_Login_Button", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Dark_Ok_Button {
             get {
                 object obj = ResourceManager.GetObject("Dark_Ok_Button", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Dark_Register_Button {
+            get {
+                object obj = ResourceManager.GetObject("Dark_Register_Button", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -156,6 +176,16 @@ namespace EasyNote.Properties {
         internal static System.Drawing.Bitmap Dark_Show_Button {
             get {
                 object obj = ResourceManager.GetObject("Dark_Show_Button", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Dark_Submit_Button {
+            get {
+                object obj = ResourceManager.GetObject("Dark_Submit_Button", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -223,9 +253,29 @@ namespace EasyNote.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Light_Login_Button {
+            get {
+                object obj = ResourceManager.GetObject("Light_Login_Button", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Light_Ok_Button {
             get {
                 object obj = ResourceManager.GetObject("Light_Ok_Button", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Light_Register_Button {
+            get {
+                object obj = ResourceManager.GetObject("Light_Register_Button", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -256,6 +306,16 @@ namespace EasyNote.Properties {
         internal static System.Drawing.Bitmap Light_Show_Button {
             get {
                 object obj = ResourceManager.GetObject("Light_Show_Button", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Light_Submit_Button {
+            get {
+                object obj = ResourceManager.GetObject("Light_Submit_Button", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

@@ -1,7 +1,7 @@
 /*MySQL stored procedure*/
 DELIMITER //
 DROP PROCEDURE IF EXISTS addnote;
-CREATE PROCEDURE `addnote`(	IN title VARCHAR(50), IN body VARCHAR(65000), IN tags VARCHAR(25), OUT nid INT )
+CREATE PROCEDURE `addnote`(	IN custid INT, IN title VARCHAR(50), IN body VARCHAR(65000), IN tags VARCHAR(25), OUT nid INT )
 BEGIN
 
 	DECLARE delim CHAR(1);
@@ -18,6 +18,8 @@ BEGIN
 
 	/*split tags*/
 	SET nid = LAST_INSERT_ID();
+
+	INSERT INTO CustomerNotes (cust_id, note_id) VALUES (custid, nid);
 
 	SET strt = 1;
 	SET tags = TRIM(tags);

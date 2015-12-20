@@ -1,7 +1,7 @@
 /*MySQL - stored procedure*/
 DELIMITER //
 DROP PROCEDURE IF EXISTS notedisplay;
-CREATE PROCEDURE `notedisplay` ()
+CREATE PROCEDURE `notedisplay` ( IN custid INT )
 BEGIN
 	/* Get the combinations of NoteId with their Tag Ids*/
 	CREATE TEMPORARY TABLE NAT ( noteid INT , tagname VARCHAR(100));
@@ -27,6 +27,7 @@ BEGIN
 		, NTD.tags AS Tags
 
 	FROM Notes
+	JOIN CustomerNotes ON Notes.note_id = CustomerNotes.note_id and CustomerNotes.cust_id = custid 
 	LEFT JOIN NTD ON NTD.noteid = Notes.note_id;
 
 	DROP TABLE NAT;

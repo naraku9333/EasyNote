@@ -22,8 +22,7 @@
         span{
 			display: inline-block;
             margin-left: 0px;
-            height: 29px;
-        }
+            }
         ImageButton{
             margin-right:.5em;
         }
@@ -85,7 +84,12 @@
 <body bgcolor="#0066CC" text="white">
     <center>
     <form id="form1" runat="server">
-        <h1 style = "font-family: 'Vladimir Script'">Easy Note Web</h1>
+        <h1 style = "font-family: 'Vladimir Script'">Easy Note Web
+        </h1>
+        <div>
+            <asp:Label style="padding-left:70%" ID="Label1" runat="server" Text="Signed in as  " Width="80px"></asp:Label>
+            <asp:LinkButton ID="lbUser" ForeColor="White" OnClick="LinkButton_Click" runat="server">LinkButton</asp:LinkButton>
+        </div>
         <asp:Label style="margin-right:.5em" ID="lbTitle" runat="server" Text="Title  " Font-Bold="True"></asp:Label>
         <asp:TextBox ID="tbTitle" runat="server" Width="349px"></asp:TextBox><br />
 &nbsp;

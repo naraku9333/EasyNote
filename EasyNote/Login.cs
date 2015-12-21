@@ -26,6 +26,7 @@ namespace EasyNote
 
         private void btnSubmit_Click(object sender, EventArgs e)
         {
+            this.DialogResult = DialogResult.None;
             if (tbFirstname.Text != "" && tbLastname.Text != "" && tbUsername2.Text != ""
                  && tbInPassword1.Text != "" && tbInPassword2.Text != "")
             {
@@ -41,7 +42,6 @@ namespace EasyNote
                             {
                                 MessageBox.Show(tbUsername2.Text + " already in use. Pick another username");
                                 con.Close();
-                                this.DialogResult = DialogResult.None;
                                 return;
                             }
                         }
@@ -52,7 +52,7 @@ namespace EasyNote
                         {
                             string salt = GenerateSaltString();//A series of random bytes to make the password longer. 
                                                                // byte[] hashedpw = new SHA1CryptoServiceProvider().ComputeHash(Encoding.UTF8.GetBytes(tbInPassword1.Text + salt));
-                            string hashedpw = FormsAuthentication.HashPasswordForStoringInConfigFile(tbPassword.Text + salt, "SHA1");
+                            string hashedpw = FormsAuthentication.HashPasswordForStoringInConfigFile(tbInPassword1.Text + salt, "SHA1");
                             byte[] enccc, key, iv; //The encrypted credit card, key for the aes algorithm, and iv from the algorithm.  
 
                             //Create an algorithm to use for symmettric encryption. 
@@ -98,12 +98,12 @@ namespace EasyNote
             else
             {
                 MessageBox.Show("All feilds are required!");
-                this.DialogResult = DialogResult.None;
             }
         }
 
         private void btnLogin_Click(object sender, EventArgs e)
         {
+            this.DialogResult = DialogResult.None;
             using (var con = new MySqlConnection(conString))
             {
                 con.Open();
@@ -133,6 +133,7 @@ namespace EasyNote
                         {
                            user = tbUsername.Text;
                             id = (int)reader["cust_id"];
+                            this.DialogResult = DialogResult.OK;
                         }
                         else
                         {
@@ -147,6 +148,7 @@ namespace EasyNote
         {
             registerPanel.Visible = true;
             loginPanel.Visible = false;
+            Text = "Register";
         }
 
         private void btnSubmit_MouseEnter(object sender, EventArgs e)

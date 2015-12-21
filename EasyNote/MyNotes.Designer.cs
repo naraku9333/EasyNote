@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MyNotes));
             this.lbTitle = new System.Windows.Forms.Label();
             this.lbTags = new System.Windows.Forms.Label();
             this.lbText = new System.Windows.Forms.Label();
@@ -43,6 +44,9 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.lbMatching = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.lnkLogged = new System.Windows.Forms.LinkLabel();
+            this.pbRetrieveBttn = new System.Windows.Forms.PictureBox();
             this.pbAttachBtn = new System.Windows.Forms.PictureBox();
             this.pbClearBtn = new System.Windows.Forms.PictureBox();
             this.pbSaveBttn = new System.Windows.Forms.PictureBox();
@@ -52,11 +56,9 @@
             this.pbAddNote = new System.Windows.Forms.PictureBox();
             this.myNotesBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.noteBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.pbRetrieveBttn = new System.Windows.Forms.PictureBox();
-            this.lnkLogged = new System.Windows.Forms.LinkLabel();
-            this.label2 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataSet1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvNotesList)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbRetrieveBttn)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbAttachBtn)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbClearBtn)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbSaveBttn)).BeginInit();
@@ -66,7 +68,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.pbAddNote)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.myNotesBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.noteBindingSource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbRetrieveBttn)).BeginInit();
             this.SuspendLayout();
             // 
             // lbTitle
@@ -226,6 +227,45 @@
             this.lbMatching.Text = "Number of matches: ##";
             this.lbMatching.Visible = false;
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.ForeColor = System.Drawing.Color.White;
+            this.label2.Location = new System.Drawing.Point(423, 9);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(65, 13);
+            this.label2.TabIndex = 30;
+            this.label2.Text = "Signed in as";
+            // 
+            // lnkLogged
+            // 
+            this.lnkLogged.AutoEllipsis = true;
+            this.lnkLogged.LinkArea = new System.Windows.Forms.LinkArea(0, 13);
+            this.lnkLogged.LinkColor = System.Drawing.Color.White;
+            this.lnkLogged.Location = new System.Drawing.Point(486, 10);
+            this.lnkLogged.Name = "lnkLogged";
+            this.lnkLogged.Size = new System.Drawing.Size(73, 13);
+            this.lnkLogged.TabIndex = 31;
+            this.lnkLogged.TabStop = true;
+            this.lnkLogged.Text = "linkLabel1";
+            this.lnkLogged.UseCompatibleTextRendering = true;
+            this.lnkLogged.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkLogged_LinkClicked);
+            // 
+            // pbRetrieveBttn
+            // 
+            this.pbRetrieveBttn.Image = global::EasyNote.Properties.Resources.Dark_Retrieve_Button;
+            this.pbRetrieveBttn.Location = new System.Drawing.Point(453, 134);
+            this.pbRetrieveBttn.Margin = new System.Windows.Forms.Padding(2);
+            this.pbRetrieveBttn.Name = "pbRetrieveBttn";
+            this.pbRetrieveBttn.Size = new System.Drawing.Size(86, 25);
+            this.pbRetrieveBttn.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pbRetrieveBttn.TabIndex = 28;
+            this.pbRetrieveBttn.TabStop = false;
+            this.pbRetrieveBttn.Visible = false;
+            this.pbRetrieveBttn.Click += new System.EventHandler(this.pbRetrieveBtn_Click);
+            this.pbRetrieveBttn.MouseEnter += new System.EventHandler(this.pbRetrieveBttn_MouseEnter);
+            this.pbRetrieveBttn.MouseLeave += new System.EventHandler(this.pbRetrieveBttn_MouseLeave);
+            // 
             // pbAttachBtn
             // 
             this.pbAttachBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -339,51 +379,14 @@
             // 
             this.noteBindingSource.DataSource = typeof(NoteLibrary.Note);
             // 
-            // pbRetrieveBttn
-            // 
-            this.pbRetrieveBttn.Image = global::EasyNote.Properties.Resources.Dark_Retrieve_Button;
-            this.pbRetrieveBttn.Location = new System.Drawing.Point(453, 134);
-            this.pbRetrieveBttn.Margin = new System.Windows.Forms.Padding(2);
-            this.pbRetrieveBttn.Name = "pbRetrieveBttn";
-            this.pbRetrieveBttn.Size = new System.Drawing.Size(86, 25);
-            this.pbRetrieveBttn.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pbRetrieveBttn.TabIndex = 28;
-            this.pbRetrieveBttn.TabStop = false;
-            this.pbRetrieveBttn.Visible = false;
-            this.pbRetrieveBttn.Click += new System.EventHandler(this.pbRetrieveBtn_Click);
-            this.pbRetrieveBttn.MouseEnter += new System.EventHandler(this.pbRetrieveBttn_MouseEnter);
-            this.pbRetrieveBttn.MouseLeave += new System.EventHandler(this.pbRetrieveBttn_MouseLeave);
-            // 
-            // lnkLogged
-            // 
-            this.lnkLogged.AutoSize = true;
-            this.lnkLogged.ForeColor = System.Drawing.Color.White;
-            this.lnkLogged.LinkArea = new System.Windows.Forms.LinkArea(0, 0);
-            this.lnkLogged.LinkColor = System.Drawing.Color.White;
-            this.lnkLogged.Location = new System.Drawing.Point(461, 8);
-            this.lnkLogged.Name = "lnkLogged";
-            this.lnkLogged.Size = new System.Drawing.Size(0, 13);
-            this.lnkLogged.TabIndex = 29;
-            this.lnkLogged.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkLogged_LinkClicked);
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.ForeColor = System.Drawing.Color.White;
-            this.label2.Location = new System.Drawing.Point(387, 8);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(68, 13);
-            this.label2.TabIndex = 30;
-            this.label2.Text = "Signed in as ";
-            // 
             // MyNotes
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.HotTrack;
             this.ClientSize = new System.Drawing.Size(571, 599);
-            this.Controls.Add(this.label2);
             this.Controls.Add(this.lnkLogged);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.pbRetrieveBttn);
             this.Controls.Add(this.pbAttachBtn);
             this.Controls.Add(this.pbClearBtn);
@@ -405,6 +408,7 @@
             this.Controls.Add(this.lbText);
             this.Controls.Add(this.lbTags);
             this.Controls.Add(this.lbTitle);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(2);
             this.MinimumSize = new System.Drawing.Size(587, 637);
             this.Name = "MyNotes";
@@ -413,6 +417,7 @@
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.MyNotes_Paint);
             ((System.ComponentModel.ISupportInitialize)(this.dataSet1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvNotesList)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbRetrieveBttn)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbAttachBtn)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbClearBtn)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbSaveBttn)).EndInit();
@@ -422,7 +427,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.pbAddNote)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.myNotesBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.noteBindingSource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbRetrieveBttn)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -454,8 +458,8 @@
         private System.Windows.Forms.PictureBox pbClearBtn;
         private System.Windows.Forms.PictureBox pbAttachBtn;
         private System.Windows.Forms.PictureBox pbRetrieveBttn;
-        private System.Windows.Forms.LinkLabel lnkLogged;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.LinkLabel lnkLogged;
     }
 }
 

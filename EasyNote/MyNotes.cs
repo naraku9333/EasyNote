@@ -952,6 +952,6 @@ namespace EasyNote
                 createNoteTable();
             }
             else MessageBox.Show("New login failed, staying logged in as " + user);
-        }
+        }       
     }
 }

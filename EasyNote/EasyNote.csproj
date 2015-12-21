@@ -52,6 +52,9 @@
   <PropertyGroup>
     <StartupObject />
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>easynote.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="ClassLibrary1">
       <HintPath>Resources\ClassLibrary1.dll</HintPath>
@@ -163,9 +166,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Dark_Submit_Button.bmp" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="images\Dark Submit Button.png" />
   </ItemGroup>
   <ItemGroup>
@@ -179,6 +179,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="images\Light Register Button.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="easynote.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

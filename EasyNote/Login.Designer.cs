@@ -28,15 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Login));
             this.loginPanel = new System.Windows.Forms.Panel();
-            this.btnRegister = new System.Windows.Forms.Button();
-            this.btnLogin = new System.Windows.Forms.Button();
             this.tbPassword = new System.Windows.Forms.TextBox();
             this.tbUsername = new System.Windows.Forms.TextBox();
             this.pword = new System.Windows.Forms.Label();
             this.uname = new System.Windows.Forms.Label();
             this.registerPanel = new System.Windows.Forms.Panel();
-            this.btnSubmit = new System.Windows.Forms.Button();
             this.tbInPassword2 = new System.Windows.Forms.TextBox();
             this.tbInPassword1 = new System.Windows.Forms.TextBox();
             this.tbCC = new System.Windows.Forms.TextBox();
@@ -49,6 +47,9 @@
             this.cc = new System.Windows.Forms.Label();
             this.pword1 = new System.Windows.Forms.Label();
             this.pword2 = new System.Windows.Forms.Label();
+            this.btnSubmit = new System.Windows.Forms.Button();
+            this.btnRegister = new System.Windows.Forms.Button();
+            this.btnLogin = new System.Windows.Forms.Button();
             this.loginPanel.SuspendLayout();
             this.registerPanel.SuspendLayout();
             this.SuspendLayout();
@@ -65,42 +66,6 @@
             this.loginPanel.Name = "loginPanel";
             this.loginPanel.Size = new System.Drawing.Size(529, 152);
             this.loginPanel.TabIndex = 0;
-            // 
-            // btnRegister
-            // 
-            this.btnRegister.BackgroundImage = global::EasyNote.Properties.Resources.Dark_Register_Button;
-            this.btnRegister.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.btnRegister.FlatAppearance.BorderColor = System.Drawing.SystemColors.HotTrack;
-            this.btnRegister.FlatAppearance.BorderSize = 0;
-            this.btnRegister.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnRegister.Location = new System.Drawing.Point(297, 107);
-            this.btnRegister.Name = "btnRegister";
-            this.btnRegister.Size = new System.Drawing.Size(86, 34);
-            this.btnRegister.TabIndex = 7;
-            this.btnRegister.UseVisualStyleBackColor = true;
-            this.btnRegister.Click += new System.EventHandler(this.btnRegister_Click);
-            this.btnRegister.MouseEnter += new System.EventHandler(this.btnRegister_MouseEnter);
-            this.btnRegister.MouseLeave += new System.EventHandler(this.btnRegister_MouseLeave);
-            // 
-            // btnLogin
-            // 
-            this.btnLogin.BackColor = System.Drawing.SystemColors.HotTrack;
-            this.btnLogin.BackgroundImage = global::EasyNote.Properties.Resources.Dark_Login_Button;
-            this.btnLogin.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.btnLogin.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnLogin.FlatAppearance.BorderColor = System.Drawing.SystemColors.HotTrack;
-            this.btnLogin.FlatAppearance.BorderSize = 0;
-            this.btnLogin.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
-            this.btnLogin.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
-            this.btnLogin.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnLogin.Location = new System.Drawing.Point(164, 107);
-            this.btnLogin.Name = "btnLogin";
-            this.btnLogin.Size = new System.Drawing.Size(86, 34);
-            this.btnLogin.TabIndex = 6;
-            this.btnLogin.UseVisualStyleBackColor = false;
-            this.btnLogin.Click += new System.EventHandler(this.btnLogin_Click);
-            this.btnLogin.MouseEnter += new System.EventHandler(this.btnLogin_MouseEnter);
-            this.btnLogin.MouseLeave += new System.EventHandler(this.btnLogin_MouseLeave);
             // 
             // tbPassword
             // 
@@ -158,22 +123,6 @@
             this.registerPanel.Name = "registerPanel";
             this.registerPanel.Size = new System.Drawing.Size(529, 247);
             this.registerPanel.TabIndex = 1;
-            // 
-            // btnSubmit
-            // 
-            this.btnSubmit.BackgroundImage = global::EasyNote.Properties.Resources.Dark_Submit_Button;
-            this.btnSubmit.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.btnSubmit.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnSubmit.FlatAppearance.BorderSize = 0;
-            this.btnSubmit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnSubmit.Location = new System.Drawing.Point(222, 205);
-            this.btnSubmit.Name = "btnSubmit";
-            this.btnSubmit.Size = new System.Drawing.Size(86, 25);
-            this.btnSubmit.TabIndex = 12;
-            this.btnSubmit.UseVisualStyleBackColor = true;
-            this.btnSubmit.Click += new System.EventHandler(this.btnSubmit_Click);
-            this.btnSubmit.MouseEnter += new System.EventHandler(this.btnSubmit_MouseEnter);
-            this.btnSubmit.MouseLeave += new System.EventHandler(this.btnSubmit_MouseLeave);
             // 
             // tbInPassword2
             // 
@@ -285,6 +234,58 @@
             this.pword2.TabIndex = 1;
             this.pword2.Text = "Confirm password: ";
             // 
+            // btnSubmit
+            // 
+            this.btnSubmit.BackgroundImage = global::EasyNote.Properties.Resources.Dark_Submit_Button;
+            this.btnSubmit.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.btnSubmit.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.btnSubmit.FlatAppearance.BorderSize = 0;
+            this.btnSubmit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSubmit.Location = new System.Drawing.Point(222, 205);
+            this.btnSubmit.Name = "btnSubmit";
+            this.btnSubmit.Size = new System.Drawing.Size(86, 25);
+            this.btnSubmit.TabIndex = 12;
+            this.btnSubmit.UseVisualStyleBackColor = true;
+            this.btnSubmit.Click += new System.EventHandler(this.btnSubmit_Click);
+            this.btnSubmit.MouseEnter += new System.EventHandler(this.btnSubmit_MouseEnter);
+            this.btnSubmit.MouseLeave += new System.EventHandler(this.btnSubmit_MouseLeave);
+            // 
+            // btnRegister
+            // 
+            this.btnRegister.BackgroundImage = global::EasyNote.Properties.Resources.Dark_Register_Button;
+            this.btnRegister.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.btnRegister.FlatAppearance.BorderColor = System.Drawing.SystemColors.HotTrack;
+            this.btnRegister.FlatAppearance.BorderSize = 0;
+            this.btnRegister.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnRegister.Location = new System.Drawing.Point(297, 107);
+            this.btnRegister.Name = "btnRegister";
+            this.btnRegister.Size = new System.Drawing.Size(86, 34);
+            this.btnRegister.TabIndex = 7;
+            this.btnRegister.UseVisualStyleBackColor = true;
+            this.btnRegister.Click += new System.EventHandler(this.btnRegister_Click);
+            this.btnRegister.MouseEnter += new System.EventHandler(this.btnRegister_MouseEnter);
+            this.btnRegister.MouseLeave += new System.EventHandler(this.btnRegister_MouseLeave);
+            // 
+            // btnLogin
+            // 
+            this.btnLogin.BackColor = System.Drawing.SystemColors.HotTrack;
+            this.btnLogin.BackgroundImage = global::EasyNote.Properties.Resources.Dark_Login_Button;
+            this.btnLogin.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.btnLogin.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.btnLogin.FlatAppearance.BorderColor = System.Drawing.SystemColors.HotTrack;
+            this.btnLogin.FlatAppearance.BorderSize = 0;
+            this.btnLogin.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.btnLogin.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.btnLogin.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnLogin.Location = new System.Drawing.Point(164, 107);
+            this.btnLogin.Name = "btnLogin";
+            this.btnLogin.Size = new System.Drawing.Size(86, 34);
+            this.btnLogin.TabIndex = 6;
+            this.btnLogin.UseVisualStyleBackColor = false;
+            this.btnLogin.Click += new System.EventHandler(this.btnLogin_Click);
+            this.btnLogin.MouseEnter += new System.EventHandler(this.btnLogin_MouseEnter);
+            this.btnLogin.MouseLeave += new System.EventHandler(this.btnLogin_MouseLeave);
+            // 
             // Login
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -293,6 +294,7 @@
             this.ClientSize = new System.Drawing.Size(553, 249);
             this.Controls.Add(this.registerPanel);
             this.Controls.Add(this.loginPanel);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Login";
             this.Text = "Login";
             this.loginPanel.ResumeLayout(false);

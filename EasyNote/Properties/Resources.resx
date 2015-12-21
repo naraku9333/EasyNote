@@ -157,6 +157,9 @@
   <data name="Dark_Submit_Button" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\Dark Submit Button.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="easynote" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\easynote.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="Light_Add_Button" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\Light Add Button.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
